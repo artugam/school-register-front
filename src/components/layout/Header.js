@@ -53,16 +53,5 @@ function Header() {
 )
 }
 
-// const headerStyle = {
-//     background: '#333',
-//     color: '#fff',
-//     textAlign: 'center',
-//     padding: '10px'
-// }
-//
-// const linkStyle = {
-//     color: '#fff',
-//     textDecoration: 'none'
-// }
 
 export default Header;
