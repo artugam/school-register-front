@@ -16,8 +16,9 @@ const toast = {
         return iZtoast.success({
             // title: title,
             message: message,
-            position: 'bottomCenter',
-
+            position: 'topRight',
+            messageSize: '20',
+            icon: ''
         });
     }
 };

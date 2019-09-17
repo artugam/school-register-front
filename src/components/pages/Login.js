@@ -5,9 +5,8 @@ import {API_URL} from "../constants/Api";
 import axios from 'axios'
 import toast from "../services/toast/ToastService";
 import axiosService from "../services/axios/AxiosService"
-import Form from 'react-validation/build/form';
-import Input from 'react-validation/build/input';
-import { Redirect } from 'react-router-dom'
+import emailValidator from "../services/validator/EmailValidator";
+import errorConstantsValidator from "../services/validator/ErrorConstantsValidator";
 
 
 const required = (value) => {
@@ -22,46 +21,57 @@ export class Login extends React.Component {
     state = {
         email: '',
         password: '',
-        emailError: ''
+        emailError: '',
+        passwordError: '',
     };
 
     validate = () => {
-        let emailClass = "";
-        let emailError = "";
-        // let passwordError = "";
+
+        let errors = [];
+
+        errors.push(this.isEmailValidate());
+        errors.push(this.isPasswordValidate());
 
 
+        return !errors.includes(false);
+
+    };
+
+    isEmailValidate = () => {
         if (!this.state.email) {
-            emailError = "Pole wymagane";
-        }
-
-        if (emailError) {
-            this.setState({ emailError});
+            this.setState({emailError: errorConstantsValidator.required});
             return false;
         }
+        if (!emailValidator.isEmail(this.state.email)) {
+            this.setState({emailError: errorConstantsValidator.badEmail});
+            return false;
+        }
+        this.setState({emailError: ''});
+        return true;
+    };
 
+    isPasswordValidate = () => {
+        if (!this.state.password) {
+            this.setState({passwordError: errorConstantsValidator.required});
+            return false;
+        }
+        this.setState({passwordError: ''});
         return true;
     };
 
 
-    onLoginFormSubmit = (e) =>  {
-
-        // if(!this.validate()) {
-        //     return;
-        // }
+    onLoginFormSubmit = (e) => {
         e.preventDefault();
-        console.log(e.parent('form:first'));
-
-        // e.checkValidity();
-
-        return;
+        if (!this.validate()) {
+            return;
+        }
 
         axios.post(API_URL + "auth/login", this.state)
             .then(res => {
-                if(!res) {
+                if (!res) {
                     return;
                 }
-                toast.success("Zalogowano")
+                toast.success("Zalogowano");
 
                 localStorage.setItem("authData", JSON.stringify(res.data));
                 this.props.history.push(`/dashboard`);
@@ -79,8 +89,6 @@ export class Login extends React.Component {
     };
 
 
-
-
     render() {
         return (
             <div className="d-flex justify-content-center loginPage">
@@ -92,20 +100,29 @@ export class Login extends React.Component {
                         <form>
                             <div className="input-group form-group">
                                 <div className="input-group-prepend">
-                                    <span className="input-group-text input-group-text-login"><i className="fa fa-user"></i></span>
+                                    <span className="input-group-text input-group-text-login"><i
+                                        className="fa fa-user"></i></span>
                                 </div>
-                                {/*<input required type="email" name='email' className={`form-control pl-1 login-field ` + (this.state.emailError ? "is-invalid" :'')} placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input>*/}
-                                <input required type="email" name='email' className={`form-control pl-1 login-field `} placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input>
-                                {/*<div className="invalid-feedback">{this.state.emailError}</div>*/}
+                                <input type="email" name='email'
+                                       className={`form-control pl-1 login-field ` + (this.state.emailError ? "is-invalid" : '')}
+                                       placeholder="Email" value={this.state.email}
+                                       onChange={this.handleEmailChange}></input>
+                                {/*<input required type="email" name='email' className={`form-control pl-1 login-field`} placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input>*/}
+                                <div className="invalid-feedback">{this.state.emailError}</div>
                             </div>
                             <div className="input-group form-group">
                                 <div className="input-group-prepend">
-                                    <span className="input-group-text input-group-text-login "><i className="fa fa-key"></i></span>
+                                    <span className="input-group-text input-group-text-login "><i
+                                        className="fa fa-key"></i></span>
                                 </div>
-                                <input type="password" className="form-control pl-1 login-field" placeholder="Hasło" value={this.state.password} onChange={this.handlePasswordChange}></input>
+                                <input type="password" className={`form-control pl-1 login-field ` + (this.state.passwordError ? "is-invalid" : '')} placeholder="Hasło"
+                                       value={this.state.password} onChange={this.handlePasswordChange}></input>
+                                <div className="invalid-feedback">{this.state.passwordError}</div>
                             </div>
                             <div className="form-group">
-                                <button className="btn btn-block float-right login_btn" type="submit" onClick={this.onLoginFormSubmit}>Login</button>
+                                <button className="btn btn-block float-right login_btn" type="submit"
+                                        onClick={this.onLoginFormSubmit}>Login
+                                </button>
                                 {/*<input className="btn btn-block float-right login_btn" type="submit" ></input>*/}
                             </div>
                         </form>

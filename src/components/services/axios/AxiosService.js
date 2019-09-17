@@ -16,7 +16,6 @@ const axiosService = {
             return;
         }
 
-        console.log(reason.response);
         toast.error(responseCodes.message[reason.response.data.error]);
     }
 };

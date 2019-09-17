@@ -2,7 +2,7 @@
 
 const responseCodes = {
     message: {
-        500: "Internal Server Error",
+        500: "Bład serwera",
         "Unauthorized": "Niepoprawne dane"
     }
 };
