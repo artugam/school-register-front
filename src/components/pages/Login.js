@@ -7,16 +7,16 @@ import toast from "../services/toast/ToastService";
 import axiosService from "../services/axios/AxiosService"
 import emailValidator from "../services/validator/EmailValidator";
 import errorConstantsValidator from "../services/validator/ErrorConstantsValidator";
-
-
-const required = (value) => {
-    if (!value.toString().trim().length) {
-        // We can return string or jsx as the 'error' prop for the validated Component
-        return 'require';
-    }
-};
+import globalConstants from "../constants/Global";
+import responseCodes from "../services/axios/ResponseCodes";
 
 export class Login extends React.Component {
+
+    componentDidMount() {
+        if(localStorage.getItem(globalConstants.authData)) {
+            this.props.history.push('/dashboard');
+        }
+    }
 
     state = {
         email: '',
@@ -59,7 +59,6 @@ export class Login extends React.Component {
         return true;
     };
 
-
     onLoginFormSubmit = (e) => {
         e.preventDefault();
         if (!this.validate()) {
@@ -71,10 +70,9 @@ export class Login extends React.Component {
                 if (!res) {
                     return;
                 }
-                toast.success("Zalogowano");
-
-                localStorage.setItem("authData", JSON.stringify(res.data));
-                this.props.history.push(`/dashboard`);
+                toast.success(responseCodes.message.logged);
+                localStorage.setItem(globalConstants.authData, JSON.stringify(res.data));
+                this.props.history.push("/dashboard");
             })
             .catch((reason) => {
                 axiosService.handleError(reason);

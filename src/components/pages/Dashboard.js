@@ -4,11 +4,19 @@ import axios from 'axios'
 import '../assets/js/plugins/nucleo/css/nucleo.css'
 import '../assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css'
 import '../assets/css/argon-dashboard.css'
-import DashboardNavigation from "../layout/DashboardNavigation";
-import DashboardBrand from "../layout/DashboardBrand";
-import DashboardFooter from "../layout/DashboardFooter";
+
+// import '../assets/js/plugins/jquery/dist/jquery.min'
+// import '../assets/js/plugins/jquery/dist/jquery.slim.min'
+//
+//
+// import '../assets/js/plugins/bootstrap/dist/js/bootstrap.min.js'
+// import '../assets/js/argon-dashboard.min.js'
+import Navigation from "../layout/Navigation";
+import Brand from "../layout/Brand";
+import Footer from "../layout/Footer";
 import toast from "../services/toast/ToastService";
 import axiosService from "../services/axios/AxiosService";
+import globalConstants from "../constants/Global";
 
 
 
@@ -19,6 +27,13 @@ export class Dashboard extends React.Component {
     };
 
     componentDidMount() {
+
+
+        if(!localStorage.getItem(globalConstants.authData)) {
+            this.props.history.push('/');
+            return;
+        }
+
 
         var authData = localStorage.getItem("authData");
         authData = JSON.parse(authData);
@@ -43,11 +58,11 @@ export class Dashboard extends React.Component {
         // const greeting =
         return (
             <div>
-                <DashboardNavigation user={this.state.user}/>
+                <Navigation user={this.state.user}/>
 
                 <div className="main-content">
                     {/* Navbar */}
-                    <DashboardBrand user={this.state.user}/>
+                    <Brand user={this.state.user}/>
                     {/* End Navbar */}
                     {/* Header */}
 
@@ -349,7 +364,7 @@ export class Dashboard extends React.Component {
                             </div>
                         </div>
                         {/*Footer*/}
-                        <DashboardFooter/>
+                        <Footer/>
                     </div>
 
                 </div>

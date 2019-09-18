@@ -3,7 +3,8 @@
 const responseCodes = {
     message: {
         500: "Bład serwera",
-        "Unauthorized": "Niepoprawne dane"
+        "Unauthorized": "Niepoprawne dane",
+        "logged": "Zalogowano"
     }
 };
 
