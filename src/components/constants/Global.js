@@ -1,7 +1,7 @@
 
 
 const globalConstants =  {
-    authData: 'authData'
+    authData: 'authData',
 };
 
 export default globalConstants;
