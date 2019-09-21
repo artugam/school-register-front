@@ -6,7 +6,7 @@ const toast = {
         return iZtoast.error({
             // title: title,
             message: message,
-            position: 'topRight',
+            position: 'bottomCenter',
             messageSize: '20',
             icon: ''
 
