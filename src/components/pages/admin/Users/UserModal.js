@@ -1,11 +1,13 @@
 import React from 'react';
 import {Modal, Button, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import userConstants from "./UserConstants";
-import Axios from "axios";
+import axios from "axios";
 import errorConstantsValidator from "../../../services/validator/ErrorConstantsValidator";
 import emailValidator from "../../../services/validator/EmailValidator";
 import axiosService from "../../../services/axios/AxiosService";
 import toast from "../../../services/toast/ToastService";
+import {API_URL} from "../../../constants/Api";
+import passwordValidator from "../../../services/validator/PasswordValidator";
 
 export class UserModal extends React.Component {
 
@@ -30,13 +32,17 @@ export class UserModal extends React.Component {
 
     addConfig = {
         title: "Dodawanie użytkownika",
-        saveButton: "Dodaj"
+        saveButton: "Dodaj",
+        successResponse: "Użytkownik został dodany"
     };
 
     editConfig = {
         title: "Edycja użytkownika",
-        saveButton: "Edytuj"
+        saveButton: "Edytuj",
+        successResponse: "Użytkownik został edytowany"
     };
+
+    user = null;
 
     config = this.addConfig;
 
@@ -74,8 +80,14 @@ export class UserModal extends React.Component {
                 }
                 break;
             case "password":
-                formErrors.password =
-                    value.length < 6 ? "Hasło powinno mieć co najmniej 6 znaków" : "";
+                if (!value) {
+                    formErrors.password = errorConstantsValidator.required;
+                } else if (!passwordValidator.isPasswordValidate(value)) {
+                    formErrors.password = errorConstantsValidator.passwordRequirements;
+                    console.log(escape(errorConstantsValidator.passwordRequirements));
+                } else {
+                    formErrors.password = ''
+                }
                 break;
             default:
                 break;
@@ -104,21 +116,63 @@ export class UserModal extends React.Component {
     };
 
     handleFormSubmit = (e) => {
-        if (this.state.role == false) {
-            this.state.role = this.props.allowedRoles[0].id;
+        if (this.state.formFields.role == false) {
+            this.state.formFields.role = this.props.allowedRoles[0].id;
         }
         if (!this.formValid()) {
             toast.error("Formularz zawiera błędy");
             return;
         }
 
-        //TODO
+        let config = axiosService.getAuthConfig(this.state.formFields);
+
+        var params = {
+            "firstName": this.state.formFields.firstname,
+            "lastName": this.state.formFields.lastname,
+            "email": this.state.formFields.email,
+            "password": this.state.formFields.password,
+            "role": this.state.formFields.role,
+
+        };
+
+
+        axios.post(API_URL + "users", params, config)
+            .then(response => {
+                if(response.status == 200) {
+                    toast.success(this.config.successResponse)
+                    this.props.toggleModal();
+                }
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
 
     };
 
 
     componentDidMount() {
         this.config = this.props.action == 'edit' ? this.editConfig : this.addConfig;
+        if(this.props.user) {
+            this.user = this.props.user;
+            this.updateStateWithUser();
+        }
+    }
+
+    updateStateWithUser() {
+        // console.log(this.user);
+        var formFields = {
+            firstname: this.user.firstName,
+            lastname: this.user.lastName,
+            email: this.user.email,
+            password: '',
+            role: false,
+
+        };
+
+        let newState = Object.assign({}, this.state);
+        newState.formFields = formFields;
+        this.setState(newState);
+
     }
 
     generateRandomPassword = () => {
@@ -159,6 +213,7 @@ export class UserModal extends React.Component {
                                    className={"form-control " + (this.state.formErrors.firstname ? "is-invalid" : '')}
                                    id="firstname" onChange={this.handleOnChange}
                                    aria-describedby="emailHelp"
+                                   value={this.state.formFields.firstname}
                                    placeholder="Wprowadź imię"></input>
                             <div className="invalid-feedback">{this.state.formErrors.firstname}</div>
                         </div>
@@ -167,6 +222,7 @@ export class UserModal extends React.Component {
                             <input type="text"
                                    className={"form-control " + (this.state.formErrors.lastname ? "is-invalid" : '')}
                                    id="lastname" onChange={this.handleOnChange}
+                                   value={this.state.formFields.lastname}
                                    placeholder="Wprowadź Nazwisko"></input>
                             <div className="invalid-feedback">{this.state.formErrors.lastname}</div>
                         </div>
@@ -176,6 +232,7 @@ export class UserModal extends React.Component {
                                    className={`form-control ` + (this.state.formErrors.email ? "is-invalid" : '')}
                                    id="email"
                                    onChange={this.handleOnChange}
+                                   value={this.state.formFields.email}
                                    placeholder="Wprowadź email"></input>
                             <div className="invalid-feedback">{this.state.formErrors.email}</div>
                         </div>
@@ -194,7 +251,8 @@ export class UserModal extends React.Component {
                                             onClick={this.generateRandomPassword}>Losowe Hasło
                                     </button>
                                 </div>
-                                <div className="invalid-feedback">{this.state.formErrors.password}</div>
+                                <div className="invalid-feedback"
+                                     dangerouslySetInnerHTML={{__html: this.state.formErrors.password}}></div>
                             </div>
                         </div>
                         <div className="form-group">
@@ -204,6 +262,7 @@ export class UserModal extends React.Component {
                                 className={"form-control " + (this.state.formErrors.role ? "is-invalid" : '')}
                                 id="role"
                                 onChange={this.handleOnChange}
+                                value={this.state.formFields.role}
                                 placeholder="Wprowadź hasło"
                             >
                                 {

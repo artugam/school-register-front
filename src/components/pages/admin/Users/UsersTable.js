@@ -5,6 +5,7 @@ import globalConstants from "../../../constants/Global";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
+import Loader from "react-loader-spinner";
 
 export class UsersTable extends React.Component {
 
@@ -40,6 +41,19 @@ export class UsersTable extends React.Component {
     render() {
         return (
             <div className="card shadow">
+                {/*<Loader*/}
+                {/*    type="BallTriangle"*/}
+                {/*    color="#00BFFF"*/}
+                {/*    style={{*/}
+                {/*        "position": "fixed",*/}
+                {/*        "width": "100",*/}
+                {/*        "height": "100",*/}
+                {/*    }}*/}
+                {/*    // height={100}*/}
+                {/*    // width={100}*/}
+                {/*    // timeout={3000} //3 secs*/}
+
+                {/*/>*/}
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
@@ -61,6 +75,7 @@ export class UsersTable extends React.Component {
                             <th scope="col">Nazwisko</th>
                             <th scope="col">Email</th>
                             <th scope="col">Rola</th>
+                            <th scope="col">Status</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
@@ -70,6 +85,7 @@ export class UsersTable extends React.Component {
                                 user={user}
                                 key={user.id}
                                 allowedRoles={this.state.allowedRoles}
+                                loadUsers={this.props.loadUsers}
                             />);
                         })}
                         </tbody>

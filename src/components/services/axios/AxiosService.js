@@ -8,8 +8,11 @@ const axiosService = {
             toast.error(responseCodes.message["500"]);
             return;
         }
-
-
+        if(reason.response.data.errors) {
+            this.handleErrorsMessages(reason.response.data.errors);
+            return;
+        }
+        // if(reason.response.)
         if (!responseCodes.message[reason.response.data.error]) {
             console.log(reason.response);
             toast.error("No key for " + reason.response.data.error)
@@ -25,9 +28,18 @@ const axiosService = {
         var config = {
             headers: {
                 "Authorization": authData.tokenType + " " + authData.accessToken
-            }
+            },
         };
         return config;
+    },
+
+    handleErrorsMessages: function (errors) {
+        errors.map((item) => {
+            if(responseCodes.message[item.code]) {
+                toast.error(responseCodes.message[item.code]);
+                return;
+            }
+        });
     }
 };
 

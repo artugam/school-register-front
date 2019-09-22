@@ -23,17 +23,11 @@ export class Dashboard extends BaseSiteController {
             return;
         }
 
+        this.loadMe();
+    }
 
-        var authData = localStorage.getItem("authData");
-        authData = JSON.parse(authData);
-
-        var config = {
-            headers: {
-                "Authorization": authData.tokenType + " "+ authData.accessToken
-            }
-        };
-
-        axios.get(API_URL + "auth/me", config)
+    loadMe = () => {
+        axios.get(API_URL + "auth/me", axiosService.getAuthConfig())
             .then(res => {
                 this.setState({user: res.data});
             })

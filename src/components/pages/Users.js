@@ -9,6 +9,8 @@ import globalConstants from "../constants/Global";
 import User from "./admin/Users/User";
 import BaseSiteController from "./BaseSiteController";
 import UsersTable from "./admin/Users/UsersTable";
+import Loader from 'react-loader-spinner'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 
 export class Users extends BaseSiteController {
@@ -28,6 +30,10 @@ export class Users extends BaseSiteController {
             return;
         }
 
+        this.loadUsers();
+    }
+
+    loadUsers = () => {
         axios.get(API_URL + "users", axiosService.getAuthConfig())
             .then(response => {
                 this.setState({users: response.data});
@@ -36,7 +42,6 @@ export class Users extends BaseSiteController {
                 axiosService.handleError(reason);
             });
     }
-
 
     render() {
         // const greeting =
@@ -53,7 +58,10 @@ export class Users extends BaseSiteController {
                     <div className="container-fluid mt--7">
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
-                                <UsersTable users={this.state.users}/>
+                                <UsersTable
+                                    users={this.state.users}
+                                    loadUsers={this.loadUsers}
+                                />
                             </div>
                         </div>
                         <Footer/>
