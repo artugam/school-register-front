@@ -6,17 +6,46 @@ import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
 import Loader from "react-loader-spinner";
+import Pagination from "../../../services/paginators/Pagination";
+
 
 export class UsersTable extends React.Component {
 
     state = {
         isModalOpen: false,
-        allowedRoles: []
+        allowedRoles: [],
+        // exampleItems: this.props.users.length > 0 ? this.props.users : [],
+        exampleItems: [],
+        pageOfItems: []
+
     };
 
+    constructor() {
+        super();
 
+        // an example array of 150 items to be paged
+        var exampleItems = [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
+        this.state.exampleItems = exampleItems;
+        // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
+        this.onChangePage = this.onChangePage.bind(this);
+    }
+
+    // state = {
+    //     isModalOpen: false,
+    //     allowedRoles: [],
+    //     // exampleItems: this.props.users,
+    //     exampleItems: [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) })),
+    //     pageOfItems: []
+    // };
+
+    onChangePage(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems: pageOfItems });
+    }
 
     componentDidMount() {
+            console.log(this.state.exampleItems);
+
         if (!localStorage.getItem(globalConstants.authData)) {
             this.props.history.push('/');
             return;
@@ -80,15 +109,20 @@ export class UsersTable extends React.Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.props.users.map((user) => {
-                            return (<User
-                                user={user}
-                                key={user.id}
-                                allowedRoles={this.state.allowedRoles}
-                                loadUsers={this.props.loadUsers}
-                            />);
-                        })}
+                        {this.state.pageOfItems.map(item =>
+                            <div key={item.id}>{item.name}</div>
+                        )}
+                        {/*{this.props.users.map((user) => {*/}
+                        {/*    return (<User*/}
+                        {/*        user={user}*/}
+                        {/*        key={user.id}*/}
+                        {/*        allowedRoles={this.state.allowedRoles}*/}
+                        {/*        loadUsers={this.props.loadUsers}*/}
+                        {/*    />);*/}
+                        {/*})}*/}
                         </tbody>
+
+                        <Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />
                     </table>
                 </div>
             </div>

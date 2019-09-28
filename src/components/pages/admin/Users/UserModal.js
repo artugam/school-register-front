@@ -42,6 +42,8 @@ export class UserModal extends React.Component {
         successResponse: "Użytkownik został edytowany"
     };
 
+    isEdit = false;
+
     user = null;
 
     config = this.addConfig;
@@ -103,6 +105,10 @@ export class UserModal extends React.Component {
 
         let fields = this.state.formFields;
 
+        if (this.isEdit) {
+            delete fields['password'];
+        }
+
         var self = this;
         Object.keys(fields).forEach(function (key) {
             self.validateField(key, fields[key]);
@@ -132,27 +138,47 @@ export class UserModal extends React.Component {
             "email": this.state.formFields.email,
             "password": this.state.formFields.password,
             "role": this.state.formFields.role,
-
         };
 
+        var url = API_URL + "users";
+        if (this.isEdit) {
+            url += "/" + this.user.id;
+            axios.patch(url, params, config)
+                .then(response => {
+                    if (response.status == 200) {
+                        toast.success(this.config.successResponse)
+                        this.props.toggleModal();
+                        this.props.loadUsers()
+                    }
+                })
+                .catch((reason) => {
+                    axiosService.handleError(reason);
+                });
+            return;
+        }
 
-        axios.post(API_URL + "users", params, config)
+        axios.post(url, params, config)
             .then(response => {
-                if(response.status == 200) {
+                if (response.status == 200) {
                     toast.success(this.config.successResponse)
                     this.props.toggleModal();
+                    this.props.loadUsers()
                 }
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
-
     };
 
 
     componentDidMount() {
-        this.config = this.props.action == 'edit' ? this.editConfig : this.addConfig;
-        if(this.props.user) {
+        this.config = this.addConfig;
+        if (this.props.action == 'edit') {
+            this.config = this.editConfig;
+            this.isEdit = true;
+        }
+
+        if (this.props.user) {
             this.user = this.props.user;
             this.updateStateWithUser();
         }
@@ -236,25 +262,29 @@ export class UserModal extends React.Component {
                                    placeholder="Wprowadź email"></input>
                             <div className="invalid-feedback">{this.state.formErrors.email}</div>
                         </div>
-                        <div className="form-group">
 
-                            <label htmlFor="password">Hasło</label>
-                            <div className="input-group mb-3">
-                                <input type="text"
-                                       className={"form-control " + (this.state.formErrors.password ? "is-invalid" : '')}
-                                       id="password"
-                                       onChange={this.handleOnChange}
-                                       value={this.state.formFields.password}
-                                       placeholder="Wprowadź hasło"></input>
-                                <div className="input-group-append">
-                                    <button className="btn btn-primary" type="button"
-                                            onClick={this.generateRandomPassword}>Losowe Hasło
-                                    </button>
+                        {this.isEdit ? '' :
+                            <div className="form-group">
+
+                                <label htmlFor="password">Hasło</label>
+                                <div className="input-group mb-3">
+                                    <input type="text"
+                                           className={"form-control " + (this.state.formErrors.password ? "is-invalid" : '')}
+                                           id="password"
+                                           onChange={this.handleOnChange}
+                                           value={this.state.formFields.password}
+                                           placeholder="Wprowadź hasło"></input>
+                                    <div className="input-group-append">
+                                        <button className="btn btn-primary" type="button"
+                                                onClick={this.generateRandomPassword}>Losowe Hasło
+                                        </button>
+                                    </div>
+                                    <div className="invalid-feedback"
+                                         dangerouslySetInnerHTML={{__html: this.state.formErrors.password}}></div>
                                 </div>
-                                <div className="invalid-feedback"
-                                     dangerouslySetInnerHTML={{__html: this.state.formErrors.password}}></div>
                             </div>
-                        </div>
+                        }
+
                         <div className="form-group">
                             <label htmlFor="role">Rola</label>
                             <select

@@ -36,7 +36,7 @@ export class Users extends BaseSiteController {
     loadUsers = () => {
         axios.get(API_URL + "users", axiosService.getAuthConfig())
             .then(response => {
-                this.setState({users: response.data});
+                this.setState({users: response.data}, function() { console.log("setState completed", this.state) });
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
