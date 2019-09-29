@@ -3,6 +3,7 @@ import UserModal from "./UserModal";
 import userConstants from "./UserConstants";
 import {UserDeleteModal} from "./UserDeleteModal";
 import UserStatusModal from "./UserStatusModal";
+import PropTypes from "prop-types";
 
 export class User extends React.Component {
 
@@ -41,6 +42,7 @@ export class User extends React.Component {
 
     render() {
         return (
+
             <tr id={this.user.id}>
                 <td scope="row">{this.user.firstName}</td>
                 <td>{this.user.lastName}</td>
@@ -67,6 +69,7 @@ export class User extends React.Component {
                             action={'edit'}
                             allowedRoles={this.props.allowedRoles}
                             user={this.user}
+                            loadUsers={this.props.loadUsers}
                         />
                     </a>
                     <a style={actionButtonStyle} onClick={this.toggleBlockModal}>
@@ -108,6 +111,10 @@ export class User extends React.Component {
     }
 
 }
+
+UserDeleteModal.propTypes = {
+    user: PropTypes.object.isRequired
+};
 
 const actionButtonStyle = {
     cursor: "pointer",

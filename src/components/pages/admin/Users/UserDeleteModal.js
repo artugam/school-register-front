@@ -1,13 +1,9 @@
 import React from 'react';
 import {Modal, Button, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
-import userConstants from "./UserConstants";
 import axios from "axios";
-import errorConstantsValidator from "../../../services/validator/ErrorConstantsValidator";
-import emailValidator from "../../../services/validator/EmailValidator";
 import axiosService from "../../../services/axios/AxiosService";
 import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
-import passwordValidator from "../../../services/validator/PasswordValidator";
 import PropTypes from 'prop-types';
 
 

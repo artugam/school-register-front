@@ -166,6 +166,7 @@ export class UserModal extends React.Component {
                 }
             })
             .catch((reason) => {
+
                 axiosService.handleError(reason);
             });
     };

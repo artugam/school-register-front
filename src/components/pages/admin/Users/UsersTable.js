@@ -7,6 +7,8 @@ import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
 import Loader from "react-loader-spinner";
 import Pagination from "../../../services/paginators/Pagination";
+import PropTypes from "prop-types";
+import UserDeleteModal from "./UserDeleteModal";
 
 
 export class UsersTable extends React.Component {
@@ -15,7 +17,6 @@ export class UsersTable extends React.Component {
         isModalOpen: false,
         allowedRoles: [],
         // exampleItems: this.props.users.length > 0 ? this.props.users : [],
-        exampleItems: [],
         pageOfItems: []
 
     };
@@ -24,8 +25,9 @@ export class UsersTable extends React.Component {
         super();
 
         // an example array of 150 items to be paged
-        var exampleItems = [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
-        this.state.exampleItems = exampleItems;
+        // var exampleItems = [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
+        // this.state.exampleItems = exampleItems;
+
         // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
         this.onChangePage = this.onChangePage.bind(this);
     }
@@ -40,16 +42,17 @@ export class UsersTable extends React.Component {
 
     onChangePage(pageOfItems) {
         // update state with new page of items
-        this.setState({ pageOfItems: pageOfItems });
+        this.setState({pageOfItems: pageOfItems});
     }
 
     componentDidMount() {
-            console.log(this.state.exampleItems);
 
         if (!localStorage.getItem(globalConstants.authData)) {
             this.props.history.push('/');
             return;
         }
+
+        this.state.exampleItems = this.props.users;
 
         axios.get(API_URL + "roles", axiosService.getAuthConfig())
             .then(response => {
@@ -90,46 +93,66 @@ export class UsersTable extends React.Component {
                         </div>
                         <div className="col text-right">
                             {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}
-                            <button onClick={this.toggleModal} className="btn btn-sm btn-primary">Dodaj Nowego Użytkownika</button>
-                            <UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal} allowedRoles={this.state.allowedRoles}/>
+                            <button onClick={this.toggleModal} className="btn btn-sm btn-primary">Dodaj Nowego
+                                Użytkownika
+                            </button>
+                            <UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
+                                       allowedRoles={this.state.allowedRoles}
+                                    loadUsers={this.props.loadUsers}/>
                         </div>
                     </div>
                 </div>
-                <div className="table-responsive">
-                    {/* Projects table */}
-                    <table className="table align-items-center table-flush">
-                        <thead className="thead-light">
-                        <tr>
-                            <th scope="col">Imie</th>
-                            <th scope="col">Nazwisko</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Rola</th>
-                            <th scope="col">Status</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.state.pageOfItems.map(item =>
-                            <div key={item.id}>{item.name}</div>
-                        )}
-                        {/*{this.props.users.map((user) => {*/}
-                        {/*    return (<User*/}
-                        {/*        user={user}*/}
-                        {/*        key={user.id}*/}
-                        {/*        allowedRoles={this.state.allowedRoles}*/}
-                        {/*        loadUsers={this.props.loadUsers}*/}
-                        {/*    />);*/}
-                        {/*})}*/}
-                        </tbody>
+                {this.props.users ?
+                    <div className="table-responsive">
+                        {/* Projects table */}
 
-                        <Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />
-                    </table>
-                </div>
+                        <table className="table align-items-center table-flush">
+                            <thead className="thead-light">
+                            <tr>
+                                <th scope="col">Imie</th>
+                                <th scope="col">Nazwisko</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Rola</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {this.state.pageOfItems.map((user) => {
+                                    return (<User
+                                        user={user}
+                                        key={user.id}
+                                        allowedRoles={this.state.allowedRoles}
+                                        loadUsers={this.props.loadUsers}
+                                    />);
+                                }
+                            )}
+                            {/*{this.props.users.map((user) => {*/}
+                            {/*    return (<User*/}
+                            {/*        user={user}*/}
+                            {/*        key={user.id}*/}
+                            {/*        allowedRoles={this.state.allowedRoles}*/}
+                            {/*        loadUsers={this.props.loadUsers}*/}
+                            {/*    />);*/}
+                            {/*})}*/}
+                            </tbody>
+
+
+                        </table>
+                        <Pagination items={this.props.users} onChangePage={this.onChangePage}/>
+
+                    </div>
+                    : ''
+                }
             </div>
 
         )
     }
 }
+
+UserDeleteModal.propTypes = {
+    users: PropTypes.array.isRequired
+};
 
 export default UsersTable;
 

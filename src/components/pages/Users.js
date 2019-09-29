@@ -17,11 +17,11 @@ export class Users extends BaseSiteController {
 
     state = {
         user: '',
-        users: []
+        users: [],
+        loaded: false
     };
 
     user = this.props.user;
-
 
 
     componentDidMount() {
@@ -34,9 +34,11 @@ export class Users extends BaseSiteController {
     }
 
     loadUsers = () => {
+
         axios.get(API_URL + "users", axiosService.getAuthConfig())
             .then(response => {
-                this.setState({users: response.data}, function() { console.log("setState completed", this.state) });
+                this.setState({users: response.data})
+                this.setState({loaded: true})
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
@@ -58,10 +60,13 @@ export class Users extends BaseSiteController {
                     <div className="container-fluid mt--7">
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
-                                <UsersTable
-                                    users={this.state.users}
-                                    loadUsers={this.loadUsers}
-                                />
+                                {this.state.loaded === true ?
+                                    <UsersTable
+                                        users={this.state.users}
+                                        loadUsers={this.loadUsers}
+                                    />
+                                    : ''
+                                }
                             </div>
                         </div>
                         <Footer/>

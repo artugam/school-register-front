@@ -5,6 +5,7 @@ import responseCodes from "./ResponseCodes";
 const axiosService = {
     handleError: function (reason) {
         if (!reason.response) {
+            console.log(reason);
             toast.error(responseCodes.message["500"]);
             return;
         }
