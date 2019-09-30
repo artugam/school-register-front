@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 export class User extends React.Component {
 
     constants = userConstants;
-    user = this.props.user;
 
     state = {
         isModalOpen: false,
@@ -62,12 +61,12 @@ export class User extends React.Component {
 
     render() {
         return (
-            <tr id={this.user.id} style={{"borderBottom": "2px solid #adb5bd"}}>
-                <td scope="row">{this.user.firstName}</td>
-                <td>{this.user.lastName}</td>
-                <td>{this.user.email}</td>
+            <tr id={this.props.user.id} style={{"borderBottom": "2px solid #adb5bd"}}>
+                <td scope="row">{this.props.user.firstName}</td>
+                <td>{this.props.user.lastName}</td>
+                <td>{this.props.user.email}</td>
                 <td>
-                    {this.getHighestRole(this.user.roles)}
+                    {this.getHighestRole(this.props.user.roles)}
                 </td>
                 <td>
                     <span className={`badge badge-` + (this.props.user.enabled ? "success" : "danger")}>
@@ -78,49 +77,46 @@ export class User extends React.Component {
                     <a style={actionButtonStyle} onClick={this.toggleModal}>
                         <i className="fa fa-edit text-yellow"></i>
                         <UserModal
-                            key={this.user.id}
+                            key={this.props.user.id}
                             isOpen={this.state.isModalOpen}
                             toggleModal={this.toggleModal}
                             action={'edit'}
                             allowedRoles={this.props.allowedRoles}
-                            user={this.user}
+                            user={this.props.user}
                             loadUsers={this.loadUsers}
                         />
                     </a>
-                    {
-                        this.props.user.enabled ?
-                            <a style={actionButtonStyle} onClick={this.toggleBlockModal}>
-                                <i className="fa fa-lock text-primary"></i>
-                                <UserStatusModal
-                                    key={this.user.id}
-                                    isOpen={this.state.isBlockModalOpen}
-                                    toggleModal={this.toggleBlockModal}
-                                    user={this.user}
-                                    loadUsers={this.props.loadUsers}
-                                    action={"block"}
-                                />
-                            </a>
-                            :
-                            <a style={actionButtonStyle} onClick={this.toggleUnBlockModal}>
-                                <i className="fa fa-lock-open text-success"></i>
-                                <UserStatusModal
-                                    key={this.user.id}
-                                    isOpen={this.state.isUnblockModalOpen}
-                                    toggleModal={this.toggleUnBlockModal}
-                                    user={this.user}
-                                    loadUsers={this.props.loadUsers}
-                                    action={"unblock"}
-                                />
-                            </a>
-                    }
+                    <a className={!this.props.user.enabled ? "d-none" : ''}  style={actionButtonStyle} onClick={this.toggleBlockModal}>
+                        <i className="fa fa-lock text-primary"></i>
+                        <UserStatusModal
+                            key={this.props.user.id}
+                            isOpen={this.state.isBlockModalOpen}
+                            toggleModal={this.toggleBlockModal}
+                            user={this.props.user}
+                            loadUsers={this.props.loadUsers}
+                            action={"block"}
+                        />
+                    </a>
+                    <a  className={this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle} onClick={this.toggleUnBlockModal}>
+                        <i className="fa fa-lock-open text-success"></i>
+                        <UserStatusModal
+                            key={this.props.user.id}
+                            isOpen={this.state.isUnblockModalOpen}
+                            toggleModal={this.toggleUnBlockModal}
+                            user={this.props.user}
+                            loadUsers={this.props.loadUsers}
+                            action={"unblock"}
+                        />
+                    </a>
 
-                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal}>
+
+                    <a  style={actionButtonStyle} onClick={this.toggleDeleteModal}>
                         <i className="fa fa-trash text-danger"></i>
                         <UserDeleteModal
-                            key={this.user.id}
+                            key={this.props.user.id}
                             isOpen={this.state.isDeleteModalOpen}
                             toggleModal={this.toggleDeleteModal}
-                            user={this.user}
+                            user={this.props.user}
                             loadUsers={this.props.loadUsers}
                         />
                     </a>
@@ -134,7 +130,7 @@ export class User extends React.Component {
 
 const actionButtonStyle = {
     cursor: "pointer",
-    display: "block",
+    // display: "block",
     padding: "0px 5px"
 }
 

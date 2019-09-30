@@ -70,6 +70,10 @@ export class UsersTable extends React.Component {
         })
     };
 
+    handleOnSearch = () => {
+
+    }
+
     render() {
         return (
             <div className="card shadow">
@@ -89,7 +93,7 @@ export class UsersTable extends React.Component {
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
-                            <h3 className="mb-0">Użytkownicy</h3>
+                            <h2 className="mb-0 p-2">Użytkownicy</h2>
                         </div>
                         <div className="col text-right">
                             {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}
@@ -99,6 +103,14 @@ export class UsersTable extends React.Component {
                             <UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
                                        allowedRoles={this.state.allowedRoles}
                                     loadUsers={this.props.loadUsers}/>
+                        </div>
+                    </div>
+                    <div className="row align-items-center">
+                        <div className="col-md-3 text-right">
+                            <input type="text"
+                                   className={"form-control"}
+                                   id="search" onChange={this.handleOnSearch}
+                                   placeholder="Szukaj"></input>
                         </div>
                     </div>
                 </div>
