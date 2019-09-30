@@ -106,7 +106,7 @@ export class UsersTable extends React.Component {
                     <div className="table-responsive">
                         {/* Projects table */}
 
-                        <table className="table align-items-center table-flush">
+                        <table className="table align-items-center table-flush table-bordered">
                             <thead className="thead-light">
                             <tr>
                                 <th scope="col">Imie</th>
@@ -117,7 +117,7 @@ export class UsersTable extends React.Component {
                                 <th scope="col"></th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="tbody-dark">
                             {this.state.pageOfItems.map((user) => {
                                     return (<User
                                         user={user}
@@ -149,10 +149,6 @@ export class UsersTable extends React.Component {
         )
     }
 }
-
-UserDeleteModal.propTypes = {
-    users: PropTypes.array.isRequired
-};
 
 export default UsersTable;
 

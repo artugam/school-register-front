@@ -111,8 +111,6 @@ class Pagination extends React.Component {
             // don't display pager if there is only 1 page
             return null;
         }
-        console.log(pager.currentPage);
-
         return (
             <nav className="m-3">
                 <ul className="pagination pg-blue">

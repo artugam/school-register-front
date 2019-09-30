@@ -33,16 +33,20 @@ export class Users extends BaseSiteController {
         this.loadUsers();
     }
 
+    refreshUsersList = (users) => this.setState({ users })
+
     loadUsers = () => {
 
+        this.forceUpdate();
         axios.get(API_URL + "users", axiosService.getAuthConfig())
             .then(response => {
-                this.setState({users: response.data})
+                this.refreshUsersList(response.data);
                 this.setState({loaded: true})
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
+
     }
 
     render() {
