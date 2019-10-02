@@ -4,6 +4,7 @@ import axios from "axios";
 import axiosService from "../../../services/axios/AxiosService";
 import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
+import PropTypes from "prop-types";
 
 export class UserDeleteModal extends React.Component {
 
@@ -43,6 +44,7 @@ export class UserDeleteModal extends React.Component {
                     >
                         Usuń
                     </Button>
+
                     <Button variant="secondary" onClick={this.props.toggleModal}>Zamknij</Button>
                 </ModalFooter>
             </Modal>

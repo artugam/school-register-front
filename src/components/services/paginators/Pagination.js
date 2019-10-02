@@ -29,32 +29,50 @@ class Pagination extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         // reset page if items array has changed
         if (this.props.items !== prevProps.items) {
-            this.setPage(this.props.initialPage);
+            // this.setPage(this.props.initialPage);
+            var {items, pageSize, totalPages, totalElements} = this.props;
+            // var pager = this.state.pager;
+            //
+            // if (page < 1 || page > pager.totalPages) {
+            //     return;
+            // }
+            //
+            // get new pager object for specified page
+            var pager = this.getPager(items.length, this.props.initialPage, pageSize, totalPages, totalElements);
+            //
+            // get new page of items from items array
+            // var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+            // var pageOfItems = items;
+            //
+            // update state
+            this.setState({pager});
         }
+
     }
 
     setPage(page) {
-        var {items, pageSize} = this.props;
+        var {items, pageSize, totalPages, totalElements} = this.props;
         var pager = this.state.pager;
 
-        if (page < 1 || page > pager.totalPages) {
-            return;
-        }
+        // if (page < 1 || page > pager.totalPages) {
+        //     return;
+        // }
 
         // get new pager object for specified page
-        pager = this.getPager(items.length, page, pageSize);
+        pager = this.getPager(items.length, page, pageSize, totalPages, totalElements);
 
         // get new page of items from items array
-        var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+        // var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+        var pageOfItems = items;
 
         // update state
-        this.setState({pager: pager});
+        this.setState({pager: pager}, this.props.onChangePage(pageOfItems, pager));
 
         // call change page function in parent component
-        this.props.onChangePage(pageOfItems);
+
     }
 
-    getPager(totalItems, currentPage, pageSize) {
+    getPager(totalItems, currentPage, pageSize, totalPages) {
         // default to first page
         currentPage = currentPage || 1;
 
@@ -62,7 +80,10 @@ class Pagination extends React.Component {
         pageSize = pageSize || 10;
 
         // calculate total pages
-        var totalPages = Math.ceil(totalItems / pageSize);
+        if(!totalPages) {
+            totalPages = Math.ceil(totalItems / pageSize);
+        }
+
 
         var startPage, endPage;
         if (totalPages <= 10) {
@@ -104,6 +125,13 @@ class Pagination extends React.Component {
         };
     }
 
+    getDisplayedAmount = () => {
+        if(this.props.isLast) {
+            return (this.props.pageSize * (this.props.initialPage - 1)) + this.props.items.length;
+        }
+        return this.props.pageSize * this.props.initialPage;
+    };
+
     render() {
         var pager = this.state.pager;
 
@@ -111,14 +139,16 @@ class Pagination extends React.Component {
             // don't display pager if there is only 1 page
             return null;
         }
+
         return (
-            <nav className="m-3">
+            <nav className="row m-3">
+                <div className="col-md-6">
                 <ul className="pagination pg-blue">
                     <li className={pager.currentPage === 1 ? 'disabled' : ''}>
                         <a className="page-link"  onClick={() => this.setPage(1)}>First</a>
                     </li>
                     <li className={pager.currentPage === 1 ? 'disabled' : ''}>
-                        <a className="page-link disabled" role="button" onClick={() => this.setPage(pager.currentPage - 1)}>Previous</a>
+                        <a className="page-link" role="button" onClick={() => this.setPage(pager.currentPage - 1)}>Previous</a>
                     </li>
 
                     {pager.pages.map((page, index) =>
@@ -134,6 +164,13 @@ class Pagination extends React.Component {
                         <a className="page-link" onClick={() => this.setPage(pager.totalPages)}>Last</a>
                     </li>
                 </ul>
+                </div>
+                <div className="col-md-6 float-right">
+                    <p className="float-right">
+                        Wyświetlono {this.getDisplayedAmount()} z {this.props.totalElements}
+                    </p>
+                </div>
+
             </nav>
         );
     }

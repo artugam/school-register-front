@@ -6,11 +6,10 @@ import Brand from "../layout/Brand";
 import Footer from "../layout/Footer";
 import axiosService from "../services/axios/AxiosService";
 import globalConstants from "../constants/Global";
-import User from "./admin/Users/User";
 import BaseSiteController from "./BaseSiteController";
 import UsersTable from "./admin/Users/UsersTable";
-import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import SortTableHeader from "../modules/SortTableHeader";
 
 
 export class Users extends BaseSiteController {
@@ -18,11 +17,15 @@ export class Users extends BaseSiteController {
     state = {
         user: '',
         users: [],
-        loaded: false
+        loaded: false,
+        usersListParams: {
+            page: 1,
+            records: 10,
+            sortField: "firstName",
+            sortDirection: "DESC",
+            search: ""
+        }
     };
-
-    user = this.props.user;
-
 
     componentDidMount() {
         if (!localStorage.getItem(globalConstants.authData)) {
@@ -33,15 +36,35 @@ export class Users extends BaseSiteController {
         this.loadUsers();
     }
 
-    refreshUsersList = (users) => this.setState({ users })
+    updateUsersQueryParams = (usersListParams) => {
+    // updateUsersQueryParams = (page, records, sortField, search) => {
+    //     var usersListParams = {
+    //         page: page ? page : this.state.usersListParams.page,
+    //         records: records ? records : this.state.usersListParams.records,
+    //         sortField: sortField ? sortField : this.state.usersListParams.sortField,
+    //         search: search ? search : this.state.usersListParams.search
+    //     };
+        this.setState(usersListParams);
+    };
 
-    loadUsers = () => {
+    refreshUsersList = (users) => {
+        this.setState({ users })
+    }
 
-        this.forceUpdate();
-        axios.get(API_URL + "users", axiosService.getAuthConfig())
+    loadUsers = (usersListParams) => {
+
+        usersListParams = usersListParams ? usersListParams : this.state.usersListParams;
+
+        var config = axiosService.getAuthConfig();
+        config.params = usersListParams;
+
+        return axios.get(API_URL + "users", config)
             .then(response => {
                 this.refreshUsersList(response.data);
-                this.setState({loaded: true})
+                if(!this.state.loaded) {
+                    this.setState({loaded: true})
+                }
+                return response.data;
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
@@ -68,6 +91,8 @@ export class Users extends BaseSiteController {
                                     <UsersTable
                                         users={this.state.users}
                                         loadUsers={this.loadUsers}
+                                        userListParams={this.state.usersListParams}
+                                        updateUsersQueryParams={this.updateUsersQueryParams}
                                     />
                                     : ''
                                 }

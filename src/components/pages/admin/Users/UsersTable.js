@@ -5,10 +5,8 @@ import globalConstants from "../../../constants/Global";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import Loader from "react-loader-spinner";
 import Pagination from "../../../services/paginators/Pagination";
-import PropTypes from "prop-types";
-import UserDeleteModal from "./UserDeleteModal";
+import SortTableHeader from "../../../modules/SortTableHeader";
 
 
 export class UsersTable extends React.Component {
@@ -16,34 +14,23 @@ export class UsersTable extends React.Component {
     state = {
         isModalOpen: false,
         allowedRoles: [],
-        // exampleItems: this.props.users.length > 0 ? this.props.users : [],
         pageOfItems: []
 
     };
 
     constructor() {
         super();
-
-        // an example array of 150 items to be paged
-        // var exampleItems = [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
-        // this.state.exampleItems = exampleItems;
-
-        // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
         this.onChangePage = this.onChangePage.bind(this);
     }
 
-    // state = {
-    //     isModalOpen: false,
-    //     allowedRoles: [],
-    //     // exampleItems: this.props.users,
-    //     exampleItems: [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) })),
-    //     pageOfItems: []
-    // };
 
-    onChangePage(pageOfItems) {
-        // update state with new page of items
-        this.setState({pageOfItems: pageOfItems});
+    onChangePage(pageOfItems, pager) {
+        var config = this.props.userListParams;
+        config.page = pager.currentPage;
+        this.props.updateUsersQueryParams(config);
+        this.props.loadUsers();
     }
+
 
     componentDidMount() {
 
@@ -51,8 +38,6 @@ export class UsersTable extends React.Component {
             this.props.history.push('/');
             return;
         }
-
-        this.state.exampleItems = this.props.users;
 
         axios.get(API_URL + "roles", axiosService.getAuthConfig())
             .then(response => {
@@ -64,14 +49,30 @@ export class UsersTable extends React.Component {
     }
 
     toggleModal = () => {
-
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
     };
 
-    handleOnSearch = () => {
+    handleOnSearch = (target) => {
+        if(target.charCode == 13){
+            var config = this.props.userListParams;
+            config.search = target.target.value;
+            config.page = 1;
 
+            this.props.updateUsersQueryParams(config);
+            this.props.loadUsers();
+        }
+    };
+
+    handleSort = (field, direction) => {
+        var config = this.props.userListParams;
+        config.sortField = field;
+        config.sortDirection = direction;
+        config.page = 1;
+
+        this.props.updateUsersQueryParams(config);
+        this.props.loadUsers();
     }
 
     render() {
@@ -102,26 +103,30 @@ export class UsersTable extends React.Component {
                             </button>
                             <UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
                                        allowedRoles={this.state.allowedRoles}
-                                    loadUsers={this.props.loadUsers}/>
+                                       loadUsers={this.props.loadUsers}
+                                       userListParams={this.props.userListParams}
+                            />
                         </div>
                     </div>
                     <div className="row align-items-center">
                         <div className="col-md-3 text-right">
                             <input type="text"
                                    className={"form-control"}
-                                   id="search" onChange={this.handleOnSearch}
+                                   id="search" onKeyPress={this.handleOnSearch}
+                                   onChange={this.handleOnChange}
                                    placeholder="Szukaj"></input>
                         </div>
                     </div>
                 </div>
                 {this.props.users ?
-                    <div className="table-responsive">
+                    <div className="table-responsive-md">
                         {/* Projects table */}
 
-                        <table className="table align-items-center table-flush table-bordered">
+                        <table className="table align-items-center table-flush table-bordered text-center">
+
                             <thead className="thead-light">
                             <tr>
-                                <th scope="col">Imie</th>
+                                <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort} />
                                 <th scope="col">Nazwisko</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Rola</th>
@@ -129,32 +134,33 @@ export class UsersTable extends React.Component {
                                 <th scope="col"></th>
                             </tr>
                             </thead>
-                            <tbody className="tbody-dark">
-                            {this.state.pageOfItems.map((user) => {
-                                    return (<User
-                                        user={user}
-                                        key={user.id}
-                                        allowedRoles={this.state.allowedRoles}
-                                        loadUsers={this.props.loadUsers}
-                                    />);
-                                }
-                            )}
-                            {/*{this.props.users.map((user) => {*/}
-                            {/*    return (<User*/}
-                            {/*        user={user}*/}
-                            {/*        key={user.id}*/}
-                            {/*        allowedRoles={this.state.allowedRoles}*/}
-                            {/*        loadUsers={this.props.loadUsers}*/}
-                            {/*    />);*/}
-                            {/*})}*/}
-                            </tbody>
 
-
+                            {this.props.users.content.length > 0 ?
+                                <tbody className="tbody-dark">
+                                {this.props.users.content.map((user) => {
+                                        return (<User
+                                            user={user}
+                                            key={user.id}
+                                            allowedRoles={this.state.allowedRoles}
+                                            loadUsers={this.props.loadUsers}
+                                        />);
+                                    }
+                                )}
+                                </tbody>
+                                : ''
+                            }
                         </table>
-                        <Pagination items={this.props.users} onChangePage={this.onChangePage}/>
+                        {this.props.users.content.length > 0 ? '' : <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>}
+
+                        <Pagination items={this.props.users.content} onChangePage={this.onChangePage}
+                                    initialPage={this.props.users.page} pageSize={this.props.users.size}
+                                    totalPages={this.props.users.totalPages} totalElements={this.props.users.totalElements}
+                                    isLast={this.props.users.last}
+                        />
 
                     </div>
-                    : ''
+                            : ''
+
                 }
             </div>
 

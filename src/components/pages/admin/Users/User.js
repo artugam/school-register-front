@@ -54,11 +54,6 @@ export class User extends React.Component {
 
     };
 
-    loadUsers = () => {
-        this.props.loadUsers();
-        this.forceUpdate();
-    };
-
     render() {
         return (
             <tr id={this.props.user.id} style={{"borderBottom": "2px solid #adb5bd"}}>
