@@ -13,6 +13,9 @@ export class SortTableHeader extends React.Component {
     };
 
     handleSort = () => {
+        if(!this.props.field) {
+            return;
+        }
         var direction = this.sortDirection.DESC;
         if(this.state.direction == this.sortDirection.DESC) {
             direction = this.sortDirection.ASC;
@@ -21,23 +24,30 @@ export class SortTableHeader extends React.Component {
         this.props.handleSort(this.props.field, direction);
     };
 
+    getSortIcon = () => {
+        if(!this.props.field) {
+            return '';
+        }
+        return (
+            <i className="fa fa-arrows-alt-v"></i>
+        );
+    };
+
     render() {
         return (
-            <th style={this.sortButtonStyle} onClick={this.handleSort} scope="col">{this.props.text}</th>
+            <th style={this.sortButtonStyle} onClick={this.handleSort} scope="col">{this.props.text} {this.getSortIcon()}</th>
         )
     }
 
     sortButtonStyle = {
-        cursor: "pointer",
+        cursor: this.props.field ? "pointer" : "default ",
     };
 
 }
 
 
 SortTableHeader.propTypes = {
-    field: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    handleSort: PropTypes.func.isRequired
+    text: PropTypes.string.isRequired
 };
 
 export default SortTableHeader;

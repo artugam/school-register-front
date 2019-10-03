@@ -72,13 +72,13 @@ export class User extends React.Component {
                     <a style={actionButtonStyle} onClick={this.toggleModal}>
                         <i className="fa fa-edit text-yellow"></i>
                         <UserModal
+                            loadUsers={this.props.loadUsers}
                             key={this.props.user.id}
                             isOpen={this.state.isModalOpen}
                             toggleModal={this.toggleModal}
                             action={'edit'}
                             allowedRoles={this.props.allowedRoles}
                             user={this.props.user}
-                            loadUsers={this.loadUsers}
                         />
                     </a>
                     <a className={!this.props.user.enabled ? "d-none" : ''}  style={actionButtonStyle} onClick={this.toggleBlockModal}>

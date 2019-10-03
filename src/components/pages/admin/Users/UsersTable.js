@@ -24,9 +24,11 @@ export class UsersTable extends React.Component {
     }
 
 
-    onChangePage(pageOfItems, pager) {
+    onChangePage(pager) {
         var config = this.props.userListParams;
         config.page = pager.currentPage;
+        config.records = pager.pageSize;
+
         this.props.updateUsersQueryParams(config);
         this.props.loadUsers();
     }
@@ -73,24 +75,12 @@ export class UsersTable extends React.Component {
 
         this.props.updateUsersQueryParams(config);
         this.props.loadUsers();
-    }
+    };
 
     render() {
         return (
             <div className="card shadow">
-                {/*<Loader*/}
-                {/*    type="BallTriangle"*/}
-                {/*    color="#00BFFF"*/}
-                {/*    style={{*/}
-                {/*        "position": "fixed",*/}
-                {/*        "width": "100",*/}
-                {/*        "height": "100",*/}
-                {/*    }}*/}
-                {/*    // height={100}*/}
-                {/*    // width={100}*/}
-                {/*    // timeout={3000} //3 secs*/}
 
-                {/*/>*/}
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
@@ -126,11 +116,11 @@ export class UsersTable extends React.Component {
 
                             <thead className="thead-light">
                             <tr>
-                                <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort} />
-                                <th scope="col">Nazwisko</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Rola</th>
-                                <th scope="col">Status</th>
+                                <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort} />
+                                <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort} />
+                                <SortTableHeader text={"Rola"}/>
+                                <SortTableHeader field={"enabled"} text={"Status"} handleSort={this.handleSort} />
                                 <th scope="col"></th>
                             </tr>
                             </thead>

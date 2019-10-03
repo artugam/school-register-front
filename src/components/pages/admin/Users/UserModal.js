@@ -142,6 +142,7 @@ export class UserModal extends React.Component {
 
         var url = API_URL + "users";
         if (this.isEdit) {
+            console.log(this.props);
             url += "/" + this.user.id;
             axios.patch(url, params, config)
                 .then(response => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TablePageSelect from "../../modules/TabePageSelect";
 
 const propTypes = {
     items: PropTypes.array.isRequired,
@@ -52,21 +53,17 @@ class Pagination extends React.Component {
 
     setPage(page) {
         var {items, pageSize, totalPages, totalElements} = this.props;
-        var pager = this.state.pager;
+        // var pager = this.state.pager;
 
         // if (page < 1 || page > pager.totalPages) {
         //     return;
         // }
 
         // get new pager object for specified page
-        pager = this.getPager(items.length, page, pageSize, totalPages, totalElements);
-
-        // get new page of items from items array
-        // var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
-        var pageOfItems = items;
+        var pager = this.getPager(items.length, page, pageSize, totalPages, totalElements);
 
         // update state
-        this.setState({pager: pager}, this.props.onChangePage(pageOfItems, pager));
+        this.setState({pager: pager}, this.props.onChangePage(pager));
 
         // call change page function in parent component
 
@@ -124,21 +121,33 @@ class Pagination extends React.Component {
             pages: pages
         };
     }
+    
+    onChangeHandle = (pageSize) => {
+        var pager = this.state.pager;
+        pager.pageSize = pageSize
+        pager.currentPage = 1;
+        this.setState({pager});
+        this.props.onChangePage(pager);
+    };
 
     getDisplayedAmount = () => {
+        var amount = this.props.pageSize * this.props.initialPage;
+        var start = amount - this.props.pageSize + 1;
         if(this.props.isLast) {
-            return (this.props.pageSize * (this.props.initialPage - 1)) + this.props.items.length;
+            amount = (this.props.pageSize * (this.props.initialPage - 1)) + this.props.items.length;
+            start = amount - this.props.items.length + 1;
         }
-        return this.props.pageSize * this.props.initialPage;
+
+        return  start +"-" + amount;
     };
 
     render() {
         var pager = this.state.pager;
 
-        if (!pager.pages || pager.pages.length <= 1) {
-            // don't display pager if there is only 1 page
-            return null;
-        }
+        // if (!pager.pages || pager.pages.length <= 1) {
+        //     // don't display pager if there is only 1 page
+        //     return null;
+        // }
 
         return (
             <nav className="row m-3">
@@ -158,7 +167,7 @@ class Pagination extends React.Component {
                     )}
 
                     <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
-                        <a className="page-link" onClick={() => this.setPage(pager.currentPage + 1)}>Next</a>
+                        <a className="page-link" onClick={() => this.setPage(pager.currentPage + 1 > pager.totalPages ? pager.currentPage : pager.currentPage + 1)}>Next</a>
                     </li>
                     <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
                         <a className="page-link" onClick={() => this.setPage(pager.totalPages)}>Last</a>
@@ -166,8 +175,12 @@ class Pagination extends React.Component {
                 </ul>
                 </div>
                 <div className="col-md-6 float-right">
+
                     <p className="float-right">
-                        Wyświetlono {this.getDisplayedAmount()} z {this.props.totalElements}
+                        Wyświetlono {this.getDisplayedAmount()} z {this.props.totalElements} &nbsp;
+                        <TablePageSelect onChange={this.onChangeHandle} items={[
+                            10, 25, 50, 100
+                        ]}/>
                     </p>
                 </div>
 
