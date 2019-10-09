@@ -108,8 +108,8 @@ function Navigation(data){
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link " href="./examples/icons.html">
-                                <i className="ni ni-planet text-blue"></i> Icons
+                            <a className="nav-link " href="/courses">
+                                <i className="ni ni-planet text-blue"></i> Kierunki
                             </a>
                         </li>
                         <li className="nav-item">

@@ -17,7 +17,19 @@ const defaultProps = {
 class Pagination extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {pager: {}};
+        this.state = {
+            pager: {
+                totalItems: 0,
+                currentPage: 1,
+                pageSize: 10,
+                totalPages: 1,
+                startPage: 1,
+                endPage: 1,
+                startIndex: 0,
+                endIndex: 0,
+                pages: []
+            }
+        };
     }
 
     componentWillMount() {
@@ -144,6 +156,10 @@ class Pagination extends React.Component {
     render() {
         var pager = this.state.pager;
 
+        if(!this.props.items.length) {
+            return null;
+        }
+
         // if (!pager.pages || pager.pages.length <= 1) {
         //     // don't display pager if there is only 1 page
         //     return null;
@@ -151,6 +167,7 @@ class Pagination extends React.Component {
 
         return (
             <nav className="row m-3">
+
                 <div className="col-md-6">
                 <ul className="pagination pg-blue">
                     <li className={pager.currentPage === 1 ? 'disabled' : ''}>
@@ -160,11 +177,12 @@ class Pagination extends React.Component {
                         <a className="page-link" role="button" onClick={() => this.setPage(pager.currentPage - 1)}>Previous</a>
                     </li>
 
-                    {pager.pages.map((page, index) =>
+                    {pager.pages.length ?  pager.pages.map((page, index) =>
                         <li key={index} className={pager.currentPage === page ? 'page-item active' : 'page-item'}>
                             <a className="page-link" onClick={() => this.setPage(page)}>{page}</a>
                         </li>
-                    )}
+                    ) : ''
+                    }
 
                     <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
                         <a className="page-link" onClick={() => this.setPage(pager.currentPage + 1 > pager.totalPages ? pager.currentPage : pager.currentPage + 1)}>Next</a>

@@ -5,23 +5,25 @@ import Navigation from "../layout/Navigation";
 import Brand from "../layout/Brand";
 import Footer from "../layout/Footer";
 import axiosService from "../services/axios/AxiosService";
-import globalConstants from "../constants/Global";
 import BaseSiteController from "./BaseSiteController";
-import UsersTable from "./admin/Users/UsersTable";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
-import SortTableHeader from "../modules/SortTableHeader";
+import CoursesTable from "./admin/Courses/CoursesTable";
 
 
-export class Users extends BaseSiteController {
+
+export class Courses extends BaseSiteController {
 
     state = {
-        user: '',
-        users: [],
+        user: {
+            firstName: '-',
+            lastName: '-'
+        },
+        records: [],
         loaded: false,
-        usersListParams: {
+        listParams: {
             page: 1,
             records: 10,
-            sortField: "firstName",
+            sortField: "name",
             sortDirection: "DESC",
             search: ""
         }
@@ -29,40 +31,28 @@ export class Users extends BaseSiteController {
 
     componentDidMount() {
         super.componentDidMount();
-        if (!localStorage.getItem(globalConstants.authData)) {
-            this.props.history.push('/');
-            return;
-        }
-
-        this.loadUsers();
+        this.loadRecords();
     }
 
-    updateUsersQueryParams = (usersListParams) => {
-    // updateUsersQueryParams = (page, records, sortField, search) => {
-    //     var usersListParams = {
-    //         page: page ? page : this.state.usersListParams.page,
-    //         records: records ? records : this.state.usersListParams.records,
-    //         sortField: sortField ? sortField : this.state.usersListParams.sortField,
-    //         search: search ? search : this.state.usersListParams.search
-    //     };
-        this.setState(usersListParams);
+    updateListQueryParams = (listParams) => {
+        this.setState(listParams);
     };
 
-    refreshUsersList = (users) => {
-        this.setState({ users })
-    }
+    refreshRecordsList = (records) => {
+        this.setState({records})
+    };
 
-    loadUsers = (usersListParams) => {
+    loadRecords = (listParams) => {
 
-        usersListParams = usersListParams ? usersListParams : this.state.usersListParams;
+        listParams = listParams ? listParams : this.state.listParams;
 
         var config = axiosService.getAuthConfig();
-        config.params = usersListParams;
+        config.params = listParams;
 
-        return axios.get(API_URL + "users", config)
+        return axios.get(API_URL + "courses", config)
             .then(response => {
-                this.refreshUsersList(response.data);
-                if(!this.state.loaded) {
+                this.refreshRecordsList(response.data);
+                if (!this.state.loaded) {
                     this.setState({loaded: true})
                 }
                 return response.data;
@@ -70,8 +60,7 @@ export class Users extends BaseSiteController {
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
-
-    }
+    };
 
     render() {
         // const greeting =
@@ -89,11 +78,11 @@ export class Users extends BaseSiteController {
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
                                 {this.state.loaded === true ?
-                                    <UsersTable
-                                        users={this.state.users}
-                                        loadUsers={this.loadUsers}
-                                        userListParams={this.state.usersListParams}
-                                        updateUsersQueryParams={this.updateUsersQueryParams}
+                                    <CoursesTable
+                                        records={this.state.records}
+                                        loadRecords={this.loadRecords}
+                                        listParams={this.state.listParams}
+                                        updateListQueryParams={this.updateListQueryParams}
                                     />
                                     : ''
                                 }
@@ -109,6 +98,6 @@ export class Users extends BaseSiteController {
     }
 }
 
-export default Users;
+export default Courses;
 
 

@@ -12,29 +12,19 @@ import BaseSiteController from "./BaseSiteController";
 
 export class Dashboard extends BaseSiteController {
 
-    state = {
-        user: '',
-    };
-
     componentDidMount() {
-
-        if(!localStorage.getItem(globalConstants.authData)) {
-            this.props.history.push('/');
-            return;
-        }
-
-        this.loadMe();
+        super.componentDidMount();
     }
 
-    loadMe = () => {
-        axios.get(API_URL + "auth/me", axiosService.getAuthConfig())
-            .then(res => {
-                this.setState({user: res.data});
-            })
-            .catch((reason) => {
-                axiosService.handleError(reason);
-            });
-    }
+    // loadMe = () => {
+    //     axios.get(API_URL + "auth/me", axiosService.getAuthConfig())
+    //         .then(res => {
+    //             this.setState({user: res.data});
+    //         })
+    //         .catch((reason) => {
+    //             axiosService.handleError(reason);
+    //         });
+    // }
 
 
     render() {
