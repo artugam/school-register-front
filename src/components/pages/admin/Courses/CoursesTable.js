@@ -1,6 +1,11 @@
 import React from 'react';
 import Pagination from "../../../services/paginators/Pagination";
 import SortTableHeader from "../../../modules/SortTableHeader";
+import CourseModal from "./CourseModal";
+import axios from "axios";
+import {API_URL} from "../../../constants/Api";
+import axiosService from "../../../services/axios/AxiosService";
+import Course from "./Course";
 
 
 export class CoursesTable extends React.Component {
@@ -8,22 +13,36 @@ export class CoursesTable extends React.Component {
     state = {
         isModalOpen: false,
         allowedRoles: [],
-        pageOfItems: []
-
+        pageOfItems: [],
+        configOptions: {
+            degrees: [],
+            forms: []
+        }
     };
-
+    //
     constructor() {
         super();
         this.onChangePage = this.onChangePage.bind(this);
     }
 
+    componentDidMount() {
+
+        axios.get(API_URL + "courses/configuration/options", axiosService.getAuthConfig())
+            .then(response => {
+                this.setState({configOptions: response.data})
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
+    }
+
 
     onChangePage(pager) {
-        var config = this.props.userListParams;
+        var config = this.props.listParams;
         config.page = pager.currentPage;
         config.records = pager.pageSize;
 
-        this.props.updateListQueryParams(config);
+        // this.props.updateListQueryParams(config);
         this.props.loadRecords();
     }
 
@@ -35,7 +54,7 @@ export class CoursesTable extends React.Component {
 
     handleOnSearch = (target) => {
         if (target.charCode == 13) {
-            var config = this.props.userListParams;
+            var config = this.props.listParams;
             config.search = target.target.value;
             config.page = 1;
 
@@ -45,12 +64,12 @@ export class CoursesTable extends React.Component {
     };
 
     handleSort = (field, direction) => {
-        var config = this.props.userListParams;
+        var config = this.props.listParams;
         config.sortField = field;
         config.sortDirection = direction;
         config.page = 1;
 
-        this.props.updateListQueryParams(config);
+        // this.props.updateListQueryParams(config);
         this.props.loadRecords();
     };
 
@@ -61,18 +80,21 @@ export class CoursesTable extends React.Component {
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
-                            <h2 className="mb-0 p-2">Użytkownicy</h2>
+                            <h2 className="mb-0 p-2">Kierunki</h2>
                         </div>
                         <div className="col text-right">
                             {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
                                 Dodaj Nowy Kierunek
                             </button>
-                            {/*<UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}*/}
-                            {/*           allowedRoles={this.state.allowedRoles}*/}
-                            {/*           loadUsers={this.props.loadUsers}*/}
-                            {/*           userListParams={this.props.userListParams}*/}
-                            {/*/>*/}
+                            {this.state.configOptions  ?
+                                <CourseModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
+                                             loadRecords={this.props.loadRecords}
+                                             configOptions={this.state.configOptions}
+                                             listParams={this.props.listParams}
+                                />
+                                : ''
+                            }
                         </div>
                     </div>
                     <div className="row align-items-center">
@@ -81,7 +103,8 @@ export class CoursesTable extends React.Component {
                                    className={"form-control"}
                                    id="search" onKeyPress={this.handleOnSearch}
                                    onChange={this.handleOnChange}
-                                   placeholder="Szukaj"></input>
+                                   placeholder="Szukaj">
+                            </input>
                         </div>
                     </div>
                 </div>
@@ -93,29 +116,28 @@ export class CoursesTable extends React.Component {
 
                             <thead className="thead-light">
                             <tr>
-                                <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
-                                <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort}/>
-                                <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>
-                                <SortTableHeader text={"Rola"}/>
-                                <SortTableHeader field={"enabled"} text={"Status"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"name"} text={"Nazwa"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"degree"} text={"Stopień"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"form"} text={"Rodzaj"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"semesters"} text={"Ilość semestrów"} handleSort={this.handleSort}/>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
 
-                            {/*{this.props.users.content.length > 0 ?*/}
-                            {/*    <tbody className="tbody-dark">*/}
-                            {/*    {this.props.users.content.map((user) => {*/}
-                            {/*            return (<User*/}
-                            {/*                user={user}*/}
-                            {/*                key={user.id}*/}
-                            {/*                allowedRoles={this.state.allowedRoles}*/}
-                            {/*                loadUsers={this.props.loadUsers}*/}
-                            {/*            />);*/}
-                            {/*        }*/}
-                            {/*    )}*/}
-                            {/*    </tbody>*/}
-                            {/*    : ''*/}
-                            {/*}*/}
+                            {this.props.records.content.length > 0 ?
+                                <tbody className="tbody-dark">
+                                {this.props.records.content.map((record) => {
+                                        return (<Course
+                                            record={record}
+                                            key={record.id}
+                                            configOptions={this.state.configOptions}
+                                            loadRecords={this.props.loadRecords}
+                                        />);
+                                    }
+                                )}
+                                </tbody>
+                                : ''
+                            }
                         </table>
                         {this.props.records.content.length > 0 ? '' :
                             <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>

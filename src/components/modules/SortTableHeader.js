@@ -20,7 +20,8 @@ export class SortTableHeader extends React.Component {
         if(this.state.direction == this.sortDirection.DESC) {
             direction = this.sortDirection.ASC;
         }
-        this.setState({direction});
+
+        this.setState({direction: direction});
         this.props.handleSort(this.props.field, direction);
     };
 

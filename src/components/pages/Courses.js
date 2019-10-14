@@ -23,7 +23,7 @@ export class Courses extends BaseSiteController {
         listParams: {
             page: 1,
             records: 10,
-            sortField: "name",
+            sortField: "",
             sortDirection: "DESC",
             search: ""
         }
