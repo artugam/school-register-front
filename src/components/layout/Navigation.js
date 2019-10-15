@@ -15,7 +15,7 @@ function Navigation(data){
                 </button>
 
                 <a className="navbar-brand pt-0" href="/dashboard">
-                    <img src={require('../assets/img/logo.jpg')} className="navbar-brand-img" alt="..."></img>
+                    <img src={require('../assets/img/logoUR.jpg')} className="navbar-brand-img" alt="..."></img>
                 </a>
 
                 <ul className="nav align-items-center d-md-none">

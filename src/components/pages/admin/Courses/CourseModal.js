@@ -118,23 +118,23 @@ export class CourseModal extends React.Component {
         };
 
         var url = API_URL + "courses";
+        var apiResposne = null;
         if (this.isEdit) {
             url += "/" + this.props.record.id;
+            apiResposne = axios.patch(url, params, config)
+        } else {
+            apiResposne = axios.post(url, params, config);
         }
+        apiResposne.then(response => {
+            if (response.status == 200) {
+                toast.success(this.config.successResponse)
+                this.props.toggleModal();
+                this.props.loadRecords()
 
-        axios.post(url, params, config)
-            .then(response => {
-                if (response.status == 200) {
-                    toast.success(this.config.successResponse)
-                    this.props.toggleModal();
-                    this.props.loadRecords()
-
-                }
-            })
-            .catch((reason) => {
-
-                axiosService.handleError(reason);
-            });
+            }
+        }).catch((reason) => {
+            axiosService.handleError(reason);
+        });
     };
 
 
@@ -152,10 +152,10 @@ export class CourseModal extends React.Component {
 
     updateStateWithRecord() {
         var formFields = {
-            name: this.record.name,
-            degree: this.record.degree,
-            form: this.record.form,
-            semesters: this.record.semesters,
+            name: this.props.record.name,
+            degree: this.props.record.degree,
+            form: this.props.record.form,
+            semesters: this.props.record.semesters,
         };
 
         let newState = Object.assign({}, this.state);
@@ -164,7 +164,7 @@ export class CourseModal extends React.Component {
 
     }
 
-  render() {
+    render() {
         return (
             <Modal
                 isOpen={this.props.isOpen}
@@ -207,14 +207,14 @@ export class CourseModal extends React.Component {
                                 placeholder="Wprowadź hasło"
                             >
 
-                                { this.props.configOptions.degrees.map((value, key) => {
-                                        return <option
-                                            key={key}
-                                            value={value}
-                                        >
-                                            {value}
-                                        </option>
-                                    })
+                                {this.props.configOptions.degrees.map((value, key) => {
+                                    return <option
+                                        key={key}
+                                        value={value}
+                                    >
+                                        {value}
+                                    </option>
+                                })
                                 }
                             </select>
                             <div className="invalid-feedback">{this.state.formErrors.degree}</div>
@@ -230,7 +230,7 @@ export class CourseModal extends React.Component {
                                 placeholder="Wprowadź hasło"
                             >
 
-                                { this.props.configOptions.forms.map((value, key) => {
+                                {this.props.configOptions.forms.map((value, key) => {
                                     return <option
                                         key={key}
                                         value={value}
