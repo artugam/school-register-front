@@ -2,11 +2,17 @@ import React from 'react';
 import {Modal, Button, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import axios from "axios";
 import errorConstantsValidator from "../../../services/validator/ErrorConstantsValidator";
-import emailValidator from "../../../services/validator/EmailValidator";
 import axiosService from "../../../services/axios/AxiosService";
 import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
-import passwordValidator from "../../../services/validator/PasswordValidator";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import pl from 'date-fns/locale/pl';
+registerLocale('pl', pl);
+
 
 export class CourseModal extends React.Component {
 
@@ -16,13 +22,15 @@ export class CourseModal extends React.Component {
             degree: '',
             form: '',
             semesters: '',
+            startDate: '',
         },
 
         formErrors: {
             name: false,
             degree: false,
             form: false,
-            semesters: false
+            semesters: false,
+            startDate: false
         },
 
     };
@@ -44,15 +52,21 @@ export class CourseModal extends React.Component {
     config = this.addConfig;
 
     handleOnChange = e => {
-        e.preventDefault();
-
-
         const {id, value} = e.target;
         let formFields = this.state.formFields;
         formFields[id] = value;
         this.setState(formFields);
         this.validateField(id, value);
     };
+
+    handleChangeDate = date => {
+        let formFields = this.state.formFields;
+        formFields.startDate = date;
+        this.setState({
+            formFields
+        });
+        this.validateField("startDate", date);
+    }
 
     validateField = (id, value) => {
         let formErrors = this.state.formErrors;
@@ -62,8 +76,15 @@ export class CourseModal extends React.Component {
                     value.length < 3 ? "Nazwa powinna mieć co najmniej 2 znaki" : "";
                 break;
             case "semesters":
+                formErrors.semesters = false;
                 if (!value) {
                     formErrors.semesters = errorConstantsValidator.required;
+                }
+                break;
+            case "startDate":
+                formErrors.startDate = false;
+                if (!value) {
+                    formErrors.startDate = errorConstantsValidator.required;
                 }
                 break;
             default:
@@ -115,6 +136,7 @@ export class CourseModal extends React.Component {
             "semesters": this.state.formFields.semesters,
             "degree": this.state.formFields.degree,
             "form": this.state.formFields.form,
+            "startDate": this.state.formFields.startDate,
         };
 
         var url = API_URL + "courses";
@@ -130,13 +152,20 @@ export class CourseModal extends React.Component {
                 toast.success(this.config.successResponse)
                 this.props.toggleModal();
                 this.props.loadRecords()
-
+                this.clearFormValues();
             }
         }).catch((reason) => {
             axiosService.handleError(reason);
         });
     };
 
+    clearFormValues () {
+        var formFields = this.state.formFields;
+        Object.keys(formFields).map((key) => {
+            formFields[key] = '';
+        });
+        this.setState(formFields);
+    }
 
     componentDidMount() {
         this.config = this.addConfig;
@@ -156,7 +185,10 @@ export class CourseModal extends React.Component {
             degree: this.props.record.degree,
             form: this.props.record.form,
             semesters: this.props.record.semesters,
+            startDate: this.props.record.startDate,
         };
+
+        console.log(this.props.record.startDate);
 
         let newState = Object.assign({}, this.state);
         newState.formFields = formFields;
@@ -187,13 +219,13 @@ export class CourseModal extends React.Component {
                             <div className="invalid-feedback">{this.state.formErrors.name}</div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="email">Semesters</label>
+                            <label htmlFor="email">Ilość semestrów</label>
                             <input type="number"
                                    className={`form-control ` + (this.state.formErrors.semesters ? "is-invalid" : '')}
                                    id="semesters"
                                    onChange={this.handleOnChange}
                                    value={this.state.formFields.semesters}
-                                   placeholder="Wprowadź email"></input>
+                                   placeholder="Wprowadź ilość semestrów"></input>
                             <div className="invalid-feedback">{this.state.formErrors.semesters}</div>
                         </div>
                         <div className="form-group">
@@ -220,7 +252,7 @@ export class CourseModal extends React.Component {
                             <div className="invalid-feedback">{this.state.formErrors.degree}</div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="role">Forma</label>
+                            <label htmlFor="role">Rodzaj</label>
                             <select
                                 type="text"
                                 className={"form-control " + (this.state.formErrors.form ? "is-invalid" : '')}
@@ -240,7 +272,19 @@ export class CourseModal extends React.Component {
                                 })
                                 }
                             </select>
-                            <div className="invalid-feedback">{this.state.formErrors.form}</div>
+                            <div className="invalid-feedback">{this.state.formErrors.startDate}</div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="role">Data rozpoczęcia</label>
+                            <DatePicker
+                                selected={Date.parse(this.state.formFields.startDate)}
+                                onChange={this.handleChangeDate}
+                                locale="pl"
+                                className={"form-control " + (this.state.formErrors.startDate ? "is-invalid" : '')}
+                                dateFormat="dd-MM-yyyy"
+                            />
+
+                            <div className="invalid-feedback" style={{display: this.state.formErrors.startDate ? "block" : "none"}}>{this.state.formErrors.startDate}</div>
                         </div>
                     </form>
                 </ModalBody>

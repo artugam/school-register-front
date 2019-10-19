@@ -165,10 +165,11 @@ class Pagination extends React.Component {
         //     return null;
         // }
 
+
         return (
             <nav className="row m-3">
 
-                <div className="col-md-6">
+                <div className="col-md-8">
                 <ul className="pagination pg-blue">
                     <li className={pager.currentPage === 1 ? 'disabled' : ''}>
                         <a className="page-link"  onClick={() => this.setPage(1)}>First</a>
@@ -192,7 +193,7 @@ class Pagination extends React.Component {
                     </li>
                 </ul>
                 </div>
-                <div className="col-md-6 float-right">
+                <div className="col-md-4 float-right">
 
                     <p className="float-right">
                         Wyświetlono {this.getDisplayedAmount()} z {this.props.totalElements} &nbsp;

@@ -126,9 +126,9 @@ export class Login extends React.Component {
                         </form>
                     </div>
                     <div className="card-footer card-footer-login">
-                        <div className="d-flex justify-content-center links">
-                            <a href="/register">Rejestracja</a>
-                        </div>
+                        {/*<div className="d-flex justify-content-center links">*/}
+                        {/*    <a href="/register">Rejestracja</a>*/}
+                        {/*</div>*/}
                         <div className="d-flex justify-content-center">
                             <a href="#">Zapomniałeś hasła?</a>
                         </div>

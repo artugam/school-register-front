@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import CourseDeleteModal from "./CourseDeleteModal";
 import CourseModal from "./CourseModal";
+import Moment from "react-moment";
 
 export class Course extends React.Component {
     state = {
@@ -27,7 +28,14 @@ export class Course extends React.Component {
                 <td scope="row">{this.props.record.name}</td>
                 <td>{this.props.record.degree}</td>
                 <td>{this.props.record.form}</td>
+                <td>
+                    <Moment format="MM-YYYY">
+                        {this.props.record.startDate}
+                    </Moment>
+
+                </td>
                 <td>{this.props.record.semesters}</td>
+                {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
                     <a style={actionButtonStyle} onClick={this.toggleModal}>
                         <i className="fa fa-edit text-yellow"></i>

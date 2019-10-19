@@ -31,7 +31,7 @@ export class CourseDeleteModal extends React.Component {
                 centered
             >
                 <ModalHeader tag={'h3'} toggle={this.props.toggleModal}>
-                    Usunięcie użytkownika
+                    Usunięcie kierunku
                 </ModalHeader>
                 <ModalBody>
                     Czy jesteś pewny, że chcesz usunąć ten kierunek?

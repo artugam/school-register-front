@@ -6,6 +6,7 @@ import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
 import Course from "./Course";
+import Moment from "react-moment";
 
 
 export class CoursesTable extends React.Component {
@@ -110,20 +111,18 @@ export class CoursesTable extends React.Component {
                 </div>
                 {this.props.records.content ?
                     <div className="table-responsive-md">
-                        {/* Projects table */}
-
                         <table className="table align-items-center table-flush table-bordered text-center">
-
                             <thead className="thead-light">
                             <tr>
                                 <SortTableHeader field={"name"} text={"Nazwa"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"degree"} text={"Stopień"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"form"} text={"Rodzaj"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"startDate"} text={"rocznik"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"semesters"} text={"Ilość semestrów"} handleSort={this.handleSort}/>
+                                {/*<SortTableHeader field={"currentSemester"} text={"Aktualny Semestrt"} handleSort={this.handleSort}/>*/}
                                 <th scope="col"></th>
                             </tr>
                             </thead>
-
                             {this.props.records.content.length > 0 ?
                                 <tbody className="tbody-dark">
                                 {this.props.records.content.map((record) => {
