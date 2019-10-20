@@ -172,10 +172,10 @@ class Pagination extends React.Component {
                 <div className="col-md-8">
                 <ul className="pagination pg-blue">
                     <li className={pager.currentPage === 1 ? 'disabled' : ''}>
-                        <a className="page-link"  onClick={() => this.setPage(1)}>First</a>
+                        <a className="page-link"  onClick={() => this.setPage(1)}>Pierwszy</a>
                     </li>
                     <li className={pager.currentPage === 1 ? 'disabled' : ''}>
-                        <a className="page-link" role="button" onClick={() => this.setPage(pager.currentPage - 1)}>Previous</a>
+                        <a className="page-link" role="button" onClick={() => this.setPage(pager.currentPage - 1)}>Poprzedni</a>
                     </li>
 
                     {pager.pages.length ?  pager.pages.map((page, index) =>
@@ -186,10 +186,10 @@ class Pagination extends React.Component {
                     }
 
                     <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
-                        <a className="page-link" onClick={() => this.setPage(pager.currentPage + 1 > pager.totalPages ? pager.currentPage : pager.currentPage + 1)}>Next</a>
+                        <a className="page-link" onClick={() => this.setPage(pager.currentPage + 1 > pager.totalPages ? pager.currentPage : pager.currentPage + 1)}>Następny</a>
                     </li>
                     <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
-                        <a className="page-link" onClick={() => this.setPage(pager.totalPages)}>Last</a>
+                        <a className="page-link" onClick={() => this.setPage(pager.totalPages)}>Ostatni</a>
                     </li>
                 </ul>
                 </div>

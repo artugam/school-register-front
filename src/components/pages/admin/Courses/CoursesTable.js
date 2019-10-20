@@ -6,7 +6,6 @@ import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
 import Course from "./Course";
-import Moment from "react-moment";
 
 
 export class CoursesTable extends React.Component {
@@ -20,14 +19,13 @@ export class CoursesTable extends React.Component {
             forms: []
         }
     };
-    //
     constructor() {
         super();
         this.onChangePage = this.onChangePage.bind(this);
     }
 
-    componentDidMount() {
 
+    componentDidMount() {
         axios.get(API_URL + "courses/configuration/options", axiosService.getAuthConfig())
             .then(response => {
                 this.setState({configOptions: response.data})
@@ -88,14 +86,14 @@ export class CoursesTable extends React.Component {
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
                                 Dodaj Nowy Kierunek
                             </button>
-                            {this.state.configOptions  ?
-                                <CourseModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
-                                             loadRecords={this.props.loadRecords}
-                                             configOptions={this.state.configOptions}
-                                             listParams={this.props.listParams}
-                                />
-                                : ''
-                            }
+                            {/*{this.state.configOptions  ?*/}
+                            {/*    <CourseModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}*/}
+                            {/*                 loadRecords={this.props.loadRecords}*/}
+                            {/*                 configOptions={this.state.configOptions}*/}
+                            {/*                 listParams={this.props.listParams}*/}
+                            {/*    />*/}
+                            {/*    : ''*/}
+                            {/*}*/}
                         </div>
                     </div>
                     <div className="row align-items-center">

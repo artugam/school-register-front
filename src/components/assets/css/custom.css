@@ -10,3 +10,15 @@ table tr:hover {
 .react-datepicker-wrapper {
     display: block !important;
 }
+
+.page-item.active .page-link {
+    box-shadow: none;
+}
+
+input[id="search"] {
+    margin-top: 10px !important;
+}
+
+.multi-select .dropdown {
+    display: block;
+}

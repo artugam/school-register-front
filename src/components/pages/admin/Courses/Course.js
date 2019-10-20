@@ -32,11 +32,13 @@ export class Course extends React.Component {
                     <Moment format="MM-YYYY">
                         {this.props.record.startDate}
                     </Moment>
-
                 </td>
                 <td>{this.props.record.semesters}</td>
                 {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>
+                        <i className="fa fa-info-circle text-blue"></i>
+                    </a>
                     <a style={actionButtonStyle} onClick={this.toggleModal}>
                         <i className="fa fa-edit text-yellow"></i>
                         <CourseModal
