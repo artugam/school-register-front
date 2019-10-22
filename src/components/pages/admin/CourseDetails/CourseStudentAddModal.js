@@ -20,16 +20,18 @@ export class CourseStudentAddModal extends React.Component {
     };
 
     componentDidMount() {
+
         var config = axiosService.getAuthConfig();
         axios.get(API_URL + "courses/" + this.props.course.id + "/notStudents", config)
             .then(response => {
-                console.log(response.data);
-                return;
-                // if (response.status == 200) {
-                //     toast.success("Studenci zostali dodani do kierunku")
-                //     this.props.toggleModal();
-                //     this.props.loadRecords();
-                // }
+                var out = [];
+                response.data.map(item => {
+                    out.push({
+                        label: item.lastName + " " + item.firstName,
+                        value: item.id
+                    })
+                });
+                this.setState({options : out});
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
@@ -38,17 +40,25 @@ export class CourseStudentAddModal extends React.Component {
 
     handleFormSubmit = (e) => {
         var config = axiosService.getAuthConfig();
-        config.data = {
-            studentsIds: [
-                this.props.record.id
-            ]
+        var data = {
+            studentsIds: this.state.selected
         };
-        axios.delete(API_URL + "courses/" + this.props.course.id + "/students", config)
+        axios.post(API_URL + "courses/" + this.props.course.id + "/students", data, config)
             .then(response => {
                 if (response.status == 200) {
                     toast.success("Studenci zostali dodani do kierunku")
                     this.props.toggleModal();
                     this.props.loadRecords();
+
+
+
+                    var options = this.state.options.filter(option => {
+                        return this.state.selected.indexOf(option.value) === -1;
+                    });
+
+                    this.setState({selected: []})
+                    this.setState({options})
+
                 }
             })
             .catch((reason) => {
@@ -76,7 +86,7 @@ export class CourseStudentAddModal extends React.Component {
                     <MultiSelect
                         labelledBy={"students"}
                         hasSelectAll={false}
-                        options={options}
+                        options={this.state.options}
                         selected={this.state.selected}
                         onSelectedChanged={selected => this.setState({selected})}
                         overrideStrings={{search: "Szukaj", selectSomeItems : "Wybierz studentów"}}

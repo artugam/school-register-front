@@ -6,12 +6,12 @@ function Footer() {
     return (
         <footer className="footer">
             <div className="row align-items-center justify-content-xl-between">
-                <div className="col-xl-6">
-                    <div className="copyright text-center text-xl-left text-muted">
+                <div className="col-md-3">
+                    <div className="copyright text-center text-md-left text-muted">
                         © 2019 Artur Pilch
                     </div>
                 </div>
-                <div className="col-xl-6">
+                <div className="col-md-9 text-center text-md-right">
                     Software Development Engineering
                     {/*<ul className="nav nav-footer justify-content-center justify-content-xl-end">*/}
                     {/*    <li className="nav-item">*/}

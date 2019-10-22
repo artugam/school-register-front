@@ -117,7 +117,6 @@ export class CoursesTable extends React.Component {
                                 <SortTableHeader field={"form"} text={"Rodzaj"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"startDate"} text={"rocznik"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"semesters"} text={"Ilość semestrów"} handleSort={this.handleSort}/>
-                                {/*<SortTableHeader field={"currentSemester"} text={"Aktualny Semestrt"} handleSort={this.handleSort}/>*/}
                                 <th scope="col"></th>
                             </tr>
                             </thead>

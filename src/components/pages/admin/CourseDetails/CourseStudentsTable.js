@@ -124,7 +124,7 @@ export class CourseStudentsTable extends React.Component {
                             <CourseStudentAddModal
                                 isOpen={this.state.isModalOpen} action={"add"}
                                 toggleModal={this.toggleModal}
-                                loadRecords={this.props.loadRecords}
+                                loadRecords={this.loadRecords}
                                 course={this.props.course}
                             />
                         </div>
