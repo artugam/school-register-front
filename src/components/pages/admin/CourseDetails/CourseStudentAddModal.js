@@ -6,11 +6,6 @@ import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
 import MultiSelect from "@khanacademy/react-multi-select";
 
-const options = [
-    {label: "One", value: 1},
-    {label: "Two", value: 2},
-    {label: "Three", value: 3},
-];
 
 export class CourseStudentAddModal extends React.Component {
 
@@ -18,25 +13,6 @@ export class CourseStudentAddModal extends React.Component {
         options: [],
         selected: [],
     };
-
-    componentDidMount() {
-
-        var config = axiosService.getAuthConfig();
-        axios.get(API_URL + "courses/" + this.props.course.id + "/notStudents", config)
-            .then(response => {
-                var out = [];
-                response.data.map(item => {
-                    out.push({
-                        label: item.lastName + " " + item.firstName,
-                        value: item.id
-                    })
-                });
-                this.setState({options : out});
-            })
-            .catch((reason) => {
-                axiosService.handleError(reason);
-            });
-    }
 
     handleFormSubmit = (e) => {
         var config = axiosService.getAuthConfig();
@@ -51,13 +27,10 @@ export class CourseStudentAddModal extends React.Component {
                     this.props.loadRecords();
 
 
-
-                    var options = this.state.options.filter(option => {
-                        return this.state.selected.indexOf(option.value) === -1;
-                    });
+                    this.props.callBack(this.state.selected);
 
                     this.setState({selected: []})
-                    this.setState({options})
+
 
                 }
             })
@@ -86,7 +59,7 @@ export class CourseStudentAddModal extends React.Component {
                     <MultiSelect
                         labelledBy={"students"}
                         hasSelectAll={false}
-                        options={this.state.options}
+                        options={this.props.options}
                         selected={this.state.selected}
                         onSelectedChanged={selected => this.setState({selected})}
                         overrideStrings={{search: "Szukaj", selectSomeItems : "Wybierz studentów"}}

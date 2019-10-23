@@ -20,6 +20,7 @@ export class CourseStudentDeleteModal extends React.Component {
                     toast.success("Student został usunięty z kierunku")
                     this.props.toggleModal();
                     this.props.loadRecords();
+                    this.props.deleteCallBack();
                 }
             })
             .catch((reason) => {

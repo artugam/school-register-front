@@ -7,6 +7,18 @@ import axios from "axios";
 import {API_URL} from "../constants/Api";
 import axiosService from "../services/axios/AxiosService";
 import CourseStudentsTable from "./admin/CourseDetails/CourseStudentsTable";
+import CourseInfo from "./admin/CourseDetails/CourseInfo";
+
+// import React from 'react';
+// import {API_URL} from "../constants/Api";
+// import axios from 'axios'
+// import Navigation from "../layout/Navigation";
+// import Brand from "../layout/Brand";
+// import Footer from "../layout/Footer";
+// import axiosService from "../services/axios/AxiosService";
+// import BaseSiteController from "./BaseSiteController";
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+// import CourseStudentsTable from "./admin/Courses/CoursesTable";
 
 export class CourseDetails extends BaseSiteController {
 
@@ -31,7 +43,10 @@ export class CourseDetails extends BaseSiteController {
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
-    }
+    };
+
+
+
 
     render() {
 
@@ -45,9 +60,15 @@ export class CourseDetails extends BaseSiteController {
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
                                 {this.state.course.id ?
-                                    <CourseStudentsTable
-                                        course={this.state.course}
-                                    />
+                                    <div>
+                                        <CourseInfo
+                                            course={this.state.course}
+                                        />
+                                        <br></br>
+                                        <CourseStudentsTable
+                                            course={this.state.course}
+                                        />
+                                    </div>
                                 : ''}
                             </div>
                         </div>

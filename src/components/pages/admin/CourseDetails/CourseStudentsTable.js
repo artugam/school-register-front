@@ -22,7 +22,8 @@ export class CourseStudentsTable extends React.Component {
             sortField: "",
             sortDirection: "DESC",
             search: ""
-        }
+        },
+        addUsersOptions: {}
     };
 
     updateListQueryParams = (listParams) => {
@@ -56,8 +57,10 @@ export class CourseStudentsTable extends React.Component {
             });
     };
 
+
     componentDidMount() {
         this.loadRecords();
+        this.loadAddUsersOptions();
     }
 
 
@@ -87,6 +90,24 @@ export class CourseStudentsTable extends React.Component {
         }
     };
 
+    loadAddUsersOptions = () => {
+        var config = axiosService.getAuthConfig();
+        axios.get(API_URL + "courses/" + this.props.course.id + "/notStudents", config)
+            .then(response => {
+                var out = [];
+                response.data.map(item => {
+                    out.push({
+                        label: item.lastName + " " + item.firstName,
+                        value: item.id
+                    })
+                });
+                this.setState({addUsersOptions : out});
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
+    }
+
     handleSort = (field, direction) => {
         var config = this.state.listParams;
         config.sortField = field;
@@ -96,6 +117,14 @@ export class CourseStudentsTable extends React.Component {
         // this.props.updateListQueryParams(config);
         this.loadRecords();
     };
+
+    addUsersCallBack = (selected) => {
+
+        var options = this.state.addUsersOptions.filter(option => {
+            return selected.indexOf(option.value) === -1;
+        });
+        this.setState({addUsersOptions: options});
+    }
 
     render() {
 
@@ -126,6 +155,8 @@ export class CourseStudentsTable extends React.Component {
                                 toggleModal={this.toggleModal}
                                 loadRecords={this.loadRecords}
                                 course={this.props.course}
+                                options={this.state.addUsersOptions}
+                                callBack={this.addUsersCallBack}
                             />
                         </div>
                     </div>
@@ -159,6 +190,7 @@ export class CourseStudentsTable extends React.Component {
                                             key={record.id}
                                             loadRecords={this.loadRecords}
                                             course={this.props.course}
+                                            deleteCallBack={this.loadAddUsersOptions}
                                         />);
                                     }
                                 )}

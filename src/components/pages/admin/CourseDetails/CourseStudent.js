@@ -52,6 +52,7 @@ export class CourseStudent extends React.Component {
                             record={this.props.record}
                             loadRecords={this.props.loadRecords}
                             course={this.props.course}
+                            deleteCallBack={this.props.deleteCallBack}
                         />
                     </a>
 

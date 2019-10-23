@@ -9,8 +9,6 @@ import BaseSiteController from "./BaseSiteController";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import CoursesTable from "./admin/Courses/CoursesTable";
 
-
-
 export class Courses extends BaseSiteController {
 
     state = {
