@@ -10,10 +10,38 @@ import CourseStudentAddModal from "./CourseStudentAddModal";
 
 export class CourseInfo extends React.Component {
 
+    state = {
+        listParams: {
+            page: 1,
+            records: 10,
+            sortField: "",
+            sortDirection: "DESC",
+            search: ""
+        },
+        records: []
+    };
 
+    componentDidMount() {
+        this.loadRecords();
+    }
+
+    loadRecords = (listParams) => {
+        listParams = listParams ? listParams : this.state.listParams;
+
+        var config = axiosService.getAuthConfig();
+        config.params = listParams;
+        return axios.get(API_URL + "courses/" + this.props.course.id + "/students", config)
+            .then(response => {
+                this.setState({records: response.data});
+
+                return response.data;
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
+    };
 
     render() {
-
         return (
             <div className="card shadow">
 
@@ -30,12 +58,21 @@ export class CourseInfo extends React.Component {
                         </div>
                     </div>
                     <div className="col">
-                        <div className="row">
+                        <hr></hr>
+                        <div className="row tab-pane">
                             <div className="col-sm-6">
                                 <h3>Starosta</h3>
                             </div>
                             <div className="col-sm-6">
-                                <h3>Art</h3>
+                                <h3>{this.props.course.foreman.firstName} {this.props.course.foreman.lastName} ({this.props.course.foreman.email})</h3>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <h3>Ilość studentów</h3>
+                            </div>
+                            <div className="col-sm-6">
+                                <h3>{this.state.records.totalElements}</h3>
                             </div>
                         </div>
                     </div>

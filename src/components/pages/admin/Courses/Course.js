@@ -36,10 +36,13 @@ export class Course extends React.Component {
                 <td>{this.props.record.semesters}</td>
                 {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>
-                        <i className="fa fa-info-circle text-blue"></i>
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Przedmioty">
+                        <i className="fa fa-book text-green"></i>
                     </a>
-                    <a style={actionButtonStyle} onClick={this.toggleModal}>
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci">
+                        <i className="fa fa-users text-blue"></i>
+                    </a>
+                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Edycja">
                         <i className="fa fa-edit text-yellow"></i>
                         <CourseModal
                             loadRecords={this.props.loadRecords}
@@ -51,7 +54,7 @@ export class Course extends React.Component {
                             record={this.props.record}
                         />
                     </a>
-                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal}>
+                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń">
                         <i className="fa fa-trash text-danger"></i>
                         <CourseDeleteModal
                             key={this.props.record.id}

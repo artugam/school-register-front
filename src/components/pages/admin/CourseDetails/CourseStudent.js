@@ -1,5 +1,6 @@
 import React from 'react';
 import CourseStudentDeleteModal from "./CourseStudentDeleteModal";
+import CourseForemanModal from "./CourseForemanModal";
 
 
 export class CourseStudent extends React.Component {
@@ -8,11 +9,11 @@ export class CourseStudent extends React.Component {
         isDeleteModalOpen: false,
     };
 
-    // toggleModal = () => {
-    //     this.setState({
-    //         isModalOpen: !this.state.isModalOpen
-    //     })
-    // };
+    toggleModal = () => {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        })
+    };
     toggleDeleteModal = () => {
         this.setState({
             isDeleteModalOpen: !this.state.isDeleteModalOpen
@@ -31,19 +32,18 @@ export class CourseStudent extends React.Component {
                     {/*<a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>*/}
                     {/*    <i className="fa fa-info-circle text-blue"></i>*/}
                     {/*</a>*/}
-                    {/*<a style={actionButtonStyle} onClick={this.toggleModal}>*/}
-                    {/*    <i className="fa fa-edit text-yellow"></i>*/}
-                    {/*    <CourseModal*/}
-                    {/*        loadRecords={this.props.loadRecords}*/}
-                    {/*        key={this.props.record.id}*/}
-                    {/*        isOpen={this.state.isModalOpen}*/}
-                    {/*        toggleModal={this.toggleModal}*/}
-                    {/*        action={'edit'}*/}
-                    {/*        configOptions={this.props.configOptions}*/}
-                    {/*        record={this.props.record}*/}
-                    {/*    />*/}
-                    {/*</a>*/}
-                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal}>
+                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Mianuj starostą">
+                        <i className="fa fa-user-alt text-primary"></i>
+                        <CourseForemanModal
+                            loadRecords={this.props.loadRecords}
+                            key={this.props.record.id}
+                            isOpen={this.state.isModalOpen}
+                            toggleModal={this.toggleModal}
+                            record={this.props.record}
+                            course={this.props.course}
+                        />
+                    </a>
+                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń z kursu">
                         <i className="fa fa-trash text-danger"></i>
                         <CourseStudentDeleteModal
                             key={this.props.record.id}

@@ -27,7 +27,8 @@ export class CourseDetails extends BaseSiteController {
             firstName: '-',
             lastName: '-'
         },
-        course: {}
+        course: {},
+        records: []
     };
 
     courseId = null;
@@ -47,7 +48,6 @@ export class CourseDetails extends BaseSiteController {
 
 
 
-
     render() {
 
         return (
@@ -63,6 +63,7 @@ export class CourseDetails extends BaseSiteController {
                                     <div>
                                         <CourseInfo
                                             course={this.state.course}
+                                            records={this.state.records}
                                         />
                                         <br></br>
                                         <CourseStudentsTable

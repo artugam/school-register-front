@@ -139,11 +139,11 @@ export class CourseStudentsTable extends React.Component {
                                 <a href="/courses">
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
-                                &nbsp; Studenci kierunku:
+                                &nbsp; Studenci
                             </h2>
 
-                            <h2 className="d-inline text-gray-dark font-weight-900">{this.props.course.name} - <Moment
-                                format="MM-YYYY">{this.props.course.startDate}</Moment></h2>
+                            {/*<h2 className="d-inline text-gray-dark font-weight-900">{this.props.course.name} - <Moment*/}
+                            {/*    format="MM-YYYY">{this.props.course.startDate}</Moment></h2>*/}
                         </div>
                         <div className="col text-right">
                             {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}
