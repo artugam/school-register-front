@@ -16,7 +16,7 @@ export class Brand extends React.Component {
                     <div className="container-fluid">
                         {/* Brand */}
                         <a className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-                           href="/dashboard">Dashboard</a>
+                           href="/dashboard">Panel Główny</a>
                         {/* Form */}
                         {/*<form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">*/}
                         {/*    <div className="form-group mb-0">*/}

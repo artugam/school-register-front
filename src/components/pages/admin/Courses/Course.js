@@ -34,13 +34,16 @@ export class Course extends React.Component {
                     </Moment>
                 </td>
                 <td>{this.props.record.semesters}</td>
-                {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Przedmioty">
-                        <i className="fa fa-book text-green"></i>
-                    </a>
+
                     <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci">
                         <i className="fa fa-users text-blue"></i>
+                    </a>
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/subjects/"} title="Przedmioty">
+                        <i className="fa fa-book text-green"></i>
+                    </a>
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/groups/"} title="Grupy">
+                        <i className="fa fa-layer-group text-gray"></i>
                     </a>
                     <a style={actionButtonStyle} onClick={this.toggleModal} title="Edycja">
                         <i className="fa fa-edit text-yellow"></i>
