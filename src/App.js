@@ -8,6 +8,7 @@ import Users from "./components/pages/Users";
 import Courses from "./components/pages/Courses";
 import CourseDetails from "./components/pages/CourseDetails";
 import CourseGroups from "./components/pages/CourseGroups";
+import Group from "./components/pages/Group";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route exact path='/courses' component={Courses}/>
                     <Route exact path='/courses/:courseId' component={CourseDetails}/>
                     <Route exact path='/courses/:courseId/groups' component={CourseGroups}/>
+                    <Route exact path='/groups/:groupId' component={Group}/>
                 {/*</div>*/}
             {/*</div>*/}
         </Router>

@@ -31,9 +31,9 @@ export class CourseGroup extends React.Component {
                 {/*<td>{this.props.record.email}</td>*/}
                 {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
-                    {/*<a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>*/}
-                    {/*    <i className="fa fa-info-circle text-blue"></i>*/}
-                    {/*</a>*/}
+                    <a style={actionButtonStyle} href={"/groups/" + this.props.record.id} title={"Studenci"}>
+                        <i className="fa fa-users text-blue"></i>
+                    </a>
                     <a style={actionButtonStyle} onClick={this.toggleModal} title="Edytuj grupę">
                         <i className="fa fa-edit text-yellow"></i>
                         <CourseGroupAddModal

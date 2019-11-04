@@ -17,9 +17,10 @@ export class CourseForemanModal extends React.Component {
         axios.post(API_URL + "courses/" + this.props.course.id + "/foreman", data, axiosService.getAuthConfig())
             .then(response => {
                 if(response.status == 200) {
-                    toast.success(this.config.successResponse);
+                    toast.success("Student został mianowany starostą");
                     this.props.toggleModal();
-                    this.props.loadUsers()
+                    this.props.loadRecords()
+                    this.props.loadCourse();
                 }
             })
             .catch((reason) => {

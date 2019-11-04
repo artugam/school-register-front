@@ -4,11 +4,9 @@ import SortTableHeader from "../../../modules/SortTableHeader";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import CourseStudent from "./CourseStudent";
 import Moment from "react-moment";
-import CourseStudentAddModal from "./CourseStudentAddModal";
 
-export class CourseInfo extends React.Component {
+export class GroupInfo extends React.Component {
 
     state = {
         listParams: {
@@ -30,7 +28,7 @@ export class CourseInfo extends React.Component {
 
         var config = axiosService.getAuthConfig();
         config.params = listParams;
-        return axios.get(API_URL + "courses/" + this.props.course.id + "/students", config)
+        return axios.get(API_URL + "groups/" + this.props.group.id + "/students", config)
             .then(response => {
                 this.setState({records: response.data});
 
@@ -53,8 +51,8 @@ export class CourseInfo extends React.Component {
                                 Kierunek:
                             </h2>
 
-                            <h2 className="d-inline text-gray-dark font-weight-900">{this.props.course.name} - <Moment
-                                format="MM-YYYY">{this.props.course.startDate}</Moment></h2>
+                            <h2 className="d-inline text-gray-dark font-weight-900">{this.props.group.course.name} - <Moment
+                                format="MM-YYYY">{this.props.group.course.startDate}</Moment></h2>
                         </div>
                     </div>
                     <div className="col">
@@ -64,12 +62,10 @@ export class CourseInfo extends React.Component {
                                 <h3>Starosta</h3>
                             </div>
                             <div className="col-sm-6">
-                                {
-                                    this.props.course.foreman ?
-                                        <h3>{this.props.course.foreman.firstName} {this.props.course.foreman.lastName} ({this.props.course.foreman.email})</h3>
+                                {this.props.group.course.foreman ?
+                                    <h3>{this.props.group.course.foreman.firstName} {this.props.group.course.foreman.lastName} ({this.props.group.course.foreman.email})</h3>
                                     : '-'
                                 }
-
                             </div>
                         </div>
                         <div className="row">
@@ -93,6 +89,6 @@ export class CourseInfo extends React.Component {
     }
 }
 
-export default CourseInfo;
+export default GroupInfo;
 
 

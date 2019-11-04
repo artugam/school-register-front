@@ -41,6 +41,7 @@ export class CourseStudent extends React.Component {
                             toggleModal={this.toggleModal}
                             record={this.props.record}
                             course={this.props.course}
+                            loadCourse={this.props.loadCourse}
                         />
                     </a>
                     <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń z kursu">

@@ -4,11 +4,12 @@ import SortTableHeader from "../../../modules/SortTableHeader";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import CourseStudent from "./CourseStudent";
 import Moment from "react-moment";
-import CourseStudentAddModal from "./CourseStudentAddModal";
+import CourseStudent from "../CourseDetails/CourseStudent";
+import GroupStudent from "./GroupStudent";
+import GroupStudentAddModal from "./GroupStudentAddModal";
 
-export class CourseStudentsTable extends React.Component {
+export class GroupStudentsTable extends React.Component {
 
     state = {
         isModalOpen: false,
@@ -23,7 +24,8 @@ export class CourseStudentsTable extends React.Component {
             sortDirection: "DESC",
             search: ""
         },
-        addUsersOptions: {}
+        optionsLoaded: false,
+        options: []
     };
 
     updateListQueryParams = (listParams) => {
@@ -44,7 +46,7 @@ export class CourseStudentsTable extends React.Component {
 
         var config = axiosService.getAuthConfig();
         config.params = listParams;
-        return axios.get(API_URL + "courses/" + this.props.course.id + "/students", config)
+        return axios.get(API_URL + "groups/" + this.props.group.id + "/students", config)
             .then(response => {
                 this.refreshRecordsList(response.data);
                 if (!this.state.loaded) {
@@ -60,8 +62,35 @@ export class CourseStudentsTable extends React.Component {
 
     componentDidMount() {
         this.loadRecords();
-        this.loadAddUsersOptions();
+        this.loadOptions();
     }
+
+    loadOptions = () => {
+        var config = axiosService.getAuthConfig();
+        config.params = {
+            notInGroups: [
+                this.props.group.id
+            ]
+        };
+
+        return axios.get(API_URL + "courses/" + this.props.group.course.id + "/allStudents", config)
+            .then(response => {
+                if (!this.state.optionsLoaded) {
+                    this.setState({optionsLoaded: true})
+                }
+                var out = [];
+                response.data.map(item => {
+                    out.push({
+                        label: item.lastName + " " + item.firstName,
+                        value: item.id
+                    })
+                });
+                this.setState({options : out});
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
+    };
 
 
     onChangePage(pager) {
@@ -90,40 +119,21 @@ export class CourseStudentsTable extends React.Component {
         }
     };
 
-    loadAddUsersOptions = () => {
-        var config = axiosService.getAuthConfig();
-        axios.get(API_URL + "courses/" + this.props.course.id + "/notStudents", config)
-            .then(response => {
-                var out = [];
-                response.data.map(item => {
-                    out.push({
-                        label: item.lastName + " " + item.firstName,
-                        value: item.id
-                    })
-                });
-                this.setState({addUsersOptions : out});
-            })
-            .catch((reason) => {
-                axiosService.handleError(reason);
-            });
-    }
-
     handleSort = (field, direction) => {
         var config = this.state.listParams;
         config.sortField = field;
         config.sortDirection = direction;
         config.page = 1;
 
-        // this.props.updateListQueryParams(config);
         this.loadRecords();
     };
 
-    addUsersCallBack = (selected) => {
+    addCallBack = (selected) => {
 
-        var options = this.state.addUsersOptions.filter(option => {
+        var options = this.state.options.filter(option => {
             return selected.indexOf(option.value) === -1;
         });
-        this.setState({addUsersOptions: options});
+        this.setState({options: options});
     }
 
     render() {
@@ -134,30 +144,30 @@ export class CourseStudentsTable extends React.Component {
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
-
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
-                                <a href="/courses">
+                                <a href={"/courses/" + this.props.group.course.id + "/groups/"}  >
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
-                                &nbsp; Studenci
+                                &nbsp; Grupa - <b>{this.props.group.name}</b>
                             </h2>
-
-                            {/*<h2 className="d-inline text-gray-dark font-weight-900">{this.props.course.name} - <Moment*/}
-                            {/*    format="MM-YYYY">{this.props.course.startDate}</Moment></h2>*/}
                         </div>
                         <div className="col text-right">
-                            {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj Studentów
+                                Dodaj Grupę
                             </button>
-                            <CourseStudentAddModal
-                                isOpen={this.state.isModalOpen} action={"add"}
-                                toggleModal={this.toggleModal}
-                                loadRecords={this.loadRecords}
-                                course={this.props.course}
-                                options={this.state.addUsersOptions}
-                                callBack={this.addUsersCallBack}
-                            />
+                            {
+                                this.state.optionsLoaded === true ?
+                                    <GroupStudentAddModal
+                                        isOpen={this.state.isModalOpen}
+                                        toggleModal={this.toggleModal}
+                                        loadRecords={this.loadRecords}
+                                        group={this.props.group}
+                                        options={this.state.options}
+                                        callBack={this.addCallBack}
+                                    />
+                                    : ''
+                            }
+
                         </div>
                     </div>
                     <div className="row align-items-center">
@@ -173,32 +183,30 @@ export class CourseStudentsTable extends React.Component {
                 </div>
                 {this.state.records.content ?
                     <div className="table-responsive-md">
-                        <table className="table align-items-center table-flush table-bordered text-center">
-                            <thead className="thead-light">
-                            <tr>
-                                <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
-                                <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort}/>
-                                <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            {this.state.records.content.length > 0 ?
-                                <tbody className="tbody-dark">
-                                {this.state.records.content.map((record) => {
-                                        return (<CourseStudent
-                                            record={record}
-                                            key={record.id}
-                                            loadRecords={this.loadRecords}
-                                            course={this.props.course}
-                                            deleteCallBack={this.loadAddUsersOptions}
-                                            loadCourse={this.props.loadCourse}
-                                        />);
-                                    }
-                                )}
-                                </tbody>
-                                : ''
-                            }
-                        </table>
+                            <table className="table align-items-center table-flush table-bordered text-center">
+                                <thead className="thead-light">
+                                <tr>
+                                    <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                {this.state.records.content.length > 0 ?
+                                    <tbody className="tbody-dark">
+                                    {this.state.records.content.map((record) => {
+                                            return (<GroupStudent
+                                                record={record}
+                                                key={record.id}
+                                                loadRecords={this.loadRecords}
+                                                group={this.props.group}
+                                            />);
+                                        }
+                                    )}
+                                    </tbody>
+                                    : <tbody></tbody>
+                                }
+                            </table>
                         {this.state.records.content.length > 0 ? '' :
                             <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>
                         }
@@ -221,6 +229,6 @@ export class CourseStudentsTable extends React.Component {
     }
 }
 
-export default CourseStudentsTable;
+export default GroupStudentsTable;
 
 
