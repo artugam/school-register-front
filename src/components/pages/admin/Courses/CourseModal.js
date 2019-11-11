@@ -187,9 +187,6 @@ export class CourseModal extends React.Component {
             semesters: this.props.record.semesters,
             startDate: this.props.record.startDate,
         };
-
-        console.log(this.props.record.startDate);
-
         let newState = Object.assign({}, this.state);
         newState.formFields = formFields;
         this.setState(newState);

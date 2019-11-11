@@ -1,3 +1,4 @@
+import React from 'react';
 import {API_URL} from "../constants/Api";
 import axios from 'axios'
 import axiosService from "../services/axios/AxiosService";
@@ -5,10 +6,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import BaseUsersController from "./BaseUsersController";
 
 
-export class Users extends BaseUsersController {
+export class Admins extends BaseUsersController {
 
     config = {
-        tableName: "Użytkownicy"
+      tableName: "Administratorowie"
     };
 
     loadUsers = (usersListParams) => {
@@ -17,7 +18,7 @@ export class Users extends BaseUsersController {
 
         var config = axiosService.getAuthConfig();
         config.params = usersListParams;
-        config.params.role = "ROLE_USER";
+        config.params.role = "ROLE_ADMIN";
 
         return axios.get(API_URL + "users", config)
             .then(response => {
@@ -32,9 +33,8 @@ export class Users extends BaseUsersController {
             });
 
     }
-
 }
 
-export default Users;
+export default Admins;
 
 

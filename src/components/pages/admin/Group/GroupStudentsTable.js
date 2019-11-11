@@ -67,11 +67,6 @@ export class GroupStudentsTable extends React.Component {
 
     loadOptions = () => {
         var config = axiosService.getAuthConfig();
-        config.params = {
-            notInGroups: [
-                this.props.group.id
-            ]
-        };
 
         return axios.get(API_URL + "courses/" + this.props.group.course.id + "/allStudents", config)
             .then(response => {

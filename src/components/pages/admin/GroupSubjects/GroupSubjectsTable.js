@@ -4,11 +4,10 @@ import SortTableHeader from "../../../modules/SortTableHeader";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import CourseGroup from "./CourseGroup";
-import Moment from "react-moment";
-import CourseGroupAddModal from "./CourseGroupAddModal";
+import GroupSubjectsAddModal from "./GroupSubjectsAddModal";
+import GroupSubject from "./GroupSubject";
 
-export class CourseGroupsTable extends React.Component {
+export class GroupSubjectsTable extends React.Component {
 
     state = {
         isModalOpen: false,
@@ -23,6 +22,8 @@ export class CourseGroupsTable extends React.Component {
             sortDirection: "DESC",
             search: ""
         },
+        optionsLoaded: false,
+        options: []
     };
 
     updateListQueryParams = (listParams) => {
@@ -43,7 +44,7 @@ export class CourseGroupsTable extends React.Component {
 
         var config = axiosService.getAuthConfig();
         config.params = listParams;
-        return axios.get(API_URL + "courses/" + this.props.course.id + "/groups", config)
+        return axios.get(API_URL + "groups/" + this.props.group.id + "/subjects", config)
             .then(response => {
                 this.refreshRecordsList(response.data);
                 if (!this.state.loaded) {
@@ -59,7 +60,33 @@ export class CourseGroupsTable extends React.Component {
 
     componentDidMount() {
         this.loadRecords();
+        this.loadOptions();
     }
+
+    loadOptions = () => {
+        var config = axiosService.getAuthConfig();
+
+        return axios.get(API_URL + "subjects/configuration/options", config)
+            .then(response => {
+                if (!this.state.optionsLoaded) {
+                    this.setState({optionsLoaded: true})
+                }
+                var out = {
+                    teachers: [],
+                    types: response.data.types
+                };
+                response.data.teachers.map(item => {
+                    out.teachers.push({
+                        label: item.lastName + " " + item.firstName,
+                        value: item.id
+                    })
+                });
+                this.setState({options : out});
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
+    };
 
 
     onChangePage(pager) {
@@ -94,17 +121,16 @@ export class CourseGroupsTable extends React.Component {
         config.sortDirection = direction;
         config.page = 1;
 
-        // this.props.updateListQueryParams(config);
         this.loadRecords();
     };
 
-    addUsersCallBack = (selected) => {
+    addCallBack = (selected) => {
 
-        var options = this.state.addUsersOptions.filter(option => {
+        var options = this.state.options.filter(option => {
             return selected.indexOf(option.value) === -1;
         });
-        this.setState({addUsersOptions: options});
-    }
+        this.setState({options: options});
+    };
 
     render() {
 
@@ -115,29 +141,29 @@ export class CourseGroupsTable extends React.Component {
                     <div className="row align-items-center">
                         <div className="col">
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
-                                <a href={"/courses/" + this.props.course.id} >
+                                <a href={"/courses/" + this.props.group.course.id + "/groups/"}  >
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
-                                &nbsp; Grupy -&nbsp;
-                                <b>
-                                    {this.props.course.name} -&nbsp;
-                                    <Moment format="MM-YYYY">{this.props.course.startDate}</Moment>
-                                </b>
+                                &nbsp; Grupa - <b>{this.props.group.name}</b>
                             </h2>
-
-                            {/*<h2 className="d-inline text-gray-dark font-weight-900">{this.props.course.name} - <Moment*/}
-                            {/*    format="MM-YYYY">{this.props.course.startDate}</Moment></h2>*/}
                         </div>
                         <div className="col text-right">
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj Grupę
+                                Dodaj Przedmiot
                             </button>
-                            <CourseGroupAddModal
-                                isOpen={this.state.isModalOpen} action={"add"}
-                                toggleModal={this.toggleModal}
-                                loadRecords={this.loadRecords}
-                                course={this.props.course}
-                            />
+                            {
+                                this.state.optionsLoaded === true ?
+                                    <GroupSubjectsAddModal
+                                        isOpen={this.state.isModalOpen}
+                                        toggleModal={this.toggleModal}
+                                        loadRecords={this.loadRecords}
+                                        group={this.props.group}
+                                        options={this.state.options}
+                                        callBack={this.addCallBack}
+                                    />
+                                    : ''
+                            }
+
                         </div>
                     </div>
                     <div className="row align-items-center">
@@ -153,30 +179,32 @@ export class CourseGroupsTable extends React.Component {
                 </div>
                 {this.state.records.content ?
                     <div className="table-responsive-md">
-                        <table className="table align-items-center table-flush table-bordered text-center">
-                            <thead className="thead-light">
-                            <tr>
-                                <SortTableHeader field={"name"} text={"Nazwa"} handleSort={this.handleSort}/>
-                                <SortTableHeader text={"Ilość studentów"} handleSort={this.handleSort}/>
-                                {/*<SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>*/}
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            {this.state.records.content.length > 0 ?
-                                <tbody className="tbody-dark">
-                                {this.state.records.content.map((record) => {
-                                        return (<CourseGroup
-                                            record={record}
-                                            key={record.id}
-                                            loadRecords={this.loadRecords}
-                                            course={this.props.course}
-                                        />);
-                                    }
-                                )}
-                                </tbody>
-                                : ''
-                            }
-                        </table>
+                            <table className="table align-items-center table-flush table-bordered text-center">
+                                <thead className="thead-light">
+                                <tr>
+                                    <SortTableHeader field={"name"} text={"Nazwa"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"hours"} text={"Ilość godzin"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"type"} text={"Rodzaj"} handleSort={this.handleSort}/>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                {this.state.records.content.length > 0 ?
+                                    <tbody className="tbody-dark">
+                                    {this.state.records.content.map((record) => {
+                                            return (<GroupSubject
+                                                record={record}
+                                                key={record.id}
+                                                loadRecords={this.loadRecords}
+                                                group={this.props.group}
+                                                options={this.state.options}
+                                                callBack={this.addCallBack}
+                                            />);
+                                        }
+                                    )}
+                                    </tbody>
+                                    : <tbody></tbody>
+                                }
+                            </table>
                         {this.state.records.content.length > 0 ? '' :
                             <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>
                         }
@@ -199,6 +227,6 @@ export class CourseGroupsTable extends React.Component {
     }
 }
 
-export default CourseGroupsTable;
+export default GroupSubjectsTable;
 
 

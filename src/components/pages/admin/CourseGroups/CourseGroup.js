@@ -31,6 +31,9 @@ export class CourseGroup extends React.Component {
                 {/*<td>{this.props.record.email}</td>*/}
                 {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
+                    <a style={actionButtonStyle} href={"/groups/" + this.props.record.id + "/subjects/"} title="Przedmioty">
+                        <i className="fa fa-book text-green"></i>
+                    </a>
                     <a style={actionButtonStyle} href={"/groups/" + this.props.record.id} title={"Studenci"}>
                         <i className="fa fa-users text-blue"></i>
                     </a>

@@ -1,20 +1,31 @@
 import React from 'react';
-import PropTypes from "prop-types";
-import CourseDeleteModal from "./CourseDeleteModal";
-import CourseModal from "./CourseModal";
-import Moment from "react-moment";
+import GroupSubjectDeleteModal from "./GroupSubjectDeleteModal";
+import GroupSubjectsAddModal from "./GroupSubjectsAddModal";
 
-export class Course extends React.Component {
+
+export class GroupSubject extends React.Component {
     state = {
         isModalOpen: false,
         isDeleteModalOpen: false,
     };
 
-    toggleModal = () => {
+    toggleModal = (e) => {
         this.setState({
+            // isModalOpen: !this.state.isModalOpen
             isModalOpen: !this.state.isModalOpen
         })
     };
+
+    toggleModalOn = (e) => {
+        if(this.state.isModalOpen) {
+           return;
+        }
+        this.setState({
+            // isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen
+        })
+    };
+
     toggleDeleteModal = () => {
         this.setState({
             isDeleteModalOpen: !this.state.isDeleteModalOpen
@@ -26,42 +37,35 @@ export class Course extends React.Component {
         return (
             <tr id={this.props.record.id} style={{"borderBottom": "2px solid #adb5bd"}}>
                 <td scope="row">{this.props.record.name}</td>
-                <td>{this.props.record.degree}</td>
-                <td>{this.props.record.form}</td>
-                <td>
-                    <Moment format="MM-YYYY">
-                        {this.props.record.startDate}
-                    </Moment>
-                </td>
-                <td>{this.props.record.semesters}</td>
+                <td>{this.props.record.hours}</td>
+                <td>{this.props.record.type}</td>
+                {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">
-
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci">
-                        <i className="fa fa-users text-blue"></i>
-                    </a>
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/groups/"} title="Grupy">
-                        <i className="fa fa-layer-group text-gray"></i>
-                    </a>
-                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Edycja">
+                    {/*<a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>*/}
+                    {/*    <i className="fa fa-info-circle text-blue"></i>*/}
+                    {/*</a>*/}
+                    <a style={actionButtonStyle} onClick={this.toggleModalOn} title="Edytuj przedmiot">
                         <i className="fa fa-edit text-yellow"></i>
-                        <CourseModal
+                        <GroupSubjectsAddModal
                             loadRecords={this.props.loadRecords}
                             key={this.props.record.id}
                             isOpen={this.state.isModalOpen}
                             toggleModal={this.toggleModal}
-                            action={'edit'}
-                            configOptions={this.props.configOptions}
                             record={this.props.record}
+                            group={this.props.group}
+                            action={"edit"}
+                            options={this.props.options}
                         />
                     </a>
-                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń">
+                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń przedmiot">
                         <i className="fa fa-trash text-danger"></i>
-                        <CourseDeleteModal
+                        <GroupSubjectDeleteModal
                             key={this.props.record.id}
                             isOpen={this.state.isDeleteModalOpen}
                             toggleModal={this.toggleDeleteModal}
                             record={this.props.record}
                             loadRecords={this.props.loadRecords}
+                            group={this.props.group}
                         />
                     </a>
 
@@ -74,10 +78,9 @@ export class Course extends React.Component {
 
 const actionButtonStyle = {
     cursor: "pointer",
-    // display: "block",
     padding: "0px 5px"
 }
 
-export default Course;
+export default GroupSubject;
 
 

@@ -62,7 +62,7 @@ export class GroupStudentAddModal extends React.Component {
                         options={this.props.options}
                         selected={this.state.selected}
                         onSelectedChanged={selected => this.setState({selected})}
-                        overrideStrings={{search: "Szukaj", selectSomeItems : "Wybierz studentów"}}
+                        overrideStrings={{search: "Szukaj", selectSomeItems : "Wybierz studentów", allItemsAreSelected: "Wszystkie opcje zostały wybrane"}}
 
 
                     />

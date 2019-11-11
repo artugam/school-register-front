@@ -1,4 +1,5 @@
 import React from 'react';
+import GroupStudentDeleteModal from "./GroupStudentDeleteModal";
 
 
 export class GroupStudent extends React.Component {
@@ -41,18 +42,17 @@ export class GroupStudent extends React.Component {
                     {/*        course={this.props.course}*/}
                     {/*    />*/}
                     {/*</a>*/}
-                    {/*<a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń z kursu">*/}
-                    {/*    <i className="fa fa-trash text-danger"></i>*/}
-                    {/*    <CourseStudentDeleteModal*/}
-                    {/*        key={this.props.record.id}*/}
-                    {/*        isOpen={this.state.isDeleteModalOpen}*/}
-                    {/*        toggleModal={this.toggleDeleteModal}*/}
-                    {/*        record={this.props.record}*/}
-                    {/*        loadRecords={this.props.loadRecords}*/}
-                    {/*        course={this.props.course}*/}
-                    {/*        deleteCallBack={this.props.deleteCallBack}*/}
-                    {/*    />*/}
-                    {/*</a>*/}
+                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń z grupy">
+                        <i className="fa fa-trash text-danger"></i>
+                        <GroupStudentDeleteModal
+                            key={this.props.record.id}
+                            isOpen={this.state.isDeleteModalOpen}
+                            toggleModal={this.toggleDeleteModal}
+                            record={this.props.record}
+                            loadRecords={this.props.loadRecords}
+                            group={this.props.group}
+                        />
+                    </a>
 
                 </td>
             </tr>

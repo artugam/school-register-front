@@ -84,7 +84,7 @@ export class UsersTable extends React.Component {
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
-                            <h2 className="mb-0 p-2">Użytkownicy</h2>
+                            <h2 className="mb-0 p-2">{this.props.config.tableName ? this.props.config.tableName : "Użytkownicy"}</h2>
                         </div>
                         <div className="col text-right">
                             {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}

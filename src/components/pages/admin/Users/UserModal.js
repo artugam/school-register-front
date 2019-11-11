@@ -27,7 +27,6 @@ export class UserModal extends React.Component {
             password: false,
             roleError: false,
         },
-
     };
 
     addConfig = {
