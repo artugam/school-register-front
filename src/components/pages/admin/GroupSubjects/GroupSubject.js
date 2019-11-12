@@ -39,11 +39,17 @@ export class GroupSubject extends React.Component {
                 <td scope="row">{this.props.record.name}</td>
                 <td>{this.props.record.hours}</td>
                 <td>{this.props.record.type}</td>
-                {/*<td>{this.props.record.currentSemester}</td>*/}
+                <td>
+                    {this.props.record.teachers.map((teacher) => {
+                        return <div>{teacher.firstName} {teacher.lastName}</div>;
+                        // return <div><span>{teacher.email}</span></div>;
+                    })}
+                </td>
+
                 <td className="row">
-                    {/*<a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>*/}
-                    {/*    <i className="fa fa-info-circle text-blue"></i>*/}
-                    {/*</a>*/}
+                    <a style={actionButtonStyle} href={"/subjects/" + this.props.record.id}>
+                        <i className="far fa-calendar-alt"></i>
+                    </a>
                     <a style={actionButtonStyle} onClick={this.toggleModalOn} title="Edytuj przedmiot">
                         <i className="fa fa-edit text-yellow"></i>
                         <GroupSubjectsAddModal

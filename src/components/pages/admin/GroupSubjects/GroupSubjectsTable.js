@@ -185,6 +185,7 @@ export class GroupSubjectsTable extends React.Component {
                                     <SortTableHeader field={"name"} text={"Nazwa"} handleSort={this.handleSort}/>
                                     <SortTableHeader field={"hours"} text={"Ilość godzin"} handleSort={this.handleSort}/>
                                     <SortTableHeader field={"type"} text={"Rodzaj"} handleSort={this.handleSort}/>
+                                    <SortTableHeader text={"Prowadzący"} handleSort={this.handleSort}/>
                                     <th scope="col"></th>
                                 </tr>
                                 </thead>

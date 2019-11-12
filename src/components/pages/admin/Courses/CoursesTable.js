@@ -86,14 +86,14 @@ export class CoursesTable extends React.Component {
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
                                 Dodaj Nowy Kierunek
                             </button>
-                            {/*{this.state.configOptions  ?*/}
-                            {/*    <CourseModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}*/}
-                            {/*                 loadRecords={this.props.loadRecords}*/}
-                            {/*                 configOptions={this.state.configOptions}*/}
-                            {/*                 listParams={this.props.listParams}*/}
-                            {/*    />*/}
-                            {/*    : ''*/}
-                            {/*}*/}
+                            {this.state.configOptions  ?
+                                <CourseModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
+                                             loadRecords={this.props.loadRecords}
+                                             configOptions={this.state.configOptions}
+                                             listParams={this.props.listParams}
+                                />
+                                : ''
+                            }
                         </div>
                     </div>
                     <div className="row align-items-center">

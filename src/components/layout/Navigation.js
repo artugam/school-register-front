@@ -60,11 +60,11 @@ function Navigation(data){
                                 <i className="ni ni-planet text-blue"></i> Kierunki
                             </a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link " href="./examples/maps.html">
-                                <i className="ni ni-pin-3 text-orange"></i> Maps
-                            </a>
-                        </li>
+                        {/*<li className="nav-item">*/}
+                        {/*    <a className="nav-link " href="./examples/maps.html">*/}
+                        {/*        <i className="ni ni-pin-3 text-orange"></i> Maps*/}
+                        {/*    </a>*/}
+                        {/*</li>*/}
                         <li className="nav-item">
                             <a className="nav-link " href="/students">
                                 <i className="ni ni-single-02 text-yellow"></i> Studenci
@@ -76,21 +76,21 @@ function Navigation(data){
                             </a>
                         </li>
 
-                        <li className="nav-item">
-                            <a className="nav-link " href="./examples/tables.html">
-                                <i className="ni ni-bullet-list-67 text-red"></i> Tables
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="./examples/login.html">
-                                <i className="ni ni-key-25 text-info"></i> Login
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="./examples/register.html">
-                                <i className="ni ni-circle-08 text-pink"></i> Register
-                            </a>
-                        </li>
+                        {/*<li className="nav-item">*/}
+                        {/*    <a className="nav-link " href="./examples/tables.html">*/}
+                        {/*        <i className="ni ni-bullet-list-67 text-red"></i> Tables*/}
+                        {/*    </a>*/}
+                        {/*</li>*/}
+                        {/*<li className="nav-item">*/}
+                        {/*    <a className="nav-link" href="./examples/login.html">*/}
+                        {/*        <i className="ni ni-key-25 text-info"></i> Login*/}
+                        {/*    </a>*/}
+                        {/*</li>*/}
+                        {/*<li className="nav-item">*/}
+                        {/*    <a className="nav-link" href="./examples/register.html">*/}
+                        {/*        <i className="ni ni-circle-08 text-pink"></i> Register*/}
+                        {/*    </a>*/}
+                        {/*</li>*/}
                     </ul>
                     <hr className="my-3"></hr>
 

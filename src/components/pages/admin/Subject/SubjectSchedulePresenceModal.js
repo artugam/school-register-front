@@ -4,28 +4,19 @@ import axios from "axios";
 import axiosService from "../../../services/axios/AxiosService";
 import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
-import MultiSelect from "@khanacademy/react-multi-select";
-import userConstants from "../Users/UserConstants";
 import errorConstantsValidator from "../../../services/validator/ErrorConstantsValidator";
-import emailValidator from "../../../services/validator/EmailValidator";
-import passwordValidator from "../../../services/validator/PasswordValidator";
 
-
-export class GroupSubjectsAddModal extends React.Component {
+export class SubjectSchedulePresenceModal extends React.Component {
 
     state = {
-        options: [],
-        selected: [],
         formFields: {
-            name: '',
-            hours: '',
-            type: false,
+            start: '',
+            end: '',
         },
 
         formErrors: {
-            name: '',
-            hours: '',
-            type: false,
+            start: '',
+            end: '',
         },
     };
 
@@ -58,13 +49,17 @@ export class GroupSubjectsAddModal extends React.Component {
         let formErrors = this.state.formErrors;
 
         switch (id) {
-            case "name":
-                formErrors.nazwa =
-                    value.length < 3 ? "Nazwa powinno mieć co najmniej 2 znaki" : "";
+            case "start":
+                formErrors.start = false;
+                if (!value) {
+                    formErrors.start = errorConstantsValidator.required;
+                }
                 break;
-            case "hours":
-                formErrors.hours =
-                    isNaN(value) ? "Wprowadź poprawną ilość godzin" : "";
+            case "end":
+                formErrors.end = false;
+                if (!value) {
+                    formErrors.end = errorConstantsValidator.required;
+                }
                 break;
             default:
                 break;
@@ -88,19 +83,10 @@ export class GroupSubjectsAddModal extends React.Component {
 
     updateEditStates() {
         var formFields = {
-            name: this.props.record.name,
-            hours: this.props.record.hours,
-            type: this.props.record.type,
+            start: this.props.record.start,
+            end: this.props.record.end,
         };
-
-        var selected = [];
-
-        this.props.record.teachers.map((user) => {
-           selected.push(user.id);
-        });
-
         let newState = Object.assign({}, this.state);
-        newState.selected = selected;
         newState.formFields = formFields;
         this.setState(newState);
     }
@@ -132,22 +118,23 @@ export class GroupSubjectsAddModal extends React.Component {
             this.state.formFields.type = this.props.options.types[0];
         }
         if (!this.formValid()) {
-            console.log(this.state);
             toast.error("Formularz zawiera błędy");
             return;
         }
 
+        console.log(this.state);
+        return;
+
+
         let config = axiosService.getAuthConfig(this.state.formFields);
 
         var params = {
-            "name": this.state.formFields.name,
-            "hours": parseInt(this.state.formFields.hours),
-            "type": this.state.formFields.type,
-            "groupId": this.props.group.id,
-            "teachersIds": this.state.selected
+            "start": this.state.formFields.start,
+            "end": this.state.formFields.end,
+            "subjectId": this.props.subject.id,
         };
 
-        var url = API_URL + "subjects";
+        var url = API_URL + "schedule";
         if (this.isEdit) {
             url += "/" + this.props.record.id;
             axios.patch(url, params, config)
@@ -200,63 +187,41 @@ export class GroupSubjectsAddModal extends React.Component {
                     {this.config.title}
                 </ModalHeader>
                 <ModalBody>
-                    <div className="form-group">
-                        <div className="form-group">
-
-                            <label htmlFor="firstname">Nazwa</label>
-
-                            <input type="text"
-                                   className={"form-control " + (this.state.formErrors.name ? "is-invalid" : '')}
-                                   id="name" onChange={this.handleOnChange}
-                                   aria-describedby="emailHelp"
-                                   value={this.state.formFields.name}
-                                   placeholder="Wprowadź nazwę"></input>
-                            <div className="invalid-feedback">{this.state.formErrors.name}</div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="lastname">Ilość godzin</label>
-                            <input type="text"
-                                   className={"form-control " + (this.state.formErrors.hours ? "is-invalid" : '')}
-                                   id="hours" onChange={this.handleOnChange}
-                                   value={this.state.formFields.hours}
-                                   placeholder="Wprowadź ilość godzin"></input>
-                            <div className="invalid-feedback">{this.state.formErrors.hours}</div>
-                        </div>
-
-                        <label htmlFor="role">Rodzaj</label>
-                        <select
-                            type="text"
-                            className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                            id="type"
-                            onChange={this.handleOnChange}
-                            value={this.state.formFields.type}
-                            placeholder="Rodzaj zajęć"
-                        >
-                            {
-
-                                this.props.options.types ?
-                                    this.props.options.types.map((role) => {
-                                        return <option
-                                            key={role}
-                                            value={role}
+                    {
+                        this.props.subject.group.users.map((user) => {
+                            return <div key={user.id} className="col">
+                                <div className="row">
+                                    <div className="col-sm-6">
+                                        <h3>{user.firstName} {user.lastName}</h3>
+                                    </div>
+                                    <div className="col-sm-6">
+                                        {/*<h3>{this.props.subject.group.name}</h3>*/}
+                                        <select
+                                            type="text"
+                                            className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
+                                            id={user.id}
+                                            onChange={this.handleOnChange}
+                                            value={this.state.formFields.type}
+                                            placeholder="Rodzaj zajęć"
                                         >
-                                            {role}
-                                        </option>
-                                    })
-                                    : ''
-                            }
-                        </select>
-                        <div className="invalid-feedback">{this.state.formErrors.type}</div>
-                    </div>
-                    <label htmlFor="teachers">Prowadzący</label>
-                    <MultiSelect
-                        labelledBy={"teachers"}
-                        hasSelectAll={false}
-                        options={this.props.options.teachers}
-                        selected={this.state.selected}
-                        onSelectedChanged={selected => this.setState({selected})}
-                        overrideStrings={{search: "Szukaj", selectSomeItems : "Wybierz prowadzących", allItemsAreSelected: "Wszystkie opcje zostały wybrane"}}
-                    />
+                                            {
+                                                this.props.options.types ?
+                                                    this.props.options.types.map((role) => {
+                                                        return <option
+                                                            key={role}
+                                                            value={role}
+                                                        >
+                                                            {role}
+                                                        </option>
+                                                    })
+                                                    : ''
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        })
+                    }
                 </ModalBody>
                 <ModalFooter>
                     <Button color={"primary"}
@@ -272,7 +237,7 @@ export class GroupSubjectsAddModal extends React.Component {
     }
 }
 
-export default GroupSubjectsAddModal;
+export default SubjectSchedulePresenceModal;
 
 
 

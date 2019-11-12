@@ -4,12 +4,12 @@ import SortTableHeader from "../../../modules/SortTableHeader";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import Moment from "react-moment";
-import CourseStudent from "../CourseDetails/CourseStudent";
-import GroupStudent from "./GroupStudent";
-import GroupStudentAddModal from "./GroupStudentAddModal";
+import SubjectScheduleInfo from "./SubjectScheduleInfo";
+import SubjectSchedule from "./SubjectSchedule";
+import SubjectScheduleAddModal from "./SubjectScheduleAddModal";
 
-export class GroupStudentsTable extends React.Component {
+
+export class SubjectScheduleTable extends React.Component {
 
     state = {
         isModalOpen: false,
@@ -46,7 +46,7 @@ export class GroupStudentsTable extends React.Component {
 
         var config = axiosService.getAuthConfig();
         config.params = listParams;
-        return axios.get(API_URL + "groups/" + this.props.group.id + "/students", config)
+        return axios.get(API_URL + "subjects/" + this.props.subject.id + "/schedule", config)
             .then(response => {
                 this.refreshRecordsList(response.data);
                 if (!this.state.loaded) {
@@ -68,18 +68,14 @@ export class GroupStudentsTable extends React.Component {
     loadOptions = () => {
         var config = axiosService.getAuthConfig();
 
-        return axios.get(API_URL + "courses/" + this.props.group.course.id + "/allStudents", config)
+        return axios.get(API_URL + "presence/configuration/options", config)
             .then(response => {
                 if (!this.state.optionsLoaded) {
                     this.setState({optionsLoaded: true})
                 }
-                var out = [];
-                response.data.map(item => {
-                    out.push({
-                        label: item.lastName + " " + item.firstName,
-                        value: item.id
-                    })
-                });
+                var out = {
+                    types: response.data.types
+                };
                 this.setState({options : out});
             })
             .catch((reason) => {
@@ -123,14 +119,6 @@ export class GroupStudentsTable extends React.Component {
         this.loadRecords();
     };
 
-    addCallBack = (selected) => {
-
-        var options = this.state.options.filter(option => {
-            return selected.indexOf(option.value) === -1;
-        });
-        this.setState({options: options});
-    }
-
     render() {
 
         return (
@@ -140,28 +128,22 @@ export class GroupStudentsTable extends React.Component {
                     <div className="row align-items-center">
                         <div className="col">
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
-                                <a href={"/courses/" + this.props.group.course.id + "/groups/"}  >
+                                <a href={"/groups/" + this.props.subject.group.id + "/subjects/"}  >
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
-                                &nbsp; Grupa - <b>{this.props.group.name}</b>
+                                &nbsp; Przedmiot - <b>{this.props.subject.name}</b>
                             </h2>
                         </div>
                         <div className="col text-right">
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj Studentów
+                                Dodaj Zajęcia
                             </button>
-                            {
-                                this.state.optionsLoaded === true ?
-                                    <GroupStudentAddModal
-                                        isOpen={this.state.isModalOpen}
-                                        toggleModal={this.toggleModal}
-                                        loadRecords={this.loadRecords}
-                                        group={this.props.group}
-                                        options={this.state.options}
-                                        callBack={this.addCallBack}
-                                    />
-                                    : ''
-                            }
+                            <SubjectScheduleAddModal
+                                isOpen={this.state.isModalOpen}
+                                toggleModal={this.toggleModal}
+                                loadRecords={this.loadRecords}
+                                subject={this.props.subject}
+                            />
 
                         </div>
                     </div>
@@ -181,20 +163,20 @@ export class GroupStudentsTable extends React.Component {
                             <table className="table align-items-center table-flush table-bordered text-center">
                                 <thead className="thead-light">
                                 <tr>
-                                    <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
-                                    <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort}/>
-                                    <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"start"} text={"Start"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"end"} text={"Koniec"} handleSort={this.handleSort}/>
                                     <th scope="col"></th>
                                 </tr>
                                 </thead>
                                 {this.state.records.content.length > 0 ?
                                     <tbody className="tbody-dark">
                                     {this.state.records.content.map((record) => {
-                                            return (<GroupStudent
+                                            return (<SubjectSchedule
                                                 record={record}
                                                 key={record.id}
                                                 loadRecords={this.loadRecords}
-                                                group={this.props.group}
+                                                subject={this.props.subject}
+                                                options={this.state.options}
                                             />);
                                         }
                                     )}
@@ -219,11 +201,10 @@ export class GroupStudentsTable extends React.Component {
 
                 }
             </div>
-
         )
     }
 }
 
-export default GroupStudentsTable;
+export default SubjectScheduleTable;
 
 
