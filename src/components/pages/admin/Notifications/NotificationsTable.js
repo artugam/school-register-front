@@ -4,12 +4,10 @@ import SortTableHeader from "../../../modules/SortTableHeader";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import SubjectScheduleInfo from "./SubjectScheduleInfo";
-import SubjectSchedule from "./SubjectSchedule";
-import SubjectScheduleAddModal from "./SubjectScheduleAddModal";
+import Notification from "./Notification";
+import {NotificationModal} from "./NotificationModal";
 
-
-export class SubjectScheduleTable extends React.Component {
+export class NotificationsTable extends React.Component {
 
     state = {
         isModalOpen: false,
@@ -24,8 +22,7 @@ export class SubjectScheduleTable extends React.Component {
             sortDirection: "DESC",
             search: ""
         },
-        optionsLoaded: false,
-        options: []
+        courses: []
     };
 
     updateListQueryParams = (listParams) => {
@@ -46,7 +43,7 @@ export class SubjectScheduleTable extends React.Component {
 
         var config = axiosService.getAuthConfig();
         config.params = listParams;
-        return axios.get(API_URL + "subjects/" + this.props.subject.id + "/schedule", config)
+        return axios.get(API_URL + "auth/notifications", config)
             .then(response => {
                 this.refreshRecordsList(response.data);
                 if (!this.state.loaded) {
@@ -62,26 +59,18 @@ export class SubjectScheduleTable extends React.Component {
 
     componentDidMount() {
         this.loadRecords();
-        this.loadOptions();
+        this.loadCourses();
     }
 
-    loadOptions = () => {
-        var config = axiosService.getAuthConfig();
-
-        return axios.get(API_URL + "presence/configuration/options", config)
+    loadCourses() {
+        axios.get(API_URL + "courses/all/records", axiosService.getAuthConfig())
             .then(response => {
-                if (!this.state.optionsLoaded) {
-                    this.setState({optionsLoaded: true})
-                }
-                var out = {
-                    types: response.data.types
-                };
-                this.setState({options : out});
+                this.setState({courses: response.data});
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
-    };
+    }
 
 
     onChangePage(pager) {
@@ -116,8 +105,10 @@ export class SubjectScheduleTable extends React.Component {
         config.sortDirection = direction;
         config.page = 1;
 
+        // this.props.updateListQueryParams(config);
         this.loadRecords();
     };
+
 
     render() {
 
@@ -128,23 +119,23 @@ export class SubjectScheduleTable extends React.Component {
                     <div className="row align-items-center">
                         <div className="col">
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
-                                <a href={"/groups/" + this.props.subject.group.id + "/subjects/"}  >
-                                    <i className="fa fa-arrow-left"></i>
-                                </a>
-                                &nbsp; Przedmiot - <b>{this.props.subject.name}</b>
+                                Powiadomienia
                             </h2>
                         </div>
                         <div className="col text-right">
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj Zajęcia
+                                Dodaj Powiadomienie
                             </button>
-                            <SubjectScheduleAddModal
-                                isOpen={this.state.isModalOpen}
-                                toggleModal={this.toggleModal}
-                                loadRecords={this.loadRecords}
-                                subject={this.props.subject}
-                            />
-
+                            {
+                                this.state.courses.length > 0 ?
+                                    <NotificationModal
+                                        isOpen={this.state.isModalOpen}
+                                        toggleModal={this.toggleModal}
+                                        loadRecords={this.loadRecords}
+                                        courses={this.state.courses}
+                                    />
+                                    : ''
+                            }
                         </div>
                     </div>
                     <div className="row align-items-center">
@@ -160,31 +151,31 @@ export class SubjectScheduleTable extends React.Component {
                 </div>
                 {this.state.records.content ?
                     <div className="table-responsive-md">
-                            <table className="table align-items-center table-flush table-bordered text-center">
-                                <thead className="thead-light">
-                                <tr>
-                                    <SortTableHeader field={"start"} text={"Start"} handleSort={this.handleSort}/>
-                                    <SortTableHeader field={"end"} text={"Koniec"} handleSort={this.handleSort}/>
-                                    <SortTableHeader field={"description"} text={"Opis"} handleSort={this.handleSort}/>
-                                    <th scope="col"></th>
-                                </tr>
-                                </thead>
-                                {this.state.records.content.length > 0 ?
-                                    <tbody className="tbody-dark">
-                                    {this.state.records.content.map((record) => {
-                                            return (<SubjectSchedule
-                                                record={record}
-                                                key={record.id}
-                                                loadRecords={this.loadRecords}
-                                                subject={this.props.subject}
-                                                options={this.state.options}
-                                            />);
-                                        }
-                                    )}
-                                    </tbody>
-                                    : <tbody></tbody>
-                                }
-                            </table>
+                        <table className="table align-items-center table-flush table-bordered text-center">
+                            <thead className="thead-light">
+                            <tr>
+                                <SortTableHeader field={"description"} text={"Opis"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"c.name"} text={"Kierunek"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"g.name"} text={"Grupa"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"s.name"} text={"Przedmiot"} handleSort={this.handleSort}/>
+                                {/*<SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>*/}
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            {this.state.records.content.length > 0 ?
+                                <tbody className="tbody-dark">
+                                {this.state.records.content.map((record) => {
+                                        return (<Notification
+                                            record={record}
+                                            key={record.id}
+                                            loadRecords={this.loadRecords}
+                                        />);
+                                    }
+                                )}
+                                </tbody>
+                                : ''
+                            }
+                        </table>
                         {this.state.records.content.length > 0 ? '' :
                             <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>
                         }
@@ -202,10 +193,11 @@ export class SubjectScheduleTable extends React.Component {
 
                 }
             </div>
+
         )
     }
 }
 
-export default SubjectScheduleTable;
+export default NotificationsTable;
 
 

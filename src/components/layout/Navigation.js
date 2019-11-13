@@ -76,11 +76,11 @@ function Navigation(data){
                             </a>
                         </li>
 
-                        {/*<li className="nav-item">*/}
-                        {/*    <a className="nav-link " href="./examples/tables.html">*/}
-                        {/*        <i className="ni ni-bullet-list-67 text-red"></i> Tables*/}
-                        {/*    </a>*/}
-                        {/*</li>*/}
+                        <li className="nav-item">
+                            <a className="nav-link " href="/notifications">
+                                <i className="ni ni-bullet-list-67 text-red"></i> Powiadomienia
+                            </a>
+                        </li>
                         {/*<li className="nav-item">*/}
                         {/*    <a className="nav-link" href="./examples/login.html">*/}
                         {/*        <i className="ni ni-key-25 text-info"></i> Login*/}

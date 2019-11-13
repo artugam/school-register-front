@@ -9,86 +9,45 @@ import errorConstantsValidator from "../../../services/validator/ErrorConstantsV
 export class SubjectSchedulePresenceModal extends React.Component {
 
     state = {
+        presences: [],
         formFields: {
-            start: '',
-            end: '',
+
         },
 
         formErrors: {
-            start: '',
-            end: '',
+
         },
     };
 
-    addConfig = {
-        title: "Dodawanie zajeć",
-        saveButton: "Dodaj",
-        successResponse: "Zajęcia został dodane"
+    config = {
+        title: "Obecności",
+        saveButton: "Zapisz",
+        successResponse: "Obecności zostały ustawione"
     };
-
-    editConfig = {
-        title: "Edycja zajeć",
-        saveButton: "Edytuj",
-        successResponse: "Zajęcia został edytowane"
-    };
-
-    config = this.addConfig;
 
     handleOnChange = e => {
         e.preventDefault();
 
         const {id, value} = e.target;
 
-        let formFields = this.state.formFields;
-        formFields[id] = value;
-        this.setState(formFields);
-        this.validateField(id, value);
+        let presences = this.state.presences;
+        presences[id] = value;
+        this.setState(presences);
     };
 
-    validateField = (id, value) => {
-        let formErrors = this.state.formErrors;
-
-        switch (id) {
-            case "start":
-                formErrors.start = false;
-                if (!value) {
-                    formErrors.start = errorConstantsValidator.required;
-                }
-                break;
-            case "end":
-                formErrors.end = false;
-                if (!value) {
-                    formErrors.end = errorConstantsValidator.required;
-                }
-                break;
-            default:
-                break;
-        }
-
-        let newState = Object.assign({}, this.state);
-        newState.formErrors = formErrors;
-        this.setState(newState);
-    };
 
     componentDidMount() {
-        this.config = this.addConfig;
-        if (this.props.action == 'edit') {
-            this.config = this.editConfig;
-            this.isEdit = true;
-        }
-        if (this.props.record) {
-            this.updateEditStates();
-        }
-    }
+        var options = this.props.options.types;
 
-    updateEditStates() {
-        var formFields = {
-            start: this.props.record.start,
-            end: this.props.record.end,
-        };
-        let newState = Object.assign({}, this.state);
-        newState.formFields = formFields;
-        this.setState(newState);
+        var presences = this.state.presences;
+        this.props.subject.group.users.map((user) => {
+            presences[user.id] =  options ? options[0] : "Obecny";
+        });
+
+        this.props.record.presences.map((presence) => {
+            presences[presence.user.id] = presence.presenceStatus;
+        });
+        this.setState(presences);
     }
 
     formValid = () => {
@@ -122,35 +81,20 @@ export class SubjectSchedulePresenceModal extends React.Component {
             return;
         }
 
-        console.log(this.state);
-        return;
+        var params = [];
+        this.state.presences.map((item, key) => {
+            params.push({
+               userId: key,
+               value: item
+            });
+
+        });
 
 
         let config = axiosService.getAuthConfig(this.state.formFields);
 
-        var params = {
-            "start": this.state.formFields.start,
-            "end": this.state.formFields.end,
-            "subjectId": this.props.subject.id,
-        };
 
-        var url = API_URL + "schedule";
-        if (this.isEdit) {
-            url += "/" + this.props.record.id;
-            axios.patch(url, params, config)
-                .then(response => {
-                    if (response.status == 200) {
-                        toast.success(this.config.successResponse)
-                        this.props.toggleModal();
-                        this.props.loadRecords()
-                    }
-                })
-                .catch((reason) => {
-                    axiosService.handleError(reason);
-                });
-            this.clearState();
-            return;
-        }
+        var url = API_URL + "schedule/" + this.props.record.id + "/presence";
 
         axios.post(url, params, config)
             .then(response => {
@@ -201,7 +145,7 @@ export class SubjectSchedulePresenceModal extends React.Component {
                                             className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
                                             id={user.id}
                                             onChange={this.handleOnChange}
-                                            value={this.state.formFields.type}
+                                            value={this.state.presences[user.id]}
                                             placeholder="Rodzaj zajęć"
                                         >
                                             {

@@ -17,11 +17,13 @@ export class SubjectScheduleAddModal extends React.Component {
         formFields: {
             start: '',
             end: '',
+            description: ''
         },
 
         formErrors: {
             start: '',
             end: '',
+            description: ''
         },
     };
 
@@ -109,6 +111,7 @@ export class SubjectScheduleAddModal extends React.Component {
         var formFields = {
             start: this.props.record.start,
             end: this.props.record.end,
+            description: this.props.record.description,
         };
         let newState = Object.assign({}, this.state);
         newState.formFields = formFields;
@@ -151,6 +154,7 @@ export class SubjectScheduleAddModal extends React.Component {
             "start": this.state.formFields.start,
             "end": this.state.formFields.end,
             "subjectId": this.props.subject.id,
+            "description": this.state.formFields.description,
         };
 
         var url = API_URL + "schedule";
@@ -234,8 +238,20 @@ export class SubjectScheduleAddModal extends React.Component {
                         />
                         <div className="invalid-feedback" style={{display: this.state.formErrors.end ? "block" : "none"}}>{this.state.formErrors.end}</div>
                     </div>
-
-
+                    <div className="form-group">
+                        <label htmlFor="description">Opis</label>
+                        {/*<input type="text"*/}
+                        {/*       className={"form-control " + (this.state.formErrors.hours ? "is-invalid" : '')}*/}
+                        {/*       id="description" onChange={this.handleOnChange}*/}
+                        {/*       value={this.state.formFields.description}*/}
+                        {/*       placeholder="Opis"></input>*/}
+                        <textarea className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
+                                  id="description"
+                                  onChange={this.handleOnChange}
+                                  value={this.state.formFields.description}
+                                  ></textarea>
+                        <div className="invalid-feedback">{this.state.formErrors.description}</div>
+                    </div>
 
                 </ModalBody>
                 <ModalFooter>

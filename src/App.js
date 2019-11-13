@@ -13,6 +13,7 @@ import Teachers from "./components/pages/Teachers";
 import Admins from "./components/pages/Admins";
 import GroupSubjects from "./components/pages/GroupSubjects";
 import SubjectSchedule from "./components/pages/SubjectSchedule";
+import Notifications from "./components/pages/Notifications";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                     <Route exact path='/courses/:courseId/groups' component={CourseGroups}/>
                     <Route exact path='/groups/:groupId' component={Group}/>
                     <Route exact path='/subjects/:subjectId' component={SubjectSchedule}/>
+                    <Route exact path='/notifications' component={Notifications}/>
                 {/*</div>*/}
             {/*</div>*/}
         </Router>

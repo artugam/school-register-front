@@ -20,8 +20,8 @@ export class SubjectSchedule extends React.Component {
     };
 
     toggleModalOn = (e) => {
-        if(this.state.isModalOpen) {
-           return;
+        if (this.state.isModalOpen) {
+            return;
         }
         this.setState({
             // isModalOpen: !this.state.isModalOpen
@@ -54,7 +54,9 @@ export class SubjectSchedule extends React.Component {
                     <Moment format="DD-MM-YYYY HH:mm">
                         {this.props.record.end}
                     </Moment>
-
+                </td>
+                <td>
+                    {this.props.record.description}
                 </td>
                 <td className="row">
                     {/*<a style={actionButtonStyle} href={"/subjects/" + this.props.record.id}>*/}
@@ -62,15 +64,20 @@ export class SubjectSchedule extends React.Component {
                     {/*</a>*/}
                     <a style={actionButtonStyle} onClick={this.togglePresenceModal} title="Obecności">
                         <i className="fa fa-check text-green"></i>
-                        <SubjectSchedulePresenceModal
-                            key={this.props.record.id}
-                            isOpen={this.state.isPresenceModalOpen}
-                            toggleModal={this.togglePresenceModal}
-                            loadRecords={this.props.loadRecords}
-                            subject={this.props.subject}
-                            record={this.props.record}
-                            options={this.props.options}
-                        />
+                        {
+                            this.props.options ?
+                                <SubjectSchedulePresenceModal
+                                    key={this.props.record.id}
+                                    isOpen={this.state.isPresenceModalOpen}
+                                    toggleModal={this.togglePresenceModal}
+                                    loadRecords={this.props.loadRecords}
+                                    subject={this.props.subject}
+                                    record={this.props.record}
+                                    options={this.props.options}
+                                />
+                                : ''
+                        }
+
                     </a>
                     <a style={actionButtonStyle} onClick={this.toggleModalOn} title="Edytuj">
                         <i className="fa fa-edit text-yellow"></i>
