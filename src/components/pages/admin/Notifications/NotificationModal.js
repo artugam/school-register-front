@@ -7,6 +7,7 @@ import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Moment from "react-moment";
 
 
 export class NotificationModal extends React.Component {
@@ -50,6 +51,23 @@ export class NotificationModal extends React.Component {
         formFields[id] = value;
         this.setState(formFields);
         this.validateField(id, value);
+    };
+
+    handleOnChangeCourse = e => {
+        this.handleOnChange(e);
+
+        var config = axiosService.getAuthConfig();
+        axios.get(API_URL + "courses/" + this.props.course.id + "/groups/all", config)
+            .then(response => {
+                this.refreshRecordsList(response.data);
+                if (!this.state.loaded) {
+                    this.setState({loaded: true})
+                }
+                return response.data;
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
     };
 
     validateField = (id, value) => {
@@ -164,6 +182,25 @@ export class NotificationModal extends React.Component {
         this.setState(newState);
     }
 
+    getStartDate = (date) => {
+
+        // return new Intl.DateTimeFormat('pl', {
+        //     year: 'numeric',
+        //     month: 'long',
+        //     day: '2-digit'
+        // }).format(date)}
+
+        var test = new Date(date);
+
+        return new Intl.DateTimeFormat('en-GB', {
+            year: 'numeric',
+            month: 'numeric',
+            literal: "-"
+            // day: '2-digit'
+        }).format(test)
+
+    };
+
     render() {
         return (
             <Modal
@@ -202,7 +239,7 @@ export class NotificationModal extends React.Component {
                                 type="text"
                                 className={"form-control " + (this.state.formErrors.courseId ? "is-invalid" : '')}
                                 id="courseId"
-                                onChange={this.handleOnChange}
+                                onChange={this.handleOnChangeCourse}
                                 value={this.state.formFields.courseId}
                                 placeholder="Wprowadź hasło"
                             >
@@ -211,7 +248,13 @@ export class NotificationModal extends React.Component {
                                         key={course.id}
                                         value={course.id}
                                     >
-                                        {course.name}
+                                        {course.name} | {course.form} | {course.degree} | {this.getStartDate(course.startDate)}
+                                            {/*{new Intl.DateTimeFormat('pl', {*/}
+                                            {/*    year: 'numeric',*/}
+                                            {/*    month: 'long',*/}
+                                            {/*    day: '2-digit'*/}
+                                            {/*}).format(course.startDate.toString())}}*/}
+
                                     </option>
                                 })
                                 }
@@ -271,6 +314,7 @@ export class NotificationModal extends React.Component {
                                 id="description"
                                 onChange={this.handleOnChange}
                                 value={this.state.formFields.description}
+                                placeholder="Treść powiadomienia"
                             ></textarea>
                             <div className="invalid-feedback">{this.state.formErrors.description}</div>
                         </div>
