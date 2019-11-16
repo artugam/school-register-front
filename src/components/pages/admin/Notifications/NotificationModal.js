@@ -26,7 +26,9 @@ export class NotificationModal extends React.Component {
             groupId: '',
             subjectId: '',
         },
-        courses: []
+        courses: [],
+        groups: [],
+        subjects: []
     };
 
     addConfig = {
@@ -56,19 +58,51 @@ export class NotificationModal extends React.Component {
     handleOnChangeCourse = e => {
         this.handleOnChange(e);
 
+        const {id, value} = e.target;
+
+        this.loadGroups(value);
+    };
+
+    loadGroups = (courseId, force = true) => {
+        this.setState({subjects: []})
         var config = axiosService.getAuthConfig();
-        axios.get(API_URL + "courses/" + this.props.course.id + "/groups/all", config)
+        axios.get(API_URL + "courses/" + courseId + "/groups/all", config)
             .then(response => {
-                this.refreshRecordsList(response.data);
-                if (!this.state.loaded) {
-                    this.setState({loaded: true})
+                this.setState({groups: response.data});
+                if(response.data.length > 0) {
+                    var formFields = this.state.formFields;
+                    if(true === force) {
+                        formFields.groupId = response.data[0].id;
+                    }
+                    this.setState(formFields);
+                    this.loadSubjects(formFields.groupId);
                 }
-                return response.data;
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
     };
+
+    loadSubjects = (subjectId) => {
+        var config = axiosService.getAuthConfig();
+        axios.get(API_URL + "groups/" + subjectId + "/subjects/all", config)
+            .then(response => {
+                this.setState({subjects: response.data});
+            })
+            .catch((reason) => {
+                axiosService.handleError(reason);
+            });
+    }
+
+
+    handleOnChangeGroup = e => {
+        this.handleOnChange(e);
+
+        const {id, value} = e.target;
+        this.loadSubjects(value);
+    };
+
+
 
     validateField = (id, value) => {
         let formErrors = this.state.formErrors;
@@ -167,19 +201,32 @@ export class NotificationModal extends React.Component {
 
         if (this.props.record) {
             this.updateStateWithRecord();
+            return;
+        }
+        var course = false;
+        if(this.props.courses.length) {
+            course = this.props.courses[0].id;
+        }
+        if(this.state.formFields.courseId) {
+            course = this.state.formFields.courseId;
+        }
+        if(false !== course) {
+            this.loadGroups(course);
         }
     }
 
     updateStateWithRecord() {
         var formFields = {
             description: this.props.record.description,
-            courseId: this.props.record.courseId,
-            groupId: this.props.record.groupId,
-            subjectId: this.props.record.subjectId,
+            courseId: this.props.record.course ? this.props.record.course.id : '',
+            groupId: this.props.record.group ? this.props.record.group.id : '',
+            subjectId: this.props.record.subject ? this.props.record.subject.id : '',
         };
         let newState = Object.assign({}, this.state);
         newState.formFields = formFields;
         this.setState(newState);
+
+        this.loadGroups(formFields.courseId, false);
     }
 
     getStartDate = (date) => {
@@ -247,16 +294,10 @@ export class NotificationModal extends React.Component {
                                     return <option
                                         key={course.id}
                                         value={course.id}
-                                    >
-                                        {course.name} | {course.form} | {course.degree} | {this.getStartDate(course.startDate)}
-                                            {/*{new Intl.DateTimeFormat('pl', {*/}
-                                            {/*    year: 'numeric',*/}
-                                            {/*    month: 'long',*/}
-                                            {/*    day: '2-digit'*/}
-                                            {/*}).format(course.startDate.toString())}}*/}
-
-                                    </option>
-                                })
+                                        >
+                                            {course.name} | {course.form} | {course.degree} | {this.getStartDate(course.startDate)}
+                                        </option>
+                                    })
                                 }
                             </select>
                             <div className="invalid-feedback">{this.state.formErrors.courseId}</div>
@@ -267,20 +308,19 @@ export class NotificationModal extends React.Component {
                                 type="text"
                                 className={"form-control " + (this.state.formErrors.groupId ? "is-invalid" : '')}
                                 id="groupId"
-                                onChange={this.handleOnChange}
+                                onChange={this.handleOnChangeGroup}
                                 value={this.state.formFields.groupId}
                                 placeholder="Wprowadź hasło"
                             >
-
-                                {/*{this.props.configOptions.degrees.map((value, key) => {*/}
-                                {/*    return <option*/}
-                                {/*        key={key}*/}
-                                {/*        value={value}*/}
-                                {/*    >*/}
-                                {/*        {value}*/}
-                                {/*    </option>*/}
-                                {/*})*/}
-                                {/*}*/}
+                                {this.state.groups.map((group) => {
+                                    return <option
+                                        key={group.id}
+                                        value={group.id}
+                                    >
+                                        {group.name}
+                                    </option>
+                                })
+                                }
                             </select>
                             <div className="invalid-feedback">{this.state.formErrors.groupId}</div>
                         </div>
@@ -295,15 +335,15 @@ export class NotificationModal extends React.Component {
                                 placeholder="Wprowadź hasło"
                             >
 
-                                {/*{this.props.configOptions.degrees.map((value, key) => {*/}
-                                {/*    return <option*/}
-                                {/*        key={key}*/}
-                                {/*        value={value}*/}
-                                {/*    >*/}
-                                {/*        {value}*/}
-                                {/*    </option>*/}
-                                {/*})*/}
-                                {/*}*/}
+                                {this.state.subjects.map((subject) => {
+                                    return <option
+                                        key={subject.id}
+                                        value={subject.id}
+                                    >
+                                        {subject.name}
+                                    </option>
+                                })
+                                }
                             </select>
                             <div className="invalid-feedback">{this.state.formErrors.subjectId}</div>
                         </div>

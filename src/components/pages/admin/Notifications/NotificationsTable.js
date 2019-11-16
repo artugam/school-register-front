@@ -169,6 +169,7 @@ export class NotificationsTable extends React.Component {
                                             record={record}
                                             key={record.id}
                                             loadRecords={this.loadRecords}
+                                            courses={this.state.courses}
                                         />);
                                     }
                                 )}

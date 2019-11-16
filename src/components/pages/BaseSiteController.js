@@ -23,10 +23,7 @@ export class BaseSiteController extends React.Component {
 
         this.loadMe();
 
-        if(!localStorage.getItem(globalConstants.authData)) {
-            this.props.history.push('/');
-            return;
-        }
+        this.redirectDashboard();
     }
     loadMe = () => {
         axios.get(API_URL + "auth/me", axiosService.getAuthConfig())
@@ -35,7 +32,16 @@ export class BaseSiteController extends React.Component {
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
+                // localStorage.removeItem(globalConstants.authData);
+                // this.redirectDashboard();
             });
+    }
+
+    redirectDashboard = () => {
+        if(!localStorage.getItem(globalConstants.authData)) {
+            this.props.history.push('/');
+            return;
+        }
     }
 
 }

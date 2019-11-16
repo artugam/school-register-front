@@ -194,7 +194,6 @@ class Pagination extends React.Component {
                 </ul>
                 </div>
                 <div className="col-md-4 float-right">
-
                     <p className="float-right">
                         Wyświetlono {this.getDisplayedAmount()} z {this.props.totalElements} &nbsp;
                         <TablePageSelect onChange={this.onChangeHandle} items={[

@@ -23,8 +23,14 @@ const axiosService = {
         toast.error(responseCodes.message[reason.response.data.error]);
     },
     getAuthConfig: () => {
-        var authData = localStorage.getItem("authData");
-        authData = JSON.parse(authData);
+        var authData = {
+            tokenType: "",
+            accessToken: ""
+        };
+        if(localStorage.getItem("authData") !== null) {
+            authData = localStorage.getItem("authData");
+            authData = JSON.parse(authData);
+        }
 
         var config = {
             headers: {

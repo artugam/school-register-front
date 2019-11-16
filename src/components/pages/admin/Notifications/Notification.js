@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from "react-moment";
 import NotificationDeleteModal from "./NotificationDeleteModal";
+import {NotificationModal} from "./NotificationModal";
 
 export class Notification extends React.Component {
     state = {
@@ -45,18 +46,16 @@ export class Notification extends React.Component {
                     {/*<a style={actionButtonStyle} href={"/groups/" + this.props.record.id} title={"Studenci"}>*/}
                     {/*    <i className="fa fa-users text-blue"></i>*/}
                     {/*</a>*/}
-                    {/*<a style={actionButtonStyle} onClick={this.toggleModal} title="Edytuj grupę">*/}
-                    {/*    <i className="fa fa-edit text-yellow"></i>*/}
-                    {/*    <CourseGroupAddModal*/}
-                    {/*        key={this.props.record.id}*/}
-                    {/*        isOpen={this.state.isModalOpen}*/}
-                    {/*        toggleModal={this.toggleModal}*/}
-                    {/*        loadRecords={this.props.loadRecords}*/}
-                    {/*        record={this.props.record}*/}
-                    {/*        course={this.props.course}*/}
-                    {/*        action={"edit"}*/}
-                    {/*    />*/}
-                    {/*</a>*/}
+                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Edytuj grupę">
+                        <i className="fa fa-edit text-yellow"></i>
+                        <NotificationModal
+                            isOpen={this.state.isModalOpen}
+                            toggleModal={this.toggleModal}
+                            loadRecords={this.props.loadRecords}
+                            courses={this.props.courses}
+                            record={this.props.record}
+                        />
+                    </a>
                     <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń powiadomienie">
                         <i className="fa fa-trash text-danger"></i>
                         <NotificationDeleteModal
