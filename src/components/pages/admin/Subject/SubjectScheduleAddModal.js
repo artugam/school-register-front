@@ -171,7 +171,6 @@ export class SubjectScheduleAddModal extends React.Component {
                 .catch((reason) => {
                     axiosService.handleError(reason);
                 });
-            this.clearState();
             return;
         }
 
@@ -240,15 +239,10 @@ export class SubjectScheduleAddModal extends React.Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="description">Opis</label>
-                        {/*<input type="text"*/}
-                        {/*       className={"form-control " + (this.state.formErrors.hours ? "is-invalid" : '')}*/}
-                        {/*       id="description" onChange={this.handleOnChange}*/}
-                        {/*       value={this.state.formFields.description}*/}
-                        {/*       placeholder="Opis"></input>*/}
                         <textarea className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                   id="description"
                                   onChange={this.handleOnChange}
-                                  value={this.state.formFields.description}
+                                  value={this.state.formFields.description ? this.state.formFields.description : " "}
                                   ></textarea>
                         <div className="invalid-feedback">{this.state.formErrors.description}</div>
                     </div>

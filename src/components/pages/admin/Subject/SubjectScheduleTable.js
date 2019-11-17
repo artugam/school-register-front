@@ -41,6 +41,8 @@ export class SubjectScheduleTable extends React.Component {
         this.onChangePage = this.onChangePage.bind(this);
     }
 
+
+
     loadRecords = (listParams) => {
         listParams = listParams ? listParams : this.state.listParams;
 
@@ -144,7 +146,6 @@ export class SubjectScheduleTable extends React.Component {
                                 loadRecords={this.loadRecords}
                                 subject={this.props.subject}
                             />
-
                         </div>
                     </div>
                     <div className="row align-items-center">

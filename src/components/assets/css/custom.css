@@ -22,3 +22,7 @@ input[id="search"] {
 .multi-select .dropdown {
     display: block;
 }
+
+.customSelect {
+    background-color: #0b2e13;
+}

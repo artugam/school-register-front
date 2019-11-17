@@ -1,0 +1,110 @@
+import React from 'react';
+import Moment from "react-moment";
+import SubjectScheduleAddModal from "./SubjectScheduleAddModal";
+import SubjectDeleteModal from "./SubjectDeleteModal";
+import SubjectSchedulePresenceModal from "./SubjectSchedulePresenceModal";
+
+
+export class FullSubjectScheduleRow extends React.Component {
+    state = {
+        isModalOpen: false,
+        isDeleteModalOpen: false,
+        isPresenceModalOpen: false,
+        presences: {},
+        loaded: false
+    };
+
+    toggleModal = (e) => {
+        this.setState({
+            // isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen
+        })
+    };
+
+
+    toggleModalOn = (e) => {
+        if (this.state.isModalOpen) {
+            return;
+        }
+        this.setState({
+            // isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen
+        })
+    };
+
+    toggleDeleteModal = () => {
+        this.setState({
+            isDeleteModalOpen: !this.state.isDeleteModalOpen
+        })
+    };
+    togglePresenceModal = () => {
+        this.setState({
+            isPresenceModalOpen: !this.state.isPresenceModalOpen
+        })
+    };
+
+    componentWillMount() {
+        this.props.record.presences.map((presence) => {
+            this.state.presences[presence.id] = presence.presenceStatus ? presence.presenceStatus : " ";
+        });
+    }
+
+
+    handleOnChange = e => {
+        const {id, value} = e.target;
+        this.updatePresence(id, value);
+
+        this.props.handlePresenceChange(id, value);
+    };
+
+    updatePresence = (id, value) => {
+        let presences = this.state.presences;
+        presences[id] = value;
+        this.setState(presences);
+    };
+
+    render() {
+        return (
+            <tr style={{"borderBottom": "2px solid #adb5bd"}}>
+                <td scope="row">
+                    {this.props.record.user.firstName} {this.props.record.user.lastName}
+                </td>
+                {
+                    this.props.record.presences.map((presence) => {
+                        return <td key={presence.id}>
+
+                            <select
+                                type="text"
+                                // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
+                                className={"form-control"}
+                                id={presence.id}
+                                onChange={this.handleOnChange}
+                                value={this.state.presences[presence.id]}
+                                placeholder="Rodzaj zajęć"
+                            >
+                                {
+                                    this.props.options.types ?
+                                        this.props.options.types.map((role) => {
+                                            return <option
+                                                key={role}
+                                                value={role}
+                                            >
+                                                {role}
+                                            </option>
+                                        })
+                                        : ''
+                                }
+                            </select>
+
+                        </td>
+                    })
+                }
+            </tr>
+        )
+    }
+
+}
+
+export default FullSubjectScheduleRow;
+
+

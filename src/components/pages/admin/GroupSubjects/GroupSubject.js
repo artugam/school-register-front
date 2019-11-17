@@ -47,8 +47,12 @@ export class GroupSubject extends React.Component {
                 </td>
 
                 <td className="row">
-                    <a style={actionButtonStyle} href={"/subjects/" + this.props.record.id}>
+
+                    <a style={actionButtonStyle} href={"/subjects/" + this.props.record.id + "/schedule"} title="Dziennik">
                         <i className="far fa-calendar-alt"></i>
+                    </a>
+                    <a style={actionButtonStyle} href={"/subjects/" + this.props.record.id} title="List zajęć">
+                        <i className="far fa-clock text-green"></i>
                     </a>
                     <a style={actionButtonStyle} onClick={this.toggleModalOn} title="Edytuj przedmiot">
                         <i className="fa fa-edit text-yellow"></i>
