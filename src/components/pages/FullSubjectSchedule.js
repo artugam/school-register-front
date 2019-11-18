@@ -11,7 +11,8 @@ import CourseInfo from "./admin/CourseDetails/CourseInfo";
 import GroupInfo from "./admin/Group/GroupInfo";
 import SubjectScheduleTable from "./admin/Subject/SubjectScheduleTable";
 import SubjectScheduleInfo from "./admin/Subject/SubjectScheduleInfo";
-import FullSubjectScheduleView from "./admin/Subject/FullSubjectScheduleView";
+import FullSubjectScheduleView from "./admin/ClassRegister/FullSubjectScheduleView";
+import FullGradesScheduleView from "./admin/ClassRegister/FullGradesScheduleView";
 
 
 export class FullSubjectSchedule extends BaseSiteController {
@@ -55,6 +56,11 @@ export class FullSubjectSchedule extends BaseSiteController {
                                 {this.state.subject.id ?
                                     <div>
                                         <FullSubjectScheduleView
+                                            subject={this.state.subject}
+                                        />
+                                        <br></br>
+                                        <br></br>
+                                        <FullGradesScheduleView
                                             subject={this.state.subject}
                                         />
                                     </div>

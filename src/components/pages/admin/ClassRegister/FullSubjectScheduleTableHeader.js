@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 import GroupSubjectsAddModal from "../GroupSubjects/GroupSubjectsAddModal";
-import SubjectScheduleAddModal from "./SubjectScheduleAddModal";
+import SubjectScheduleAddModal from "../Subject/SubjectScheduleAddModal";
 
 export class FullSubjectScheduleTableHeader extends React.Component {
 
@@ -71,7 +71,8 @@ export class FullSubjectScheduleTableHeader extends React.Component {
     }
 
     sortButtonStyle = {
-        cursor: "pointer"
+        cursor: "pointer",
+        width: "300px"
     };
 
 }

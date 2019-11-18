@@ -1,8 +1,8 @@
 import React from 'react';
 import Moment from "react-moment";
-import SubjectScheduleAddModal from "./SubjectScheduleAddModal";
-import SubjectDeleteModal from "./SubjectDeleteModal";
-import SubjectSchedulePresenceModal from "./SubjectSchedulePresenceModal";
+import SubjectScheduleAddModal from "../Subject/SubjectScheduleAddModal";
+import SubjectDeleteModal from "../Subject/SubjectDeleteModal";
+import SubjectSchedulePresenceModal from "../Subject/SubjectSchedulePresenceModal";
 
 
 export class FullSubjectScheduleRow extends React.Component {
