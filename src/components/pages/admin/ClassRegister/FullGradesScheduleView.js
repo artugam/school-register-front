@@ -1,16 +1,14 @@
 import React from 'react';
-import Pagination from "../../../services/paginators/Pagination";
 import SortTableHeader from "../../../modules/SortTableHeader";
 import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
-import SubjectSchedule from "../Subject/SubjectSchedule";
-import SubjectScheduleAddModal from "../Subject/SubjectScheduleAddModal";
 import FullSubjectScheduleTableHeader from "./FullSubjectScheduleTableHeader";
 import FullSubjectScheduleRow from "./FullSubjectScheduleRow";
-import TablePageSelect from "../../../modules/TabePageSelect";
 import toast from "../../../services/toast/ToastService";
 import FullGradesAddModal from "./FullGradesAddModal";
+import FullGradesScheduleRow from "./FullGradesScheduleRow";
+import FullGradeTableHeader from "./FullGradeTableHeader";
 
 
 export class FullGradesScheduleView extends React.Component {
@@ -22,18 +20,11 @@ export class FullGradesScheduleView extends React.Component {
         optionsLoaded: false,
         options: [],
         fullSchedule: {},
-        presences: {}
+        grades: {}
     };
 
 
     loadRecords = () => {
-        // axios.get(API_URL + "subjects/" + this.props.subject.id + "/schedule/full", axiosService.getAuthConfig())
-        //     .then(response => {
-        //         this.setState({fullSchedule: response.data})
-        //     })
-        //     .catch((reason) => {
-        //         axiosService.handleError(reason);
-        //     });
 
         axios.get(API_URL + "subjects/" + this.props.subject.id + "/grades/full", axiosService.getAuthConfig())
             .then(response => {
@@ -54,14 +45,15 @@ export class FullGradesScheduleView extends React.Component {
     loadOptions = () => {
         var config = axiosService.getAuthConfig();
 
-        return axios.get(API_URL + "presence/configuration/options", config)
+        return axios.get(API_URL + "grades/configuration/options", config)
             .then(response => {
                 if (!this.state.optionsLoaded) {
                     this.setState({optionsLoaded: true})
                 }
                 var out = {
-                    types: response.data.types
+                    types: response.data.options
                 };
+                out.types[0] = "";
                 this.setState({options: out});
             })
             .catch((reason) => {
@@ -70,10 +62,10 @@ export class FullGradesScheduleView extends React.Component {
     };
 
     handlePresenceChange = (id, value) => {
-        var presences = this.state.presences;
-        presences[id] = value;
+        var grades = this.state.grades;
+        grades[id] = value;
 
-        this.setState(presences);
+        this.setState(grades);
     };
 
 
@@ -87,16 +79,17 @@ export class FullGradesScheduleView extends React.Component {
         var config = axiosService.getAuthConfig();
         var params = [];
 
-        var presences = this.state.presences;
+        var grades = this.state.grades;
 
-        Object.keys(this.state.presences).forEach(function (key, index) {
+        Object.keys(this.state.grades).forEach(function (key, index) {
+            var grade = grades[key] ? grades[key] : 0;
             params.push({
-                schedulePresenceId: parseInt(key),
-                status: presences[key]
+                id: parseInt(key),
+                grade: parseFloat(grade)
             })
         });
 
-        axios.post(API_URL + "presence/update/all", params, config)
+        axios.post(API_URL + "grades/update/all", params, config)
             .then(response => {
                 if (response.status == 200) {
                     toast.success("Zapisano");
@@ -136,17 +129,17 @@ export class FullGradesScheduleView extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.state.fullSchedule.schedules ?
+                {this.state.fullSchedule.sections ?
                     <div className="table-responsive">
                         <table className="table align-items-center table-flush table-bordered text-center">
                             <thead className="thead-light">
                             <tr>
                                 <SortTableHeader text={"Student"}/>
                                 {
-                                    this.state.fullSchedule.schedules.map((schedule) => {
-                                        return <FullSubjectScheduleTableHeader
-                                            key={schedule.id}
-                                            schedule={schedule}
+                                    this.state.fullSchedule.sections.map((description) => {
+                                        return <FullGradeTableHeader
+                                            key={description}
+                                            text={description}
                                             options={this.state.options}
                                             subject={this.props.subject}
                                         />
@@ -157,13 +150,16 @@ export class FullGradesScheduleView extends React.Component {
                             <tbody className="tbody-dark">
                             {
                                 this.state.fullSchedule.rows.map((row, key) => {
-                                    return <FullSubjectScheduleRow key={key} record={row} options={this.state.options}
-                                                                   handlePresenceChange={this.handlePresenceChange}/>
+                                    return <FullGradesScheduleRow
+                                        key={key}
+                                        record={row}
+                                        options={this.state.options}
+                                        handlePresenceChange={this.handlePresenceChange}/>
                                 })
                             }
                             </tbody>
                         </table>
-                        {this.state.fullSchedule.schedules.length > 0 ? '' :
+                        {this.state.fullSchedule.sections.length > 0 ? '' :
                             <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>
                         }
                     </div>
