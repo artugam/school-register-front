@@ -139,9 +139,10 @@ export class FullGradesScheduleView extends React.Component {
                                     this.state.fullSchedule.sections.map((description) => {
                                         return <FullGradeTableHeader
                                             key={description}
-                                            text={description}
+                                            description={description}
                                             options={this.state.options}
                                             subject={this.props.subject}
+                                            loadRecords={this.loadRecords}
                                         />
                                     })
                                 }
