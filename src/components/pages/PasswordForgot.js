@@ -10,7 +10,7 @@ import errorConstantsValidator from "../services/validator/ErrorConstantsValidat
 import globalConstants from "../constants/Global";
 import responseCodes from "../services/axios/ResponseCodes";
 
-export class Login extends React.Component {
+export class PasswordForgot extends React.Component {
 
     componentDidMount() {
         if(localStorage.getItem(globalConstants.authData)) {
@@ -23,6 +23,7 @@ export class Login extends React.Component {
         password: '',
         emailError: '',
         passwordError: '',
+        disabledButton: false
     };
 
     validate = () => {
@@ -30,9 +31,6 @@ export class Login extends React.Component {
         let errors = [];
 
         errors.push(this.isEmailValidate());
-        errors.push(this.isPasswordValidate());
-
-
         return !errors.includes(false);
 
     };
@@ -50,40 +48,36 @@ export class Login extends React.Component {
         return true;
     };
 
-    isPasswordValidate = () => {
-        if (!this.state.password) {
-            this.setState({passwordError: errorConstantsValidator.required});
-            return false;
-        }
-        this.setState({passwordError: ''});
-        return true;
-    };
-
     onLoginFormSubmit = (e) => {
         e.preventDefault();
         if (!this.validate()) {
             return;
         }
-
-        axios.post(API_URL + "auth/login", this.state)
+        var params = {
+            email: this.state.email
+        };
+        this.setState({disabledButton: true});
+        axios.post(API_URL + "public/password/reset", params)
             .then(res => {
+                this.setState({disabledButton: false});
                 if (!res) {
                     return;
                 }
-                toast.success(responseCodes.message.logged);
-                localStorage.setItem(globalConstants.authData, JSON.stringify(res.data));
-                this.props.history.push("/dashboard");
+                toast.success(responseCodes.message.passowrdResetEmail);
             })
             .catch((reason) => {
+                this.setState({disabledButton: false});
+                if(reason.response.data.message === 'User not found') {
+                    toast.error(responseCodes.message.userNotFoundWithEmail);
+                    return;
+                }
                 axiosService.handleError(reason);
             });
+
     };
 
     handleEmailChange = (e) => {
         this.setState({email: e.target.value});
-    };
-    handlePasswordChange = (e) => {
-        this.setState({password: e.target.value});
     };
 
 
@@ -92,7 +86,7 @@ export class Login extends React.Component {
             <div className="d-flex justify-content-center loginPage">
                 <div className="card card-login auth">
                     <div className="card-header card-header-login">
-                        <h3>Wirtualny Dziennik</h3>
+                        <h3><a href="/">Wirtualny Dziennik</a></h3>
                     </div>
                     <div className="card-body card-body-login align-content-center">
                         <form>
@@ -104,34 +98,24 @@ export class Login extends React.Component {
                                 <input type="email" name='email'
                                        className={`form-control pl-1 login-field ` + (this.state.emailError ? "is-invalid" : '')}
                                        placeholder="Email" value={this.state.email}
-                                       onChange={this.handleEmailChange}></input>
+                                       onChange={this.handleEmailChange}
+
+                                >
+
+                                </input>
                                 {/*<input required type="email" name='email' className={`form-control pl-1 login-field`} placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input>*/}
                                 <div className="invalid-feedback">{this.state.emailError}</div>
                             </div>
-                            <div className="input-group form-group">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text input-group-text-login "><i
-                                        className="fa fa-key"></i></span>
-                                </div>
-                                <input type="password" className={`form-control pl-1 login-field ` + (this.state.passwordError ? "is-invalid" : '')} placeholder="Hasło"
-                                       value={this.state.password} onChange={this.handlePasswordChange}></input>
-                                <div className="invalid-feedback">{this.state.passwordError}</div>
-                            </div>
                             <div className="form-group">
                                 <button className="btn btn-block float-right login_btn" type="submit"
-                                        onClick={this.onLoginFormSubmit}>Login
+                                        onClick={this.onLoginFormSubmit}
+                                        disabled={this.state.disabledButton}
+                                >
+                                    Wyślij przypomnienie
                                 </button>
                                 {/*<input className="btn btn-block float-right login_btn" type="submit" ></input>*/}
                             </div>
                         </form>
-                    </div>
-                    <div className="card-footer card-footer-login">
-                        {/*<div className="d-flex justify-content-center links">*/}
-                        {/*    <a href="/register">Rejestracja</a>*/}
-                        {/*</div>*/}
-                        <div className="d-flex justify-content-center">
-                            <a href="/password-forgot">Zapomniałeś hasła?</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -139,6 +123,6 @@ export class Login extends React.Component {
     }
 }
 
-export default Login;
+export default PasswordForgot;
 
 

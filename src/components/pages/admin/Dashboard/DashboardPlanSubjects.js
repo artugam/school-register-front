@@ -126,10 +126,10 @@ export class DashboardPlanSubjects extends React.Component {
                     <div className="card shadow">
                         <div className="card-header border-0">
                             <div className="row align-items-center">
-                                <div className="col">
+                                <div className="col-4">
                                     <h3 className="mb-0">Zajęcia</h3>
                                 </div>
-                                <div className="col text-right">
+                                <div className="col-8 text-right">
                                     <button onClick={this.handleChangePeriodPrevious}
                                             className="btn btn-sm btn-primary">
                                         Poprzedni Tydzień
@@ -153,7 +153,7 @@ export class DashboardPlanSubjects extends React.Component {
                             </div>
                         </div>
                         {this.state.records ?
-                            <div className="table-responsive-md">
+                            <div className="table-responsive">
                                 <table className="table align-items-center table-flush">
                                     <thead className="thead-light">
                                     <tr>

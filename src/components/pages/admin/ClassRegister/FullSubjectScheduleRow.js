@@ -67,7 +67,7 @@ export class FullSubjectScheduleRow extends React.Component {
         return (
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
                 <td scope="row">
-                    {this.props.record.user.firstName} {this.props.record.user.lastName}
+                    {this.props.record.user.lastName} {this.props.record.user.firstName}
                 </td>
                 {
                     this.props.record.presences.map((presence) => {

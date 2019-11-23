@@ -68,7 +68,7 @@ export class DashboardNotifications extends React.Component {
                             </div>
                         </div>
                         {this.state.records.content ?
-                            <div className="table-responsive-md">
+                            <div className="table-responsive">
                                 {this.state.records.content.length > 0 ?
                                     <div>
                                     {this.state.records.content.map((record) => {

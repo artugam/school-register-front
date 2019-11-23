@@ -54,7 +54,7 @@ export class DashboardTodaysSubjects extends React.Component {
                             </div>
                         </div>
                         {this.state.records ?
-                            <div className="table-responsive-md">
+                            <div className="table-responsive">
                                 <table className="table align-items-center table-flush">
                                     <thead className="thead-light">
                                     <tr>

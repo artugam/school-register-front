@@ -109,7 +109,7 @@ export class UsersTable extends React.Component {
                     </div>
                 </div>
                 {this.props.users ?
-                    <div className="table-responsive-md">
+                    <div className="table-responsive">
                         {/* Projects table */}
 
                         <table className="table align-items-center table-flush table-bordered text-center">
