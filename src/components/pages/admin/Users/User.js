@@ -59,6 +59,7 @@ export class User extends React.Component {
             <tr id={this.props.user.id} style={{"borderBottom": "2px solid #adb5bd"}}>
                 <td scope="row">{this.props.user.firstName}</td>
                 <td>{this.props.user.lastName}</td>
+                <td>{this.props.user.uniqueNumber}</td>
                 <td>{this.props.user.email}</td>
                 <td>
                     {this.getHighestRole(this.props.user.roles)}

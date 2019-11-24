@@ -17,6 +17,7 @@ import Notifications from "./components/pages/Notifications";
 import FullSubjectSchedule from "./components/pages/FullSubjectSchedule";
 import PasswordReset from "./components/pages/PasswordReset";
 import PasswordForgot from "./components/pages/PasswordForgot";
+import Profile from "./components/pages/Profile";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
             {/*    <div className='container-fluid'>*/}
                     <Route exact path='/' component={Login}/>
                     <Route exact path='/password-forgot' component={PasswordForgot}/>
+                    <Route exact path='/profile' component={Profile}/>
                     <Route exact path='/password-reset/:token' component={PasswordReset}/>
                     <Route exact path='/register' component={Register}/>
                     <Route exact path='/dashboard' component={Dashboard}/>

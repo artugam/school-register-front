@@ -118,6 +118,7 @@ export class UsersTable extends React.Component {
                             <tr>
                                 <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort} />
+                                <SortTableHeader field={"uniqueNumber"} text={"Nr Indeksu"} handleSort={this.handleSort} />
                                 <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort} />
                                 <SortTableHeader text={"Rola"}/>
                                 <SortTableHeader field={"enabled"} text={"Status"} handleSort={this.handleSort} />

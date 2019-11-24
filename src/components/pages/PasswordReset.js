@@ -99,7 +99,6 @@ export class PasswordReset extends React.Component {
                 this.setState({disabledButton: false});
                 axiosService.handleError(reason);
             });
-
     };
 
     handleEmailChange = (e) => {

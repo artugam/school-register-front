@@ -10,6 +10,8 @@ const responseCodes = {
         "userNotFoundWithEmail": "Nie znaleziono użytkownika z podanym e-mailem",
         "passwordsNotTheSame": "Hasła się różnią",
         "passwordChanged": "Hasło zostało zapisane",
+        "notAllowedFileExtension": "Wprowadzony plik ma niedozwolony format",
+        "userProfileUpdate": "Profil został zaktualizowany",
     }
 };
 

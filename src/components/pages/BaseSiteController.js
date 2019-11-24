@@ -17,6 +17,7 @@ export class BaseSiteController extends React.Component {
             firstName: '-',
             lastName: '-'
         },
+        loaded: false
     };
 
     componentDidMount() {
@@ -29,6 +30,7 @@ export class BaseSiteController extends React.Component {
         axios.get(API_URL + "auth/me", axiosService.getAuthConfig())
             .then(res => {
                 this.setState({user: res.data});
+                this.setState({loaded: true})
             })
             .catch((reason) => {
                 axiosService.handleError(reason);

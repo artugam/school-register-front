@@ -30,7 +30,7 @@ export class FullGradeTableHeader extends React.Component {
 
                 <div className="d-inline" style={{width: "300px"}}>
                     <span style={this.sortButtonStyle} onClick={this.toggleModal}>
-                     {this.props.description}
+                     {this.props.description ? this.props.description : '-'}
                     </span>
                     <span style={this.sortButtonStyle} onClick={this.toggleDeleteModal} className="close" aria-label="Close">
                      <span aria-hidden="true">×</span>

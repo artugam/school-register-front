@@ -63,6 +63,22 @@ export class FullSubjectScheduleRow extends React.Component {
         this.setState(presences);
     };
 
+    getColor = (value) => {
+
+      switch (value) {
+          case "Obecny":
+              return "#36a849";
+          case "Spóźniony":
+              return "#4c87e6";
+          case "Usprawiedliwiony":
+              return "#7b8696";
+          case "Nieobecny":
+              return "#d43737";
+          default:
+              return "ffffff"
+      }
+    };
+
     render() {
         return (
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
@@ -81,6 +97,8 @@ export class FullSubjectScheduleRow extends React.Component {
                                 onChange={this.handleOnChange}
                                 value={this.state.presences[presence.id]}
                                 placeholder="Rodzaj zajęć"
+                                style={{backgroundColor: this.getColor(this.state.presences[presence.id])}}
+
                             >
                                 {
                                     this.props.options.types ?
@@ -88,6 +106,7 @@ export class FullSubjectScheduleRow extends React.Component {
                                             return <option
                                                 key={role}
                                                 value={role}
+                                                style={{backgroundColor: "#ffffff"}}
                                             >
                                                 {role}
                                             </option>

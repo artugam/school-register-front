@@ -123,11 +123,11 @@ export class FullGradeEditDescriptionModal extends React.Component {
                 centered
             >
                 <ModalHeader tag={'h3'} toggle={this.props.toggleModal}>
-                    Opis
+                    Edycja Opisu
                 </ModalHeader>
                 <ModalBody>
                     <div className="form-group">
-                        <label htmlFor="description">Edycja Opisu</label>
+                        <label htmlFor="description">Opis</label>
                         <input className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                   id="description"
                                   onChange={this.handleOnChange}

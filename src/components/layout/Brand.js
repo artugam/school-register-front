@@ -34,28 +34,16 @@ export class Brand extends React.Component {
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
                                     <div className=" dropdown-header noti-title">
-                                        <h6 className="text-overflow m-0">Welcome!</h6>
+                                        <h6 className="text-overflow m-0">Witaj!</h6>
                                     </div>
-                                    <a href="./examples/profile.html" className="dropdown-item">
+                                    <a href="/profile" className="dropdown-item">
                                         <i className="ni ni-single-02"/>
-                                        <span>My profile</span>
-                                    </a>
-                                    <a href="./examples/profile.html" className="dropdown-item">
-                                        <i className="ni ni-settings-gear-65"/>
-                                        <span>Settings</span>
-                                    </a>
-                                    <a href="./examples/profile.html" className="dropdown-item">
-                                        <i className="ni ni-calendar-grid-58"/>
-                                        <span>Activity</span>
-                                    </a>
-                                    <a href="./examples/profile.html" className="dropdown-item">
-                                        <i className="ni ni-support-16"/>
-                                        <span>Support</span>
+                                        <span>Mój profil</span>
                                     </a>
                                     <div className="dropdown-divider"/>
                                     <a href="" className="dropdown-item" onClick={this.logout}>
                                         <i className="ni ni-user-run"/>
-                                        <span>Logout</span>
+                                        <span>Wyloguj</span>
                                     </a>
                                 </div>
                             </li>

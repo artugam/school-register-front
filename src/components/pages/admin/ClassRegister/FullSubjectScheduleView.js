@@ -126,7 +126,7 @@ export class FullSubjectScheduleView extends React.Component {
                             <table className="table align-items-center table-flush table-bordered text-center">
                                 <thead className="thead-light">
                                 <tr>
-                                    <SortTableHeader text={"Student"}/>
+                                    <SortTableHeader text={"Student"} />
                                     {
                                         this.state.fullSchedule.schedules.map((schedule) => {
                                             return <FullSubjectScheduleTableHeader

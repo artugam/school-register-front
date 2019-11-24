@@ -7,11 +7,13 @@ import axiosService from "../../../services/axios/AxiosService";
 import CourseStudent from "./CourseStudent";
 import Moment from "react-moment";
 import CourseStudentAddModal from "./CourseStudentAddModal";
+import CourseStudentAddFileModal from "./CourseStudentAddFileModal";
 
 export class CourseStudentsTable extends React.Component {
 
     state = {
         isModalOpen: false,
+        isFileModalOpen: false,
         allowedRoles: [],
         pageOfItems: [],
         records: {},
@@ -76,6 +78,12 @@ export class CourseStudentsTable extends React.Component {
     toggleModal = () => {
         this.setState({
             isModalOpen: !this.state.isModalOpen
+        })
+    };
+
+    toggleFileModal = () => {
+        this.setState({
+            isFileModalOpen: !this.state.isFileModalOpen
         })
     };
 
@@ -158,6 +166,17 @@ export class CourseStudentsTable extends React.Component {
                                 options={this.state.addUsersOptions}
                                 callBack={this.addUsersCallBack}
                             />
+                            <button onClick={this.toggleFileModal} className="btn btn-sm btn-primary">
+                                Dodaj z pliku
+                            </button>
+                            <CourseStudentAddFileModal
+                                isOpen={this.state.isFileModalOpen}
+                                toggleModal={this.toggleFileModal}
+                                loadRecords={this.loadRecords}
+                                course={this.props.course}
+                                options={this.state.addUsersOptions}
+                                callBack={this.addUsersCallBack}
+                            />
                         </div>
                     </div>
                     <div className="row align-items-center">
@@ -178,6 +197,7 @@ export class CourseStudentsTable extends React.Component {
                             <tr>
                                 <SortTableHeader field={"firstName"} text={"Imie"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"lastName"} text={"Nazwisko"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"uniqueNumber"} text={"Nr Indeksu"} handleSort={this.handleSort} />
                                 <SortTableHeader field={"email"} text={"Email"} handleSort={this.handleSort}/>
                                 <th scope="col"></th>
                             </tr>
