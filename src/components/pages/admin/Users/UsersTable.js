@@ -35,7 +35,6 @@ export class UsersTable extends React.Component {
 
 
     componentDidMount() {
-
         if (!localStorage.getItem(globalConstants.authData)) {
             this.props.history.push('/');
             return;
@@ -108,7 +107,7 @@ export class UsersTable extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.props.users ?
+                {this.props.users && this.props.users.content ?
                     <div className="table-responsive">
                         {/* Projects table */}
 
@@ -126,7 +125,7 @@ export class UsersTable extends React.Component {
                             </tr>
                             </thead>
 
-                            {this.props.users.content.length > 0 ?
+                            { this.props.users.content.length > 0 ?
                                 <tbody className="tbody-dark">
                                 {this.props.users.content.map((user) => {
                                         return (<User
@@ -141,7 +140,7 @@ export class UsersTable extends React.Component {
                                 : ''
                             }
                         </table>
-                        {this.props.users.content.length > 0 ? '' : <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>}
+                        { this.props.users.content.length > 0 ? '' : <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>}
 
                         <Pagination items={this.props.users.content} onChangePage={this.onChangePage}
                                     initialPage={this.props.users.page} pageSize={this.props.users.size}

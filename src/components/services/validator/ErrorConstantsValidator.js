@@ -2,6 +2,8 @@
 const errorConstantsValidator  = {
     required: "Pole wymagane",
     badEmail: "Niepoprawny email",
+    passwordsNotTheSame: "Hasła się różnią",
+    notAllowedValue: "Niepoprawna wartość",
 
     // passwordRequirements: "&lt;h1&gt;Hi there!&lt;/h1&gt;"
     passwordRequirements: "Hasło musi posiadać co najmniej 8 znaków<br>" +

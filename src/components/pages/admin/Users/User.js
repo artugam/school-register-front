@@ -4,6 +4,7 @@ import userConstants from "./UserConstants";
 import {UserDeleteModal} from "./UserDeleteModal";
 import UserStatusModal from "./UserStatusModal";
 import PropTypes from "prop-types";
+import UserPasswordModal from "./UserPasswordModal";
 
 export class User extends React.Component {
 
@@ -13,8 +14,15 @@ export class User extends React.Component {
         isModalOpen: false,
         isDeleteModalOpen: false,
         isBlockModalOpen: false,
-        isUnblockModalOpen: false
+        isUnblockModalOpen: false,
+        isPasswordModalOpen: false
     }
+
+    togglePasswordModal = () => {
+        this.setState({
+            isPasswordModalOpen: !this.state.isPasswordModalOpen
+        })
+    };
 
     toggleModal = () => {
         this.setState({
@@ -70,6 +78,17 @@ export class User extends React.Component {
                     </span>
                 </td>
                 <td className="row">
+                    <a style={actionButtonStyle} onClick={this.togglePasswordModal}>
+                        <i className="fa fa-key text-black"></i>
+                        <UserPasswordModal
+                            loadUsers={this.props.loadUsers}
+                            key={this.props.user.id}
+                            isOpen={this.state.isPasswordModalOpen}
+                            toggleModal={this.togglePasswordModal}
+                            allowedRoles={this.props.allowedRoles}
+                            user={this.props.user}
+                        />
+                    </a>
                     <a style={actionButtonStyle} onClick={this.toggleModal}>
                         <i className="fa fa-edit text-yellow"></i>
                         <UserModal

@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from "prop-types";
 import Moment from "react-moment";
-import GroupSubjectsAddModal from "../GroupSubjects/GroupSubjectsAddModal";
 import SubjectScheduleAddModal from "../Subject/SubjectScheduleAddModal";
+import userConstants from "../Users/UserConstants";
 
 export class FullSubjectScheduleTableHeader extends React.Component {
 
@@ -39,6 +38,9 @@ export class FullSubjectScheduleTableHeader extends React.Component {
     };
 
     toggleModal = () => {
+        if(!this.props.roles.includes(userConstants.roles.ROLE_TEACHER)) {
+            return;
+        }
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
@@ -46,7 +48,11 @@ export class FullSubjectScheduleTableHeader extends React.Component {
 
     render() {
         return (
-            <th style={this.sortButtonStyle} onClick={this.toggleModal} scope="col">
+            <th
+                style={this.sortButtonStyle}
+                onClick={this.toggleModal}
+                scope="col"
+            >
 
                 <Moment format="DD-MM-YYYY">
                     {this.props.schedule.start}
@@ -71,7 +77,7 @@ export class FullSubjectScheduleTableHeader extends React.Component {
     }
 
     sortButtonStyle = {
-        cursor: "pointer",
+        cursor: this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ? "pointer" : 'default',
         width: "300px"
     };
 

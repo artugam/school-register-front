@@ -84,7 +84,7 @@ export class PasswordForgot extends React.Component {
     render() {
         return (
             <div className="d-flex justify-content-center loginPage">
-                <div className="card card-login auth">
+                <div className="card card-login auth" style={{height: "260px"}}>
                     <div className="card-header card-header-login">
                         <h3><a href="/">Wirtualny Dziennik</a></h3>
                     </div>
@@ -101,7 +101,6 @@ export class PasswordForgot extends React.Component {
                                        onChange={this.handleEmailChange}
 
                                 >
-
                                 </input>
                                 {/*<input required type="email" name='email' className={`form-control pl-1 login-field`} placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input>*/}
                                 <div className="invalid-feedback">{this.state.emailError}</div>

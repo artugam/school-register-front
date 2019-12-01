@@ -25,7 +25,7 @@ export class GroupStudent extends React.Component {
             <tr id={this.props.record.id} style={{"borderBottom": "2px solid #adb5bd"}}>
                 <td scope="row">{this.props.record.firstName}</td>
                 <td>{this.props.record.lastName}</td>
-                <td>{this.props.user.uniqueNumber}</td>
+                <td>{this.props.record.uniqueNumber}</td>
                 <td>{this.props.record.email}</td>
                 {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td className="row">

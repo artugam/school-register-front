@@ -162,6 +162,7 @@ export class DashboardPlanSubjects extends React.Component {
                                         <th scope="col">Koniec</th>
                                         <th scope="col">Grupa</th>
                                         <th scope="col">Kierunek</th>
+                                        <th scope="col"></th>
                                     </tr>
                                     </thead>
                                     {this.state.records.length > 0 ?
@@ -182,6 +183,11 @@ export class DashboardPlanSubjects extends React.Component {
                                                         </td>
                                                         <td>{record.subject.group.name}</td>
                                                         <td>{record.subject.group.course.name}</td>
+                                                        <td>
+                                                            <a style={actionButtonStyle} href={"/subjects/" + record.subject.id + "/schedule"} title="Dziennik">
+                                                                <i className="far fa-calendar-alt"></i>
+                                                            </a>
+                                                        </td>
                                                     </tr>
                                                 );
                                             }

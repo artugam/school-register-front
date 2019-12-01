@@ -9,6 +9,7 @@ import toast from "../../../services/toast/ToastService";
 import FullGradesAddModal from "./FullGradesAddModal";
 import FullGradesScheduleRow from "./FullGradesScheduleRow";
 import FullGradeTableHeader from "./FullGradeTableHeader";
+import userConstants from "../Users/UserConstants";
 
 
 export class FullGradesScheduleView extends React.Component {
@@ -113,19 +114,26 @@ export class FullGradesScheduleView extends React.Component {
                             </h2>
                         </div>
                         <div className="col-4 text-right">
-                            <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj sekcje
-                            </button>
+                            {
+                                this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                    <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
+                                        Dodaj sekcje
+                                    </button>
+                                    : ''
+                            }
                             <FullGradesAddModal
                                 isOpen={this.state.isModalOpen}
                                 toggleModal={this.toggleModal}
                                 loadRecords={this.loadRecords}
                                 subject={this.props.subject}
                             />
-
-                            <button onClick={this.handleSave} className="btn btn-sm btn-primary">
-                                Zapisz
-                            </button>
+                            {
+                                this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                    <button onClick={this.handleSave} className="btn btn-sm btn-primary">
+                                        Zapisz
+                                    </button>
+                                    : ''
+                            }
                         </div>
                     </div>
                 </div>
@@ -134,15 +142,21 @@ export class FullGradesScheduleView extends React.Component {
                         <table className="table align-items-center table-flush table-bordered text-center">
                             <thead className="thead-light">
                             <tr>
-                                <SortTableHeader text={"Student"}/>
                                 {
-                                    this.state.fullSchedule.sections.map((description) => {
+                                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                        <SortTableHeader text={"Student"}/>
+                                        : ''
+                                }
+
+                                {
+                                    this.state.fullSchedule.sections.map((description, key) => {
                                         return <FullGradeTableHeader
-                                            key={description}
+                                            key={key + description}
                                             description={description}
                                             options={this.state.options}
                                             subject={this.props.subject}
                                             loadRecords={this.loadRecords}
+                                            roles={this.props.roles}
                                         />
                                     })
                                 }
@@ -155,7 +169,9 @@ export class FullGradesScheduleView extends React.Component {
                                         key={key}
                                         record={row}
                                         options={this.state.options}
-                                        handlePresenceChange={this.handlePresenceChange}/>
+                                        handlePresenceChange={this.handlePresenceChange}
+                                        roles={this.props.roles}
+                                    />
                                 })
                             }
                             </tbody>

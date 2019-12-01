@@ -6,11 +6,6 @@ import BaseSiteController from "./BaseSiteController";
 import axios from "axios";
 import {API_URL} from "../constants/Api";
 import axiosService from "../services/axios/AxiosService";
-import GroupStudentsTable from "./admin/Group/GroupStudentsTable";
-import CourseInfo from "./admin/CourseDetails/CourseInfo";
-import GroupInfo from "./admin/Group/GroupInfo";
-import SubjectScheduleTable from "./admin/Subject/SubjectScheduleTable";
-import SubjectScheduleInfo from "./admin/Subject/SubjectScheduleInfo";
 import FullSubjectScheduleView from "./admin/ClassRegister/FullSubjectScheduleView";
 import FullGradesScheduleView from "./admin/ClassRegister/FullGradesScheduleView";
 
@@ -24,6 +19,17 @@ export class FullSubjectSchedule extends BaseSiteController {
         },
         subject: {},
         records: []
+    };
+
+    getRoles = (user) => {
+        var allRoles = [];
+        if(!user) {
+            return allRoles;
+        }
+        user.roles.map((role) => {
+            allRoles.push(role.name);
+        });
+        return allRoles;
     };
 
     id = null;
@@ -43,7 +49,6 @@ export class FullSubjectSchedule extends BaseSiteController {
 
 
     render() {
-
         return (
             <div>
                 <Navigation user={this.state.user}/>
@@ -53,18 +58,22 @@ export class FullSubjectSchedule extends BaseSiteController {
                     <div className="container-fluid mt--7">
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
-                                {this.state.subject.id ?
+                                {this.state.subject.id && this.state.user ?
                                     <div>
                                         <FullSubjectScheduleView
                                             subject={this.state.subject}
+                                            user={this.state.user}
+                                            roles={this.getRoles(this.state.user)}
                                         />
                                         <br></br>
                                         <br></br>
                                         <FullGradesScheduleView
                                             subject={this.state.subject}
+                                            user={this.state.user}
+                                            roles={this.getRoles(this.state.user)}
                                         />
                                     </div>
-                                : ''}
+                                    : ''}
                             </div>
                         </div>
                         <Footer/>

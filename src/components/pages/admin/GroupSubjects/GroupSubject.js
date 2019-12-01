@@ -41,8 +41,7 @@ export class GroupSubject extends React.Component {
                 <td>{this.props.record.type}</td>
                 <td>
                     {this.props.record.teachers.map((teacher) => {
-                        return <div>{teacher.firstName} {teacher.lastName}</div>;
-                        // return <div><span>{teacher.email}</span></div>;
+                        return <div key={teacher.id}>{teacher.firstName} {teacher.lastName}</div>;
                     })}
                 </td>
 

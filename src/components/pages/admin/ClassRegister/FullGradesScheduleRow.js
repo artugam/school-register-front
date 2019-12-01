@@ -1,4 +1,5 @@
 import React from 'react';
+import userConstants from "../Users/UserConstants";
 
 
 export class FullGradesScheduleRow extends React.Component {
@@ -63,36 +64,43 @@ export class FullGradesScheduleRow extends React.Component {
     render() {
         return (
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
-                <td scope="row">
-                    {this.props.record.user.lastName} {this.props.record.user.firstName}
-                </td>
+                {
+                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                        <td scope="row">
+                            {this.props.record.user.lastName} {this.props.record.user.firstName} {this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}
+                        </td>
+                        : ''
+                }
+
                 {
                     this.props.record.grades.map((grade) => {
                         return <td key={grade.id}>
-
-                            <select
-                                type="text"
-                                // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                                className={"form-control"}
-                                id={grade.id}
-                                onChange={this.handleOnChange}
-                                value={this.state.grades[grade.id]}
-                                placeholder="Rodzaj zajęć"
-                            >
-                                {
-                                    this.props.options.types ?
-                                        this.props.options.types.map((role) => {
-                                            return <option
-                                                key={role}
-                                                value={role}
-                                            >
-                                                {role}
-                                            </option>
-                                        })
-                                        : ''
-                                }
-                            </select>
-
+                            {
+                                this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                    <select
+                                        type="text"
+                                        // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
+                                        className={"form-control"}
+                                        id={grade.id}
+                                        onChange={this.handleOnChange}
+                                        value={this.state.grades[grade.id]}
+                                        placeholder="Rodzaj zajęć"
+                                    >
+                                        {
+                                            this.props.options.types ?
+                                                this.props.options.types.map((role) => {
+                                                    return <option
+                                                        key={role}
+                                                        value={role}
+                                                    >
+                                                        {role}
+                                                    </option>
+                                                })
+                                                : ''
+                                        }
+                                    </select>
+                                    : this.state.grades[grade.id] ? this.state.grades[grade.id] : '-'
+                            }
                         </td>
                     })
                 }

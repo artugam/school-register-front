@@ -1,9 +1,7 @@
 import React from 'react';
-import Moment from "react-moment";
-import SubjectScheduleAddModal from "../Subject/SubjectScheduleAddModal";
 import FullGradeEditDescriptionModal from "./FullGradeEditDescriptionModal";
-import SubjectDeleteModal from "../Subject/SubjectDeleteModal";
 import FullGradeDeleteSection from "./FullGradeDeleteSection";
+import userConstants from "../Users/UserConstants";
 
 export class FullGradeTableHeader extends React.Component {
 
@@ -26,40 +24,54 @@ export class FullGradeTableHeader extends React.Component {
 
     render() {
         return (
-            <th scope="col">
-
+            <th scope="col" key={this.props.description + Math.random()}>
                 <div className="d-inline" style={{width: "300px"}}>
                     <span style={this.sortButtonStyle} onClick={this.toggleModal}>
                      {this.props.description ? this.props.description : '-'}
                     </span>
-                    <span style={this.sortButtonStyle} onClick={this.toggleDeleteModal} className="close" aria-label="Close">
-                     <span aria-hidden="true">×</span>
-                    </span>
+                    {
+                        this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                            <span style={this.sortButtonStyle} onClick={this.toggleDeleteModal} className="close" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </span>
+                            : ''
+                    }
+
                 </div>
 
-                <FullGradeEditDescriptionModal
-                    key={this.props.description}
-                    isOpen={this.state.isModalOpen}
-                    subject={this.props.subject}
-                    toggleModal={this.toggleModal}
-                    loadRecords={this.props.loadRecords}
-                    description={this.props.description}
-                />
-                <FullGradeDeleteSection
-                    key={this.props.description}
-                    isOpen={this.state.isDeleteModalOpen}
-                    subject={this.props.subject}
-                    toggleModal={this.toggleDeleteModal}
-                    loadRecords={this.props.loadRecords}
-                    description={this.props.description}
-                />
+                {
+                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                        <FullGradeEditDescriptionModal
+                            key={this.props.description + Math.random()}
+                            isOpen={this.state.isModalOpen}
+                            subject={this.props.subject}
+                            toggleModal={this.toggleModal}
+                            loadRecords={this.props.loadRecords}
+                            description={this.props.description}
+                        />
+                        : ''
+                }
+                {
+                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                        <FullGradeDeleteSection
+                            key={this.props.description + Math.random()}
+                            isOpen={this.state.isDeleteModalOpen}
+                            subject={this.props.subject}
+                            toggleModal={this.toggleDeleteModal}
+                            loadRecords={this.props.loadRecords}
+                            description={this.props.description}
+                        />
+                        : ''
+                }
+
+
             </th>
 
         )
     }
 
     sortButtonStyle = {
-        cursor: "pointer",
+        cursor: this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ? "pointer" : 'default',
     };
 
 }

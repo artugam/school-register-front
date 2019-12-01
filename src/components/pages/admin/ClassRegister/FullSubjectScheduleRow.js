@@ -3,6 +3,7 @@ import Moment from "react-moment";
 import SubjectScheduleAddModal from "../Subject/SubjectScheduleAddModal";
 import SubjectDeleteModal from "../Subject/SubjectDeleteModal";
 import SubjectSchedulePresenceModal from "../Subject/SubjectSchedulePresenceModal";
+import userConstants from "../Users/UserConstants";
 
 
 export class FullSubjectScheduleRow extends React.Component {
@@ -65,56 +66,63 @@ export class FullSubjectScheduleRow extends React.Component {
 
     getColor = (value) => {
 
-      switch (value) {
-          case "Obecny":
-              return "#36a849";
-          case "Spóźniony":
-              return "#4c87e6";
-          case "Usprawiedliwiony":
-              return "#7b8696";
-          case "Nieobecny":
-              return "#d43737";
-          default:
-              return "ffffff"
-      }
+        switch (value) {
+            case "Obecny":
+                return "#36a849";
+            case "Spóźniony":
+                return "#4c87e6";
+            case "Usprawiedliwiony":
+                return "#7b8696";
+            case "Nieobecny":
+                return "#d43737";
+            default:
+                return "ffffff"
+        }
     };
 
     render() {
+        console.log(this.state.presences);
         return (
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
-                <td scope="row">
-                    {this.props.record.user.lastName} {this.props.record.user.firstName}
-                </td>
+                {
+                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                        <td scope="row">
+                            {this.props.record.user.lastName} {this.props.record.user.firstName} {this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}
+                        </td>
+                        : ''
+                }
                 {
                     this.props.record.presences.map((presence) => {
                         return <td key={presence.id}>
+                            {
+                                this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                    <select
+                                        type="text"
+                                        // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
+                                        className={"form-control"}
+                                        id={presence.id}
+                                        onChange={this.handleOnChange}
+                                        value={this.state.presences[presence.id]}
+                                        placeholder="Rodzaj zajęć"
+                                        style={{backgroundColor: this.getColor(this.state.presences[presence.id])}}
 
-                            <select
-                                type="text"
-                                // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                                className={"form-control"}
-                                id={presence.id}
-                                onChange={this.handleOnChange}
-                                value={this.state.presences[presence.id]}
-                                placeholder="Rodzaj zajęć"
-                                style={{backgroundColor: this.getColor(this.state.presences[presence.id])}}
-
-                            >
-                                {
-                                    this.props.options.types ?
-                                        this.props.options.types.map((role) => {
-                                            return <option
-                                                key={role}
-                                                value={role}
-                                                style={{backgroundColor: "#ffffff"}}
-                                            >
-                                                {role}
-                                            </option>
-                                        })
-                                        : ''
-                                }
-                            </select>
-
+                                    >
+                                        {
+                                            this.props.options.types ?
+                                                this.props.options.types.map((role) => {
+                                                    return <option
+                                                        key={role}
+                                                        value={role}
+                                                        style={{backgroundColor: "#ffffff"}}
+                                                    >
+                                                        {role}
+                                                    </option>
+                                                })
+                                                : ''
+                                        }
+                                    </select>
+                                    : (this.state.presences[presence.id] !== " "? this.state.presences[presence.id] : "-")
+                            }
                         </td>
                     })
                 }

@@ -17,6 +17,7 @@ export class UserModal extends React.Component {
             lastname: '',
             email: '',
             password: '',
+            uniqueNumber: '',
             role: false,
         },
 
@@ -25,6 +26,7 @@ export class UserModal extends React.Component {
             lastname: false,
             email: false,
             password: false,
+            uniqueNumber: false,
             roleError: false,
         },
     };
@@ -64,11 +66,15 @@ export class UserModal extends React.Component {
         switch (id) {
             case "firstname":
                 formErrors.firstname =
-                    value.length < 3 ? "Imie powinno mieć co najmniej 2 znaki" : "";
+                    value.length < 2 ? "Imie powinno mieć co najmniej 2 znaki" : "";
                 break;
             case "lastname":
                 formErrors.lastname =
-                    value.length < 3 ? "Nazwisko powinno mieć co najmniej 2 znaki" : "";
+                    value.length < 2 ? "Nazwisko powinno mieć co najmniej 2 znaki" : "";
+                break;
+            case "uniqueNumber":
+                formErrors.lastname =
+                    value.length < 2 ? "Numer Indeksu powinien mieć co najmniej 2 znaki" : "";
                 break;
             case "email":
 
@@ -136,6 +142,7 @@ export class UserModal extends React.Component {
             "lastName": this.state.formFields.lastname,
             "email": this.state.formFields.email,
             "password": this.state.formFields.password,
+            "uniqueNumber": this.state.formFields.uniqueNumber,
             "role": this.state.formFields.role,
         };
 
@@ -191,6 +198,7 @@ export class UserModal extends React.Component {
             firstname: this.user.firstName,
             lastname: this.user.lastName,
             email: this.user.email,
+            uniqueNumber: this.user.uniqueNumber,
             password: '',
             role: false,
 
@@ -252,6 +260,15 @@ export class UserModal extends React.Component {
                                    value={this.state.formFields.lastname}
                                    placeholder="Wprowadź Nazwisko"></input>
                             <div className="invalid-feedback">{this.state.formErrors.lastname}</div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="lastname">Numer Indeksu</label>
+                            <input type="text"
+                                   className={"form-control " + (this.state.formErrors.uniqueNumber ? "is-invalid" : '')}
+                                   id="uniqueNumber" onChange={this.handleOnChange}
+                                   value={this.state.formFields.uniqueNumber}
+                                   placeholder="Wprowadź numer indeksu"></input>
+                            <div className="invalid-feedback">{this.state.formErrors.uniqueNumber}</div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email</label>

@@ -11,19 +11,38 @@ import DateTime from "react-datetime";
 
 import errorConstantsValidator from "../../../services/validator/ErrorConstantsValidator";
 
+const ONE_WEEK = "oneWeek";
+const TWO_WEEKS = "twoWeeks";
+
 export class SubjectScheduleAddModal extends React.Component {
+
+
+    options = [
+        {
+            value: ONE_WEEK,
+            text: "Co tydzień"
+        },
+        {
+            value: TWO_WEEKS,
+            text: "Co 2 tygodnie"
+        }
+    ]
 
     state = {
         formFields: {
             start: '',
             end: '',
-            description: ''
+            description: '',
+            amount: 1,
+            frequency: "oneWeek",
         },
 
         formErrors: {
             start: '',
             end: '',
-            description: ''
+            description: '',
+            amount: '',
+            frequency: ''
         },
     };
 
@@ -75,6 +94,22 @@ export class SubjectScheduleAddModal extends React.Component {
         let formErrors = this.state.formErrors;
 
         switch (id) {
+            case "frequency":
+                formErrors.frequency = false;
+                if (!value) {
+                    formErrors.frequency = errorConstantsValidator.required;
+                } else if (value !== TWO_WEEKS && value !== ONE_WEEK) {
+                    formErrors.frequency = errorConstantsValidator.notAllowedValue;
+                }
+                break;
+            case "amount":
+                formErrors.amount = false;
+                if (!value) {
+                    formErrors.amount = errorConstantsValidator.required;
+                } else if (value < 1) {
+                    formErrors.amount = "Ilość nie może być mniejsza od 1";
+                }
+                break;
             case "start":
                 formErrors.start = false;
                 if (!value) {
@@ -123,10 +158,6 @@ export class SubjectScheduleAddModal extends React.Component {
 
         let fields = this.state.formFields;
 
-        if (this.isEdit) {
-            delete fields['password'];
-        }
-
         var self = this;
         Object.keys(fields).forEach(function (key) {
             self.validateField(key, fields[key]);
@@ -153,6 +184,8 @@ export class SubjectScheduleAddModal extends React.Component {
         var params = {
             "start": this.state.formFields.start,
             "end": this.state.formFields.end,
+            "amount": this.state.formFields.amount,
+            "frequency": this.state.formFields.frequency,
             "subjectId": this.props.subject.id,
             "description": this.state.formFields.description,
         };
@@ -188,10 +221,22 @@ export class SubjectScheduleAddModal extends React.Component {
         this.clearState();
     };
 
-    clearState(){
+    clearState() {
         let newState = Object.assign({}, this.state);
-        newState.formErrors = {};
-        newState.formFields = {};
+        newState.formErrors = {
+            start: '',
+            end: '',
+            description: '',
+            amount: '',
+            frequency: ''
+        };
+        newState.formFields = {
+            start: '',
+            end: '',
+            description: '',
+            amount: 1,
+            frequency: "oneWeek",
+        };
         newState.selected = [];
         this.setState(newState);
     }
@@ -221,7 +266,8 @@ export class SubjectScheduleAddModal extends React.Component {
                             showTimeSelect={true}
                             timeCaption={"Godzina"}
                         />
-                        <div className="invalid-feedback" style={{display: this.state.formErrors.start ? "block" : "none"}}>{this.state.formErrors.start}</div>
+                        <div className="invalid-feedback"
+                             style={{display: this.state.formErrors.start ? "block" : "none"}}>{this.state.formErrors.start}</div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="role">Data końca</label>
@@ -235,15 +281,59 @@ export class SubjectScheduleAddModal extends React.Component {
                             showTimeSelect={true}
                             timeCaption={"Godzina"}
                         />
-                        <div className="invalid-feedback" style={{display: this.state.formErrors.end ? "block" : "none"}}>{this.state.formErrors.end}</div>
+                        <div className="invalid-feedback"
+                             style={{display: this.state.formErrors.end ? "block" : "none"}}>{this.state.formErrors.end}</div>
                     </div>
+
+
+                    {
+                        this.props.action !== 'edit' ?
+                            <div className="form-group">
+                                <label htmlFor="lastname">Ilość zajęć</label>
+                                <input type="number"
+                                       className={"form-control " + (this.state.formErrors.amount ? "is-invalid" : '')}
+                                       id="amount" onChange={this.handleOnChange}
+                                       value={this.state.formFields.amount}
+                                       placeholder="Wprowadź ilość zajeć"></input>
+                                <div className="invalid-feedback">{this.state.formErrors.amount}</div>
+                            </div>
+                            : ''
+                    }
+                    {
+                        this.props.action !== 'edit' ?
+                            <div className="form-group">
+                                <label htmlFor="role">Częstotliwość</label>
+                                <select
+                                    type="text"
+                                    className={"form-control " + (this.state.formErrors.frequency ? "is-invalid" : '')}
+                                    id="frequency"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.formFields.frequency}
+                                    placeholder="Rodzaj zajęć"
+                                >
+                                    {
+                                        this.options.map((option) => {
+                                            return <option
+                                                key={option.value}
+                                                value={option.value}
+                                            >
+                                                {option.text}
+                                            </option>
+                                        })
+                                    }
+                                </select>
+                                <div className="invalid-feedback">{this.state.formErrors.frequency}</div>
+                            </div>
+                            : ''
+                        }
+
                     <div className="form-group">
                         <label htmlFor="description">Opis</label>
                         <textarea className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                   id="description"
                                   onChange={this.handleOnChange}
                                   value={this.state.formFields.description ? this.state.formFields.description : " "}
-                                  ></textarea>
+                        ></textarea>
                         <div className="invalid-feedback">{this.state.formErrors.description}</div>
                     </div>
 
