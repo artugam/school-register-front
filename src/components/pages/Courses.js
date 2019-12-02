@@ -75,12 +75,13 @@ export class Courses extends BaseSiteController {
                     <div className="container-fluid mt--7">
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
-                                {this.state.loaded === true ?
+                                {this.state.loaded === true && this.state.user ?
                                     <CoursesTable
                                         records={this.state.records}
                                         loadRecords={this.loadRecords}
                                         listParams={this.state.listParams}
                                         updateListQueryParams={this.updateListQueryParams}
+                                        roles={this.getRoles(this.state.user)}
                                     />
                                     : ''
                                 }

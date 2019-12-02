@@ -81,8 +81,8 @@ export class FullSubjectScheduleRow extends React.Component {
     };
 
     render() {
-        console.log(this.state.presences);
         return (
+
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
                 {
                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?

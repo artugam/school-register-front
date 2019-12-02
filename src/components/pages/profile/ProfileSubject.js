@@ -43,7 +43,7 @@ export class ProfileSubject extends React.Component {
                     })}
                 </td>
 
-                <td className="row">
+                <td>
                     <a style={actionButtonStyle} href={"/subjects/" + this.props.record.id + "/schedule"} title="Dziennik">
                         <i className="far fa-calendar-alt"></i>
                     </a>

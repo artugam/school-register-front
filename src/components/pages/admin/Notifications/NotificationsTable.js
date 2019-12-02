@@ -174,7 +174,7 @@ export class NotificationsTable extends React.Component {
                                     }
                                 )}
                                 </tbody>
-                                : ''
+                                : <tbody></tbody>
                             }
                         </table>
                         {this.state.records.content.length > 0 ? '' :

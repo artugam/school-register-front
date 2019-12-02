@@ -7,12 +7,18 @@ import FullSubjectScheduleTableHeader from "./FullSubjectScheduleTableHeader";
 import FullSubjectScheduleRow from "./FullSubjectScheduleRow";
 import toast from "../../../services/toast/ToastService";
 import userConstants from "../Users/UserConstants";
+import {NotificationModal} from "../Notifications/NotificationModal";
+import FullGradeDeleteSection from "./FullGradeDeleteSection";
+import FullSubjectNotificationModal from "./FullSubjectNotificationModal";
+import CourseStudentAddModal from "../CourseDetails/CourseStudentAddModal";
+import CourseStudentAddFileModal from "../CourseDetails/CourseStudentAddFileModal";
 
 
 export class FullSubjectScheduleView extends React.Component {
 
     state = {
         isModalOpen: false,
+        isNotificationModalOpen: false,
         records: {},
         loaded: false,
         optionsLoaded: false,
@@ -69,6 +75,12 @@ export class FullSubjectScheduleView extends React.Component {
         })
     };
 
+    toggleNotificationModal = () => {
+        this.setState({
+            isNotificationModalOpen: !this.state.isNotificationModalOpen
+        })
+    };
+
     handleSave = () => {
         var config = axiosService.getAuthConfig();
         var params = [];
@@ -100,25 +112,34 @@ export class FullSubjectScheduleView extends React.Component {
 
                 <div className="card-header border-0">
                     <div className="row align-items-center">
-                        <div className="col-10">
+                        <div className="col">
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
                                 <a href={"/groups/" + this.props.subject.group.id + "/subjects/"}>
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
                                 &nbsp; Przedmiot
                                 - <b>{this.props.subject.name} - {this.props.subject.group.name} - {this.props.subject.group.course.name}</b>
-
                             </h2>
                         </div>
-                        <div className="col-2 text-right">
-                            {
-                                this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                        {
+                            this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                <div className="col text-right">
+
+                                    <button onClick={this.toggleNotificationModal} className="btn btn-sm btn-primary">
+                                        Dodaj Powiadomienie
+                                    </button>
+                                    <FullSubjectNotificationModal
+                                        isOpen={this.state.isNotificationModalOpen}
+                                        toggleModal={this.toggleNotificationModal}
+                                        subject={this.props.subject}
+                                    />
+
                                     <button onClick={this.handleSave} className="btn btn-sm btn-primary">
                                         Zapisz
                                     </button>
-                                    : ''
-                            }
-                        </div>
+                                </div>
+                                : ''
+                        }
                     </div>
                 </div>
                 {this.state.fullSchedule.schedules ?

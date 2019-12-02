@@ -1,6 +1,7 @@
 import React from 'react';
 import CourseStudentDeleteModal from "./CourseStudentDeleteModal";
 import CourseForemanModal from "./CourseForemanModal";
+import userConstants from "../Users/UserConstants";
 
 
 export class CourseStudent extends React.Component {
@@ -29,22 +30,24 @@ export class CourseStudent extends React.Component {
                 <td>{this.props.record.uniqueNumber}</td>
                 <td>{this.props.record.email}</td>
                 {/*<td>{this.props.record.currentSemester}</td>*/}
-                <td className="row">
-                    {/*<a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>*/}
-                    {/*    <i className="fa fa-info-circle text-blue"></i>*/}
-                    {/*</a>*/}
-                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Mianuj starostą">
-                        <i className="fa fa-user-alt text-primary"></i>
-                        <CourseForemanModal
-                            loadRecords={this.props.loadRecords}
-                            key={this.props.record.id}
-                            isOpen={this.state.isModalOpen}
-                            toggleModal={this.toggleModal}
-                            record={this.props.record}
-                            course={this.props.course}
-                            loadCourse={this.props.loadCourse}
-                        />
-                    </a>
+                <td>
+                    {
+                        this.props.roles.includes(userConstants.roles.ROLE_ADMIN) ?
+                            <a style={actionButtonStyle} onClick={this.toggleModal} title="Mianuj starostą">
+                                <i className="fa fa-user-alt text-primary"></i>
+                                <CourseForemanModal
+                                    loadRecords={this.props.loadRecords}
+                                    key={this.props.record.id}
+                                    isOpen={this.state.isModalOpen}
+                                    toggleModal={this.toggleModal}
+                                    record={this.props.record}
+                                    course={this.props.course}
+                                    loadCourse={this.props.loadCourse}
+                                />
+                            </a>
+                            : ''
+                    }
+
                     <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń z kursu">
                         <i className="fa fa-trash text-danger"></i>
                         <CourseStudentDeleteModal

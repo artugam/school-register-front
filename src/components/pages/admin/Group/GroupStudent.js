@@ -28,7 +28,7 @@ export class GroupStudent extends React.Component {
                 <td>{this.props.record.uniqueNumber}</td>
                 <td>{this.props.record.email}</td>
                 {/*<td>{this.props.record.currentSemester}</td>*/}
-                <td className="row">
+                <td>
                     {/*<a style={actionButtonStyle} href={"/courses/" + this.props.record.id}>*/}
                     {/*    <i className="fa fa-info-circle text-blue"></i>*/}
                     {/*</a>*/}

@@ -6,6 +6,7 @@ import axios from "axios";
 import {API_URL} from "../../../constants/Api";
 import axiosService from "../../../services/axios/AxiosService";
 import Course from "./Course";
+import userConstants from "../Users/UserConstants";
 
 
 export class CoursesTable extends React.Component {
@@ -19,6 +20,7 @@ export class CoursesTable extends React.Component {
             forms: []
         }
     };
+
     constructor() {
         super();
         this.onChangePage = this.onChangePage.bind(this);
@@ -82,12 +84,16 @@ export class CoursesTable extends React.Component {
                             <h2 className="mb-0 p-2">Kierunki</h2>
                         </div>
                         <div className="col text-right">
-                            {/*<a href="#!" className="btn btn-sm btn-primary">See all</a>*/}
-                            <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj Nowy Kierunek
-                            </button>
-                            {this.state.configOptions  ?
-                                <CourseModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
+                            {
+                                this.props.roles.includes(userConstants.roles.ROLE_ADMIN) ?
+                                    <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
+                                        Dodaj Nowy Kierunek
+                                    </button>
+                                    : ''
+                            }
+                            {this.state.configOptions && this.props.roles.includes(userConstants.roles.ROLE_ADMIN) ?
+                                <CourseModal isOpen={this.state.isModalOpen} action={"add"}
+                                             toggleModal={this.toggleModal}
                                              loadRecords={this.props.loadRecords}
                                              configOptions={this.state.configOptions}
                                              listParams={this.props.listParams}
@@ -116,7 +122,8 @@ export class CoursesTable extends React.Component {
                                 <SortTableHeader field={"degree"} text={"Stopień"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"form"} text={"Rodzaj"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"startDate"} text={"rocznik"} handleSort={this.handleSort}/>
-                                <SortTableHeader field={"semesters"} text={"Ilość semestrów"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"semesters"} text={"Ilość semestrów"}
+                                                 handleSort={this.handleSort}/>
 
                                 <th scope="col"></th>
                             </tr>
@@ -129,6 +136,7 @@ export class CoursesTable extends React.Component {
                                             key={record.id}
                                             configOptions={this.state.configOptions}
                                             loadRecords={this.props.loadRecords}
+                                            roles={this.props.roles}
                                         />);
                                     }
                                 )}

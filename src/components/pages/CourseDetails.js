@@ -64,7 +64,7 @@ export class CourseDetails extends BaseSiteController {
                     <div className="container-fluid mt--7">
                         <div className="row mt-0">
                             <div className="col-xl-12 mb-5 mb-xl-0">
-                                {this.state.course.id ?
+                                {this.state.course.id && this.state.user ?
                                     <div>
                                         <CourseInfo
                                             course={this.state.course}
@@ -74,6 +74,7 @@ export class CourseDetails extends BaseSiteController {
                                         <CourseStudentsTable
                                             course={this.state.course}
                                             loadCourse={this.loadCourse}
+                                            roles={this.getRoles(this.state.user)}
                                         />
                                     </div>
                                 : ''}

@@ -77,7 +77,7 @@ export class User extends React.Component {
                     {this.props.user.enabled ? "Aktywny" : "Zablokowany"}
                     </span>
                 </td>
-                <td className="row">
+                <td>
                     <a style={actionButtonStyle} onClick={this.togglePasswordModal}>
                         <i className="fa fa-key text-black"></i>
                         <UserPasswordModal

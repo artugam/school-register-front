@@ -39,7 +39,7 @@ export class Notification extends React.Component {
                 {/*<td>{this.props.record.lastName}</td>*/}
                 {/*<td>{this.props.record.email}</td>*/}
                 {/*<td>{this.props.record.currentSemester}</td>*/}
-                <td className="row">
+                <td>
                     {/*<a style={actionButtonStyle} href={"/groups/" + this.props.record.id + "/subjects/"} title="Przedmioty">*/}
                     {/*    <i className="fa fa-book text-green"></i>*/}
                     {/*</a>*/}

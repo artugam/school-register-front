@@ -1,11 +1,7 @@
 import React from 'react';
-import {API_URL} from "../constants/Api";
-import axios from 'axios'
 import Navigation from "../layout/Navigation";
 import Brand from "../layout/Brand";
 import Footer from "../layout/Footer";
-import axiosService from "../services/axios/AxiosService";
-import globalConstants from "../constants/Global";
 import BaseSiteController from "./BaseSiteController";
 import DashboardNotifications from "./admin/Dashboard/DashboardNotifications";
 import DashboardTodaysSubjects from "./admin/Dashboard/DashboardTodaysSubjects";
@@ -19,15 +15,6 @@ export class Dashboard extends BaseSiteController {
         super.componentDidMount();
     }
 
-    // loadMe = () => {
-    //     axios.get(API_URL + "auth/me", axiosService.getAuthConfig())
-    //         .then(res => {
-    //             this.setState({user: res.data});
-    //         })
-    //         .catch((reason) => {
-    //             axiosService.handleError(reason);
-    //         });
-    // }
 
 
     render() {

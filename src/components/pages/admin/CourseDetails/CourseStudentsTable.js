@@ -212,6 +212,7 @@ export class CourseStudentsTable extends React.Component {
                                             course={this.props.course}
                                             deleteCallBack={this.loadAddUsersOptions}
                                             loadCourse={this.props.loadCourse}
+                                            roles={this.props.roles}
                                         />);
                                     }
                                 )}

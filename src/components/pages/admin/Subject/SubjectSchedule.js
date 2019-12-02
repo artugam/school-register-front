@@ -58,7 +58,7 @@ export class SubjectSchedule extends React.Component {
                 <td>
                     {this.props.record.description}
                 </td>
-                <td className="row">
+                <td>
                     {/*<a style={actionButtonStyle} href={"/subjects/" + this.props.record.id}>*/}
                     {/*    <i className="far fa-calendar-alt"></i>*/}
                     {/*</a>*/}

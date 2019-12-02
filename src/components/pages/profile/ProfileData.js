@@ -14,9 +14,11 @@ import responseCodes from "../../services/axios/ResponseCodes";
 export class ProfileData extends React.Component {
 
     state = {
+
         formFields: {
             firstname: '',
             lastname: '',
+            uniqueNumber: '-',
         },
 
         formErrors: {
@@ -30,6 +32,7 @@ export class ProfileData extends React.Component {
             let formFields = this.state.formFields;
             formFields.firstname = this.props.user.firstName;
             formFields.lastname = this.props.user.lastName;
+            formFields.uniqueNumber = this.props.user.uniqueNumber ? this.props.user.uniqueNumber : "-";
             this.setState(formFields);
         }
     }
@@ -135,6 +138,16 @@ export class ProfileData extends React.Component {
                     <div className="row align-items-center">
                         <div className="col">
                             <form>
+                                <div className="form-group">
+                                    <label htmlFor="firstname">Numer Indeksu</label>
+                                    <input type="text"
+                                           className={"form-control"}
+                                           value={this.state.formFields.uniqueNumber}
+                                           placeholder="Wprowadź imię"
+                                            disabled={true}
+                                    ></input>
+
+                                </div>
                                 <div className="form-group">
                                     <label htmlFor="firstname">Imię</label>
                                     <input type="text"

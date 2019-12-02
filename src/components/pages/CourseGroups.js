@@ -35,10 +35,7 @@ export class CourseGroups extends BaseSiteController {
             });
     };
 
-
-
     render() {
-
         return (
             <div>
                 <Navigation user={this.state.user}/>

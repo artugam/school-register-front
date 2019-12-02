@@ -21,17 +21,6 @@ export class FullSubjectSchedule extends BaseSiteController {
         records: []
     };
 
-    getRoles = (user) => {
-        var allRoles = [];
-        if(!user) {
-            return allRoles;
-        }
-        user.roles.map((role) => {
-            allRoles.push(role.name);
-        });
-        return allRoles;
-    };
-
     id = null;
 
     componentDidMount() {

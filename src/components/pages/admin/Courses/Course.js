@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import CourseDeleteModal from "./CourseDeleteModal";
 import CourseModal from "./CourseModal";
 import Moment from "react-moment";
+import userConstants from "../Users/UserConstants";
 
 export class Course extends React.Component {
     state = {
@@ -34,36 +35,43 @@ export class Course extends React.Component {
                     </Moment>
                 </td>
                 <td>{this.props.record.semesters}</td>
-                <td className="row">
+                <td>
 
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci">
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci kierunku">
                         <i className="fa fa-users text-blue"></i>
                     </a>
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/groups/"} title="Grupy">
+                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/groups/"} title="Grupy kierunku">
                         <i className="fa fa-layer-group text-gray"></i>
                     </a>
-                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Edycja">
-                        <i className="fa fa-edit text-yellow"></i>
-                        <CourseModal
-                            loadRecords={this.props.loadRecords}
-                            key={this.props.record.id}
-                            isOpen={this.state.isModalOpen}
-                            toggleModal={this.toggleModal}
-                            action={'edit'}
-                            configOptions={this.props.configOptions}
-                            record={this.props.record}
-                        />
-                    </a>
-                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń">
-                        <i className="fa fa-trash text-danger"></i>
-                        <CourseDeleteModal
-                            key={this.props.record.id}
-                            isOpen={this.state.isDeleteModalOpen}
-                            toggleModal={this.toggleDeleteModal}
-                            record={this.props.record}
-                            loadRecords={this.props.loadRecords}
-                        />
-                    </a>
+                    {
+                        this.props.roles.includes(userConstants.roles.ROLE_ADMIN) ?
+                            <span>
+                                <a style={actionButtonStyle} onClick={this.toggleModal} title="Edycja kierunku">
+                                <i className="fa fa-edit text-yellow"></i>
+                                <CourseModal
+                                    loadRecords={this.props.loadRecords}
+                                    key={this.props.record.id}
+                                    isOpen={this.state.isModalOpen}
+                                    toggleModal={this.toggleModal}
+                                    action={'edit'}
+                                    configOptions={this.props.configOptions}
+                                    record={this.props.record}
+                                />
+                                </a>
+                                <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń kierunek">
+                                    <i className="fa fa-trash text-danger"></i>
+                                    <CourseDeleteModal
+                                        key={this.props.record.id}
+                                        isOpen={this.state.isDeleteModalOpen}
+                                        toggleModal={this.toggleDeleteModal}
+                                        record={this.props.record}
+                                        loadRecords={this.props.loadRecords}
+                                    />
+                                </a>
+                            </span>
+                            : ''
+                    }
+
 
                 </td>
             </tr>

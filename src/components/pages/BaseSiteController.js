@@ -17,13 +17,12 @@ export class BaseSiteController extends React.Component {
             firstName: '-',
             lastName: '-'
         },
-        loaded: false
+        loaded: false,
+
     };
 
     componentDidMount() {
-
         this.loadMe();
-
         this.redirectDashboard();
     }
     loadMe = () => {
@@ -37,7 +36,18 @@ export class BaseSiteController extends React.Component {
                 // localStorage.removeItem(globalConstants.authData);
                 // this.redirectDashboard();
             });
-    }
+    };
+
+    getRoles = (user) => {
+        var allRoles = [];
+        if(!user) {
+            return allRoles;
+        }
+        user.roles.map((role) => {
+            allRoles.push(role.name);
+        });
+        return allRoles;
+    };
 
     redirectDashboard = () => {
         if(!localStorage.getItem(globalConstants.authData)) {
