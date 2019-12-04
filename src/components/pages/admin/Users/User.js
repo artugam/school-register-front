@@ -55,7 +55,7 @@ export class User extends React.Component {
 
 
         for (let role in userConstants.roles) {
-            if(allRoles.includes(role)) {
+            if (allRoles.includes(role)) {
                 return userConstants.roleNames[role];
             }
         }
@@ -74,8 +74,18 @@ export class User extends React.Component {
                 </td>
                 <td>
                     <span className={`badge badge-` + (this.props.user.enabled ? "success" : "danger")}>
-                    {this.props.user.enabled ? "Aktywny" : "Zablokowany"}
+                        {this.props.user.enabled ? "Aktywny" : "Zablokowany"}
                     </span>
+                    <br></br>
+                    {
+                        !this.props.user.enabled ?
+
+                            <span className={`badge badge-primary`}>
+                                {this.props.user.lockReason}
+                            </span>
+                            : ''
+                    }
+
                 </td>
                 <td>
                     <a style={actionButtonStyle} onClick={this.togglePasswordModal}>
@@ -101,7 +111,8 @@ export class User extends React.Component {
                             user={this.props.user}
                         />
                     </a>
-                    <a className={!this.props.user.enabled ? "d-none" : ''}  style={actionButtonStyle} onClick={this.toggleBlockModal}>
+                    <a className={!this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle}
+                       onClick={this.toggleBlockModal}>
                         <i className="fa fa-lock text-primary"></i>
                         <UserStatusModal
                             key={this.props.user.id}
@@ -112,7 +123,8 @@ export class User extends React.Component {
                             action={"block"}
                         />
                     </a>
-                    <a  className={this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle} onClick={this.toggleUnBlockModal}>
+                    <a className={this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle}
+                       onClick={this.toggleUnBlockModal}>
                         <i className="fa fa-lock-open text-success"></i>
                         <UserStatusModal
                             key={this.props.user.id}
@@ -125,7 +137,7 @@ export class User extends React.Component {
                     </a>
 
 
-                    <a  style={actionButtonStyle} onClick={this.toggleDeleteModal}>
+                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal}>
                         <i className="fa fa-trash text-danger"></i>
                         <UserDeleteModal
                             key={this.props.user.id}
