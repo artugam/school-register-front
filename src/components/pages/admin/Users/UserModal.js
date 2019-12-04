@@ -17,7 +17,7 @@ export class UserModal extends React.Component {
             lastname: '',
             email: '',
             password: '',
-            uniqueNumber: '',
+            uniqueNumber: "",
             role: false,
         },
 
@@ -73,11 +73,14 @@ export class UserModal extends React.Component {
                     value.length < 2 ? "Nazwisko powinno mieć co najmniej 2 znaki" : "";
                 break;
             case "uniqueNumber":
-                formErrors.lastname =
+                if(!value) {
+                    formErrors.uniqueNumber = errorConstantsValidator.required;
+                    return;
+                }
+                formErrors.uniqueNumber =
                     value.length < 2 ? "Numer Indeksu powinien mieć co najmniej 2 znaki" : "";
                 break;
             case "email":
-
                 if (!value) {
                     formErrors.email = errorConstantsValidator.required;
                 } else if (!emailValidator.isEmail(value)) {
@@ -142,13 +145,12 @@ export class UserModal extends React.Component {
             "lastName": this.state.formFields.lastname,
             "email": this.state.formFields.email,
             "password": this.state.formFields.password,
-            "uniqueNumber": this.state.formFields.uniqueNumber,
+            "uniqueNumber": this.state.formFields.uniqueNumber ? this.state.formFields.uniqueNumber : " ",
             "role": this.state.formFields.role,
         };
 
         var url = API_URL + "users";
         if (this.isEdit) {
-            console.log(this.props);
             url += "/" + this.user.id;
             axios.patch(url, params, config)
                 .then(response => {
@@ -201,7 +203,6 @@ export class UserModal extends React.Component {
             uniqueNumber: this.user.uniqueNumber,
             password: '',
             role: false,
-
         };
 
         let newState = Object.assign({}, this.state);

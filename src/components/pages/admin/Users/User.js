@@ -69,9 +69,9 @@ export class User extends React.Component {
                 <td>{this.props.user.lastName}</td>
                 <td>{this.props.user.uniqueNumber}</td>
                 <td>{this.props.user.email}</td>
-                <td>
-                    {this.getHighestRole(this.props.user.roles)}
-                </td>
+                {/*<td>*/}
+                {/*    {this.getHighestRole(this.props.user.roles)}*/}
+                {/*</td>*/}
                 <td>
                     <span className={`badge badge-` + (this.props.user.enabled ? "success" : "danger")}>
                         {this.props.user.enabled ? "Aktywny" : "Zablokowany"}
