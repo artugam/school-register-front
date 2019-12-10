@@ -94,7 +94,6 @@ export class UserModal extends React.Component {
                     formErrors.password = errorConstantsValidator.required;
                 } else if (!passwordValidator.isPasswordValidate(value)) {
                     formErrors.password = errorConstantsValidator.passwordRequirements;
-                    console.log(escape(errorConstantsValidator.passwordRequirements));
                 } else {
                     formErrors.password = ''
                 }

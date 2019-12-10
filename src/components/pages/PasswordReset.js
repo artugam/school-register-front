@@ -13,6 +13,7 @@ import errorConstantsValidator from "../services/validator/ErrorConstantsValidat
 import emailValidator from "../services/validator/EmailValidator";
 import toast from "../services/toast/ToastService";
 import responseCodes from "../services/axios/ResponseCodes";
+import passwordValidator from "../services/validator/PasswordValidator";
 
 
 export class PasswordReset extends React.Component {
@@ -42,8 +43,12 @@ export class PasswordReset extends React.Component {
     };
 
     isPasswordValidate = () => {
-        if (!this.state.password) {
-            this.setState({passwordError: errorConstantsValidator.required});
+        // if (!this.state.password) {
+        //     this.setState({passwordError: errorConstantsValidator.required});
+        //     return false;
+        // } else
+        if (!passwordValidator.isPasswordValidate(this.state.password)) {
+            this.setState({passwordError: errorConstantsValidator.passwordRequirements});
             return false;
         }
         this.setState({passwordError: ''});
@@ -108,8 +113,8 @@ export class PasswordReset extends React.Component {
 
     render() {
         return (
-            <div className="d-flex justify-content-center loginPage">
-                <div className="card card-login auth">
+            <div className="d-flex justify-content-center loginPage" >
+                <div className="card card-login auth" style={{height: !this.state.passwordError? "360px" : "450px"}}>
                     <div className="card-header card-header-login">
                         <h3><a href="/">Wirtualny Dziennik</a></h3>
                     </div>
@@ -122,7 +127,8 @@ export class PasswordReset extends React.Component {
                                 </div>
                                 <input id="password" type="password" className={`form-control pl-1 login-field ` + (this.state.passwordError ? "is-invalid" : '')} placeholder="Hasło"
                                        value={this.state.password} onChange={this.handleOnChange}></input>
-                                <div className="invalid-feedback">{this.state.passwordError}</div>
+                                <div className="invalid-feedback"
+                                     dangerouslySetInnerHTML={{__html: this.state.passwordError}}></div>
                             </div>
                             <div className="input-group form-group">
                                 <div className="input-group-prepend">

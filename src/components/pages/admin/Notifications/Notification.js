@@ -54,6 +54,7 @@ export class Notification extends React.Component {
                             loadRecords={this.props.loadRecords}
                             courses={this.props.courses}
                             record={this.props.record}
+                            action={'edit'}
                         />
                     </a>
                     <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usuń powiadomienie">

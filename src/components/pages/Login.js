@@ -90,7 +90,7 @@ export class Login extends React.Component {
     render() {
         return (
             <div className="d-flex justify-content-center loginPage">
-                <div className="card card-login auth">
+                <div className="card card-login auth" style={{height: "360px"}}>
                     <div className="card-header card-header-login">
                         <h3>Wirtualny Dziennik</h3>
                     </div>
@@ -119,7 +119,7 @@ export class Login extends React.Component {
                             </div>
                             <div className="form-group">
                                 <button className="btn btn-block float-right login_btn" type="submit"
-                                        onClick={this.onLoginFormSubmit}>Login
+                                        onClick={this.onLoginFormSubmit}>Zaloguj się
                                 </button>
                                 {/*<input className="btn btn-block float-right login_btn" type="submit" ></input>*/}
                             </div>

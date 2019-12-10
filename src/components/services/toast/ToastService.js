@@ -16,7 +16,7 @@ const toast = {
         return iZtoast.success({
             // title: title,
             message: message,
-            position: 'topRight',
+            position: 'bottomCenter',
             messageSize: '20',
             icon: ''
         });

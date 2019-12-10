@@ -7,11 +7,12 @@ const responseCodes = {
         "logged": "Zalogowano",
         "EmailExistsConstraint": "Użytkownik z podanym emailem istnieje",
         "passowrdResetEmail": "Email resetujący hasło został wysłany",
-        "userNotFoundWithEmail": "Nie znaleziono użytkownika z podanym e-mailem",
+        "userNotFoundWithEmail": "Nie znaleziono użytkownika z podanym emailem",
         "passwordsNotTheSame": "Hasła się różnią",
         "passwordChanged": "Hasło zostało zapisane",
         "notAllowedFileExtension": "Wprowadzony plik ma niedozwolony format",
         "userProfileUpdate": "Profil został zaktualizowany",
+
     }
 };
 
