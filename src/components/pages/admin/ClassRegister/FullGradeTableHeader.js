@@ -24,14 +24,14 @@ export class FullGradeTableHeader extends React.Component {
 
     render() {
         return (
-            <th scope="col" key={this.props.description + Math.random()}>
-                <div className="d-inline" style={{width: "300px"}}>
-                    <span style={this.sortButtonStyle} onClick={this.toggleModal}>
+            <th scope="col" key={this.props.description + Math.random()} style={{width: "300px"}} className={'custom-table-th'}>
+                <div className="d-inline" >
+                    <span style={this.sortButtonStyle} onClick={this.toggleModal} title={"Edycja sekcji"}>
                      {this.props.description ? this.props.description : '-'}
                     </span>
                     {
                         this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                            <span style={this.sortButtonStyle} onClick={this.toggleDeleteModal} className="close" aria-label="Close">
+                            <span style={this.sortButtonStyle} onClick={this.toggleDeleteModal} className="close" aria-label="Close" title={"Usuń sekcje"}>
                                 <span aria-hidden="true">×</span>
                             </span>
                             : ''

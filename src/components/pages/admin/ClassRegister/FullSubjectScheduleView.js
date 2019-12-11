@@ -12,6 +12,7 @@ import FullGradeDeleteSection from "./FullGradeDeleteSection";
 import FullSubjectNotificationModal from "./FullSubjectNotificationModal";
 import CourseStudentAddModal from "../CourseDetails/CourseStudentAddModal";
 import CourseStudentAddFileModal from "../CourseDetails/CourseStudentAddFileModal";
+import Collapse from 'react-css-collapse';
 
 
 export class FullSubjectScheduleView extends React.Component {
@@ -24,7 +25,8 @@ export class FullSubjectScheduleView extends React.Component {
         optionsLoaded: false,
         options: [],
         fullSchedule: {},
-        presences: {}
+        presences: {},
+        collapse: true
     };
 
     loadRecords = () => {
@@ -105,11 +107,15 @@ export class FullSubjectScheduleView extends React.Component {
             });
     };
 
+    handleCollapse = () => {
+        this.setState({collapse: !this.state.collapse})
+    }
+
+
     render() {
 
         return (
             <div className="card shadow">
-
                 <div className="card-header border-0">
                     <div className="row align-items-center">
                         <div className="col">
@@ -142,6 +148,7 @@ export class FullSubjectScheduleView extends React.Component {
                         }
                     </div>
                 </div>
+                <Collapse isOpen={this.state.collapse}>
                 {this.state.fullSchedule.schedules ?
                     <div className="table-responsive">
                         <table className="table align-items-center table-flush table-bordered text-center">
@@ -184,9 +191,20 @@ export class FullSubjectScheduleView extends React.Component {
                             <div className="p-3 text-center d-block">Nie znaleziono rekordów</div>
                         }
                     </div>
+
                     : ''
 
                 }
+                </Collapse>
+                <div className="text-right">
+                    <button
+                        onClick={this.handleCollapse}
+                        type="button"
+                        className="btn btn-primary"
+                    >
+                        <i className={"fa fa-arrow-" + (this.state.collapse ? "up" : "down")}></i>
+                    </button>
+                </div>
             </div>
         )
     }

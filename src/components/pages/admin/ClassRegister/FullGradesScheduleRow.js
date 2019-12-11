@@ -66,8 +66,10 @@ export class FullGradesScheduleRow extends React.Component {
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
                 {
                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                        <td scope="row">
+                        <td scope="row" style={{backgroundColor: "#f6f9fc"}}>
+                            <b className="text-sm">
                             {this.props.record.user.lastName} {this.props.record.user.firstName} {this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}
+                            </b>
                         </td>
                         : ''
                 }
@@ -80,7 +82,7 @@ export class FullGradesScheduleRow extends React.Component {
                                     <select
                                         type="text"
                                         // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                                        className={"form-control"}
+                                        className={"form-control form-control-sm"}
                                         id={grade.id}
                                         onChange={this.handleOnChange}
                                         value={this.state.grades[grade.id]}

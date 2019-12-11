@@ -10,6 +10,7 @@ import FullGradesAddModal from "./FullGradesAddModal";
 import FullGradesScheduleRow from "./FullGradesScheduleRow";
 import FullGradeTableHeader from "./FullGradeTableHeader";
 import userConstants from "../Users/UserConstants";
+import Collapse from 'react-css-collapse';
 
 
 export class FullGradesScheduleView extends React.Component {
@@ -21,7 +22,8 @@ export class FullGradesScheduleView extends React.Component {
         optionsLoaded: false,
         options: [],
         fullSchedule: {},
-        grades: {}
+        grades: {},
+        collapse: true
     };
 
 
@@ -101,6 +103,10 @@ export class FullGradesScheduleView extends React.Component {
             });
     };
 
+    handleCollapse = () => {
+        this.setState({collapse: !this.state.collapse})
+    }
+
     render() {
 
         return (
@@ -137,6 +143,7 @@ export class FullGradesScheduleView extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Collapse isOpen={this.state.collapse}>
                 {this.state.fullSchedule.sections ?
                     <div className="table-responsive">
                         <table className="table align-items-center table-flush table-bordered text-center">
@@ -183,6 +190,16 @@ export class FullGradesScheduleView extends React.Component {
                     : ''
 
                 }
+                </Collapse>
+                <div className="text-right">
+                    <button
+                        onClick={this.handleCollapse}
+                        type="button"
+                        className="btn btn-primary"
+                    >
+                        <i className={"fa fa-arrow-" + (this.state.collapse ? "up" : "down")}></i>
+                    </button>
+                </div>
             </div>
         )
     }

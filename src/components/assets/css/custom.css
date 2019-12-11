@@ -26,3 +26,16 @@ input[id="search"] {
 .customSelect {
     background-color: #0b2e13;
 }
+
+.custom-table-th:hover
+{
+    color: black !important;
+}
+.custom-table-th
+{
+    font-size: 12px !important;
+}
+
+.react-css-collapse-transition {
+    transition: height 250ms cubic-bezier(.4, 0, .2, 1);
+}

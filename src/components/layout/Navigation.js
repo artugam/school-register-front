@@ -96,12 +96,18 @@ export class Navigation extends React.Component {
                                     : ''
                             }
 
+                            {
+                                this.props.user.roles && this.getRoles(this.props.user).includes(userConstants.roles.ROLE_SUPER_USER) ?
+                                    <span>
+                                        <li className="nav-item">
+                                            <a className="nav-link " href="/notifications">
+                                                <i className="ni ni-bullet-list-67 text-red"></i> Powiadomienia
+                                            </a>
+                                        </li>
+                                    </span>
+                                    : ''
+                            }
 
-                            <li className="nav-item">
-                                <a className="nav-link " href="/notifications">
-                                    <i className="ni ni-bullet-list-67 text-red"></i> Powiadomienia
-                                </a>
-                            </li>
                         </ul>
 
 

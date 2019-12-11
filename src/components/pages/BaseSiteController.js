@@ -33,16 +33,15 @@ export class BaseSiteController extends React.Component {
             })
             .catch((reason) => {
                 axiosService.handleError(reason);
-                // localStorage.removeItem(globalConstants.authData);
-                // this.redirectDashboard();
             });
     };
 
     getRoles = (user) => {
         var allRoles = [];
-        if(!user) {
+        if(!user || !user.roles) {
             return allRoles;
         }
+
         user.roles.map((role) => {
             allRoles.push(role.name);
         });

@@ -68,15 +68,19 @@ export class FullSubjectScheduleRow extends React.Component {
 
         switch (value) {
             case "Obecny":
-                return "#36a849";
+                // return "#36a849";
+                return "rgba(17, 151, 7, 0.73)";
             case "Spóźniony":
-                return "#4c87e6";
+                // return "#4c87e6";
+                return "rgba(247, 241, 59, 0.79)";
             case "Usprawiedliwiony":
-                return "#7b8696";
+                // return "#7b8696";
+                return "rgba(47, 99, 228, 0.83)";
             case "Nieobecny":
-                return "#d43737";
+                // return "#d43737";
+                return "rgba(195, 9, 9, 0.83)";
             default:
-                return "ffffff"
+                return "#ffffff"
         }
     };
 
@@ -86,8 +90,10 @@ export class FullSubjectScheduleRow extends React.Component {
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
                 {
                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                        <td scope="row">
+                        <td scope="row" style={{backgroundColor: "#f6f9fc"}}>
+                            <b className="text-sm">
                             {this.props.record.user.lastName} {this.props.record.user.firstName} {this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}
+                            </b>
                         </td>
                         : ''
                 }
@@ -99,7 +105,7 @@ export class FullSubjectScheduleRow extends React.Component {
                                     <select
                                         type="text"
                                         // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                                        className={"form-control"}
+                                        className={"form-control form-control-sm"}
                                         id={presence.id}
                                         onChange={this.handleOnChange}
                                         value={this.state.presences[presence.id]}
@@ -113,7 +119,8 @@ export class FullSubjectScheduleRow extends React.Component {
                                                     return <option
                                                         key={role}
                                                         value={role}
-                                                        style={{backgroundColor: "#ffffff"}}
+                                                        // style={{backgroundColor: "#ffffff"}}
+                                                        style={{backgroundColor: this.getColor(role)}}
                                                     >
                                                         {role}
                                                     </option>

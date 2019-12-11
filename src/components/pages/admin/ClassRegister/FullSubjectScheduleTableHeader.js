@@ -52,8 +52,9 @@ export class FullSubjectScheduleTableHeader extends React.Component {
                 style={this.sortButtonStyle}
                 onClick={this.toggleModal}
                 scope="col"
+                className={'custom-table-th'}
+                title={"Edycja zajęć"}
             >
-
                 <Moment format="DD-MM-YYYY">
                     {this.props.schedule.start}
                 </Moment>
@@ -78,7 +79,7 @@ export class FullSubjectScheduleTableHeader extends React.Component {
 
     sortButtonStyle = {
         cursor: this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ? "pointer" : 'default',
-        width: "300px"
+        width: "150px",
     };
 
 }
