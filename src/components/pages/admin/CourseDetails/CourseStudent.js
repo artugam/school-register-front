@@ -32,7 +32,7 @@ export class CourseStudent extends React.Component {
                 {/*<td>{this.props.record.currentSemester}</td>*/}
                 <td>
                     {
-                        this.props.roles.includes(userConstants.roles.ROLE_ADMIN) ?
+                        this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
                             <a style={actionButtonStyle} onClick={this.toggleModal} title="Mianuj starostą">
                                 <i className="fa fa-user-alt text-primary"></i>
                                 <CourseForemanModal

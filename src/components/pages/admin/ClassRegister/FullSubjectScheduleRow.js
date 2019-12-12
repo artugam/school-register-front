@@ -72,6 +72,7 @@ export class FullSubjectScheduleRow extends React.Component {
                 return "rgba(17, 151, 7, 0.73)";
             case "Spóźniony":
                 // return "#4c87e6";
+                return "rgba(136, 125, 151, 1)";
                 return "rgba(247, 241, 59, 0.79)";
             case "Usprawiedliwiony":
                 // return "#7b8696";
@@ -128,7 +129,7 @@ export class FullSubjectScheduleRow extends React.Component {
                                                 : ''
                                         }
                                     </select>
-                                    : (this.state.presences[presence.id] !== " "? this.state.presences[presence.id] : "-")
+                                    : (this.state.presences[presence.id] !== " "? <b style={{color: this.getColor(this.state.presences[presence.id])}}>{this.state.presences[presence.id]}</b> : "-")
                             }
                         </td>
                     })

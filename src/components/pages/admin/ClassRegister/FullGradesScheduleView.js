@@ -191,15 +191,20 @@ export class FullGradesScheduleView extends React.Component {
 
                 }
                 </Collapse>
-                <div className="text-right">
-                    <button
-                        onClick={this.handleCollapse}
-                        type="button"
-                        className="btn btn-primary"
-                    >
-                        <i className={"fa fa-arrow-" + (this.state.collapse ? "up" : "down")}></i>
-                    </button>
-                </div>
+                {
+                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                        <div className="text-right">
+                            <button
+                                onClick={this.handleCollapse}
+                                type="button"
+                                className="btn btn-primary"
+                            >
+                                <i className={"fa fa-arrow-" + (this.state.collapse ? "up" : "down")}></i>
+                            </button>
+                        </div>
+                        : ''
+                }
+
             </div>
         )
     }

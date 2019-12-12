@@ -7,6 +7,9 @@ import axiosService from "../../../services/axios/AxiosService";
 import CourseStudent from "./CourseStudent";
 import Moment from "react-moment";
 import CourseStudentAddModal from "./CourseStudentAddModal";
+import CourseStudentDeleteModal from "./CourseStudentDeleteModal";
+import CourseForemanModal from "./CourseForemanModal";
+import CourseForemanModalDelete from "./CourseForemanModalDelete";
 
 export class CourseInfo extends React.Component {
 
@@ -18,7 +21,8 @@ export class CourseInfo extends React.Component {
             sortDirection: "DESC",
             search: ""
         },
-        records: []
+        records: [],
+        isDeleteModalOpen: false
     };
 
     componentDidMount() {
@@ -39,6 +43,12 @@ export class CourseInfo extends React.Component {
             .catch((reason) => {
                 axiosService.handleError(reason);
             });
+    };
+
+    toggleDeleteModal = () => {
+        this.setState({
+            isDeleteModalOpen: !this.state.isDeleteModalOpen
+        })
     };
 
     render() {
@@ -63,10 +73,24 @@ export class CourseInfo extends React.Component {
                             <div className="col-sm-6">
                                 <h3>Starosta</h3>
                             </div>
-                            <div className="col-sm-6">
+                            <div className="col-sm-6 d-inline">
                                 {
                                     this.props.course.foreman ?
-                                        <h3>{this.props.course.foreman.firstName} {this.props.course.foreman.lastName} ({this.props.course.foreman.email})</h3>
+                                        <h3 className="flex-column">
+                                            {this.props.course.foreman.firstName} {this.props.course.foreman.lastName} ({this.props.course.foreman.email})
+                                            <a style={{cursor: 'pointer'}} onClick={this.toggleDeleteModal} title="Usuń starostę">
+                                                &nbsp;<i className="fa fa-trash text-danger"></i>
+                                                <CourseForemanModalDelete
+                                                    loadRecords={this.loadRecords}
+                                                    key={this.props.course.foreman.id}
+                                                    isOpen={this.state.isDeleteModalOpen}
+                                                    toggleModal={this.toggleDeleteModal}
+                                                    record={this.props.course.foreman}
+                                                    course={this.props.course}
+                                                    loadCourse={this.props.loadCourse}
+                                                />
+                                            </a>
+                                        </h3>
                                     : '-'
                                 }
 
@@ -81,7 +105,6 @@ export class CourseInfo extends React.Component {
                             </div>
                         </div>
                     </div>
-
 
                 </div>
 

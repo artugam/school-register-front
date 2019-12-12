@@ -69,6 +69,7 @@ export class CourseDetails extends BaseSiteController {
                                         <CourseInfo
                                             course={this.state.course}
                                             records={this.state.records}
+                                            loadCourse={this.loadCourse}
                                         />
                                         <br></br>
                                         <CourseStudentsTable
