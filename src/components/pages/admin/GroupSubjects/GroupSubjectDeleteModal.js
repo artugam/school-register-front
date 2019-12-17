@@ -38,7 +38,7 @@ export class GroupSubjectDeleteModal extends React.Component {
                 centered
             >
                 <ModalHeader tag={'h3'} toggle={this.props.toggleModal}>
-                    Usunięcie studenta z grupy
+                    Usunięcie przedmiotu
                 </ModalHeader>
                 <ModalBody>
                     Czy jesteś pewny, że chcesz usunąć

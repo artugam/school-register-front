@@ -167,7 +167,7 @@ export class CourseStudentsTable extends React.Component {
                                 callBack={this.addUsersCallBack}
                             />
                             <button onClick={this.toggleFileModal} className="btn btn-sm btn-primary">
-                                Dodaj z pliku
+                                Dodaj z studentów pliku
                             </button>
                             <CourseStudentAddFileModal
                                 isOpen={this.state.isFileModalOpen}

@@ -52,25 +52,27 @@ export class GroupInfo extends React.Component {
                             </h2>
 
                             <h2 className="d-inline text-gray-dark font-weight-900">{this.props.group.course.name} - <Moment
-                                format="MM-YYYY">{this.props.group.course.startDate}</Moment></h2>
+                                format="MM-YYYY">{this.props.group.course.startDate}</Moment>
+                                &nbsp;- {this.props.group.name}
+                            </h2>
                         </div>
                     </div>
                     <div className="col">
                         <hr></hr>
-                        <div className="row tab-pane">
-                            <div className="col-sm-6">
-                                <h3>Starosta</h3>
-                            </div>
-                            <div className="col-sm-6">
-                                {this.props.group.course.foreman ?
-                                    <h3>{this.props.group.course.foreman.firstName} {this.props.group.course.foreman.lastName} ({this.props.group.course.foreman.email})</h3>
-                                    : '-'
-                                }
-                            </div>
-                        </div>
+                        {/*<div className="row tab-pane">*/}
+                        {/*    <div className="col-sm-6">*/}
+                        {/*        <h3>Starosta</h3>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="col-sm-6">*/}
+                        {/*        {this.props.group.course.foreman ?*/}
+                        {/*            <h3>{this.props.group.course.foreman.firstName} {this.props.group.course.foreman.lastName} ({this.props.group.course.foreman.email})</h3>*/}
+                        {/*            : '-'*/}
+                        {/*        }*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                         <div className="row">
                             <div className="col-sm-6">
-                                <h3>Ilość studentów</h3>
+                                <h3>Ilość studentów grupy</h3>
                             </div>
                             <div className="col-sm-6">
                                 <h3>{this.state.records.totalElements}</h3>

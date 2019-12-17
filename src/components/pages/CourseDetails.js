@@ -70,6 +70,7 @@ export class CourseDetails extends BaseSiteController {
                                             course={this.state.course}
                                             records={this.state.records}
                                             loadCourse={this.loadCourse}
+                                            roles={this.getRoles(this.state.user)}
                                         />
                                         <br></br>
                                         <CourseStudentsTable

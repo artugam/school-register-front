@@ -42,7 +42,8 @@ export class CourseForemanModal extends React.Component {
                     Mianuj staroste
                 </ModalHeader>
                 <ModalBody>
-                    Czy na pewno chcesz mianować studenta <b>{this.props.record.firstName} {this.props.record.lastName}</b> starostą?
+                    Czy na pewno chcesz mianować studenta <b>{this.props.record.firstName} {this.props.record.lastName}</b> starostą kierunku
+                    kierunku <b>{this.props.course.name}</b>?
                 </ModalBody>
                 <ModalFooter>
                     <Button color={"primary"}

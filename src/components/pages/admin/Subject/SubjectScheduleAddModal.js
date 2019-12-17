@@ -289,12 +289,12 @@ export class SubjectScheduleAddModal extends React.Component {
                     {
                         this.props.action !== 'edit' ?
                             <div className="form-group">
-                                <label htmlFor="lastname">Ilość zajęć</label>
+                                <label htmlFor="amount">Ilość spotkań</label>
                                 <input type="number"
                                        className={"form-control " + (this.state.formErrors.amount ? "is-invalid" : '')}
                                        id="amount" onChange={this.handleOnChange}
                                        value={this.state.formFields.amount}
-                                       placeholder="Wprowadź ilość zajeć"></input>
+                                       placeholder="Wprowadź ilość spotkań"></input>
                                 <div className="invalid-feedback">{this.state.formErrors.amount}</div>
                             </div>
                             : ''

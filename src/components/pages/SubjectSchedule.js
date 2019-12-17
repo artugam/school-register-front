@@ -52,10 +52,10 @@ export class SubjectSchedule extends BaseSiteController {
                             <div className="col-xl-12 mb-5 mb-xl-0">
                                 {this.state.subject.id ?
                                     <div>
-                                        <SubjectScheduleInfo
-                                            subject={this.state.subject}
-                                        />
-                                        <br></br>
+                                        {/*<SubjectScheduleInfo*/}
+                                        {/*    subject={this.state.subject}*/}
+                                        {/*/>*/}
+                                        {/*<br></br>*/}
                                         <SubjectScheduleTable
                                             subject={this.state.subject}
                                         />

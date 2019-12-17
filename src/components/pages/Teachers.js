@@ -1,22 +1,16 @@
 import React from 'react';
 import {API_URL} from "../constants/Api";
 import axios from 'axios'
-import Navigation from "../layout/Navigation";
-import Brand from "../layout/Brand";
-import Footer from "../layout/Footer";
 import axiosService from "../services/axios/AxiosService";
-import globalConstants from "../constants/Global";
-import BaseSiteController from "./BaseSiteController";
-import UsersTable from "./admin/Users/UsersTable";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
-import SortTableHeader from "../modules/SortTableHeader";
 import BaseUsersController from "./BaseUsersController";
+import UsersTableConstants from "../services/users/UsersTableConstants";
 
 
 export class Teachers extends BaseUsersController {
 
     config = {
-        tableName: "Wykładowcy"
+        tableName: UsersTableConstants.TEACHER
     };
 
 

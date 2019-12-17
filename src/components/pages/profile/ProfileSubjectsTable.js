@@ -128,9 +128,11 @@ export class ProfileSubjectsTable extends React.Component {
                             <table className="table align-items-center table-flush table-bordered text-center">
                                 <thead className="thead-light">
                                 <tr>
-                                    <SortTableHeader field={"name"} text={"Nazwa"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"name"} text={"Przedmiot"} handleSort={this.handleSort}/>
                                     <SortTableHeader field={"hours"} text={"Ilość godzin"} handleSort={this.handleSort}/>
                                     <SortTableHeader field={"type"} text={"Rodzaj"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"group.name"} text={"Grupa"} handleSort={this.handleSort}/>
+                                    <SortTableHeader field={"course.name"} text={"Kierunek"} handleSort={this.handleSort}/>
                                     <SortTableHeader text={"Prowadzący"} handleSort={this.handleSort}/>
                                     <th scope="col"></th>
                                 </tr>

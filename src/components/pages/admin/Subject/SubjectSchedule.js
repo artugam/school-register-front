@@ -62,7 +62,7 @@ export class SubjectSchedule extends React.Component {
                     {/*<a style={actionButtonStyle} href={"/subjects/" + this.props.record.id}>*/}
                     {/*    <i className="far fa-calendar-alt"></i>*/}
                     {/*</a>*/}
-                    <a style={actionButtonStyle} onClick={this.togglePresenceModal} title="Obecności">
+                   {/* <a style={actionButtonStyle} onClick={this.togglePresenceModal} title="Obecności">
                         <i className="fa fa-check text-green"></i>
                         {
                             this.props.options ?
@@ -78,7 +78,7 @@ export class SubjectSchedule extends React.Component {
                                 : ''
                         }
 
-                    </a>
+                    </a>*/}
                     <a style={actionButtonStyle} onClick={this.toggleModalOn} title="Edytuj">
                         <i className="fa fa-edit text-yellow"></i>
                         <SubjectScheduleAddModal

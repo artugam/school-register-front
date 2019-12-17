@@ -4,6 +4,8 @@ import CourseDeleteModal from "./CourseDeleteModal";
 import CourseModal from "./CourseModal";
 import Moment from "react-moment";
 import userConstants from "../Users/UserConstants";
+import globalConstants from "../../../constants/Global";
+import auth from "../../../services/auth/LoggedUser";
 
 export class Course extends React.Component {
     state = {
@@ -36,13 +38,19 @@ export class Course extends React.Component {
                 </td>
                 <td>{this.props.record.semesters}</td>
                 <td>
-
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci kierunku">
-                        <i className="fa fa-users text-blue"></i>
-                    </a>
-                    <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/groups/"} title="Grupy kierunku">
-                        <i className="fa fa-layer-group text-gray"></i>
-                    </a>
+                    {
+                        this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ||
+                        (this.props.record.foreman && this.props.record.foreman.id == auth.getLoggedUser().id) ?
+                            <span>
+                                <a style={actionButtonStyle} href={"/courses/" + this.props.record.id} title="Studenci kierunku">
+                                    <i className="fa fa-users text-blue"></i>
+                                </a>
+                                <a style={actionButtonStyle} href={"/courses/" + this.props.record.id + "/groups/"} title="Grupy kierunku">
+                                    <i className="fa fa-layer-group text-gray"></i>
+                                </a>
+                            </span>
+                        : ''
+                        }
                     {
                         this.props.roles.includes(userConstants.roles.ROLE_ADMIN) ?
                             <span>

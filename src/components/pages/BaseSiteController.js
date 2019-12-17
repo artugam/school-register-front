@@ -30,6 +30,7 @@ export class BaseSiteController extends React.Component {
             .then(res => {
                 this.setState({user: res.data});
                 this.setState({loaded: true})
+                localStorage.setItem(globalConstants.user, JSON.stringify(res.data));
             })
             .catch((reason) => {
                 axiosService.handleError(reason);

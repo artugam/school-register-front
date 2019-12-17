@@ -9,7 +9,7 @@ const userConstants = {
     roleNames: {
         ROLE_ADMIN: 'Administrator',
         ROLE_USER: 'Student',
-        ROLE_TEACHER: 'Wykładowca',
+        ROLE_TEACHER: 'Prowadzący',
         ROLE_SUPER_USER: 'Starosta'
     }
 };

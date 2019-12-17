@@ -36,7 +36,7 @@ export class UserDeleteModal extends React.Component {
                     Usunięcie użytkownika
                 </ModalHeader>
                 <ModalBody>
-                    Czy jesteś pewny, że chcesz usunąć tego użytkownika?
+                    Czy jesteś pewny, że chcesz usunąć użytkownika <b>{this.props.user.firstName} {this.props.user.lastName}</b>?
                 </ModalBody>
                 <ModalFooter>
                     <Button color={"danger"}

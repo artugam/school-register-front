@@ -14,7 +14,7 @@ export class FullGradeDeleteSection extends React.Component {
         axios.delete(API_URL + "subjects/" + this.props.subject.id + "/grades/section/" + this.props.description, config)
             .then(response => {
                 if (response.status == 200) {
-                    toast.success("Sekcja została usuniętas")
+                    toast.success("Sekcja została usunięta")
                     this.props.toggleModal();
                     this.props.loadRecords();
                 }

@@ -101,7 +101,7 @@ export class FullGradesScheduleRow extends React.Component {
                                                 : ''
                                         }
                                     </select>
-                                    : this.state.grades[grade.id] ? this.state.grades[grade.id] : '-'
+                                    : this.state.grades[grade.id] ? this.state.grades[grade.id] == " " ? '-' : this.state.grades[grade.id] : '-'
                             }
                         </td>
                     })

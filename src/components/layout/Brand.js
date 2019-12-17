@@ -6,6 +6,7 @@ export class Brand extends React.Component {
 
     logout = () => {
         localStorage.removeItem(globalConstants.authData);
+        localStorage.removeItem(globalConstants.user);
         this.props.history.push("/");
     };
 
@@ -16,7 +17,7 @@ export class Brand extends React.Component {
                     <div className="container-fluid">
                         {/* Brand */}
                         <a className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-                           href="/dashboard">Panel Główny</a>
+                           href="/dashboard"></a>
                         <ul className="navbar-nav align-items-center d-none d-md-flex">
                             <li className="nav-item dropdown">
                                 <a className="nav-link pr-0" href="#" role="button" data-toggle="dropdown"

@@ -10,6 +10,7 @@ import CourseStudentAddModal from "./CourseStudentAddModal";
 import CourseStudentDeleteModal from "./CourseStudentDeleteModal";
 import CourseForemanModal from "./CourseForemanModal";
 import CourseForemanModalDelete from "./CourseForemanModalDelete";
+import userConstants from "../Users/UserConstants";
 
 export class CourseInfo extends React.Component {
 
@@ -78,18 +79,23 @@ export class CourseInfo extends React.Component {
                                     this.props.course.foreman ?
                                         <h3 className="flex-column">
                                             {this.props.course.foreman.firstName} {this.props.course.foreman.lastName} ({this.props.course.foreman.email})
-                                            <a style={{cursor: 'pointer'}} onClick={this.toggleDeleteModal} title="Usuń starostę">
-                                                &nbsp;<i className="fa fa-trash text-danger"></i>
-                                                <CourseForemanModalDelete
-                                                    loadRecords={this.loadRecords}
-                                                    key={this.props.course.foreman.id}
-                                                    isOpen={this.state.isDeleteModalOpen}
-                                                    toggleModal={this.toggleDeleteModal}
-                                                    record={this.props.course.foreman}
-                                                    course={this.props.course}
-                                                    loadCourse={this.props.loadCourse}
-                                                />
-                                            </a>
+                                            {
+                                                this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                                    <a style={{cursor: 'pointer'}} onClick={this.toggleDeleteModal} title="Usuń starostę">
+                                                        &nbsp;<i className="fa fa-trash text-danger"></i>
+                                                        <CourseForemanModalDelete
+                                                            loadRecords={this.loadRecords}
+                                                            key={this.props.course.foreman.id}
+                                                            isOpen={this.state.isDeleteModalOpen}
+                                                            toggleModal={this.toggleDeleteModal}
+                                                            record={this.props.course.foreman}
+                                                            course={this.props.course}
+                                                            loadCourse={this.props.loadCourse}
+                                                        />
+                                                    </a>
+                                                    : ''
+                                            }
+
                                         </h3>
                                     : '-'
                                 }

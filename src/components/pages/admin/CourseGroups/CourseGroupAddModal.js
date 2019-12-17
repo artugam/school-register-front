@@ -166,7 +166,7 @@ export class CourseGroupAddModal extends React.Component {
                 <ModalBody>
                     <form>
                         <div className="form-group">
-                            <label htmlFor="firstname">Nazwa</label>
+                            <label htmlFor="firstname">Nazwa grupy</label>
                             <input type="text"
                                    className={"form-control " + (this.state.formErrors.name ? "is-invalid" : '')}
                                    id="name" onChange={this.handleOnChange}

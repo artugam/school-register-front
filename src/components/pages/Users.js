@@ -3,12 +3,13 @@ import axios from 'axios'
 import axiosService from "../services/axios/AxiosService";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import BaseUsersController from "./BaseUsersController";
+import UsersTableConstants from "../services/users/UsersTableConstants";
 
 
 export class Users extends BaseUsersController {
 
     config = {
-        tableName: "Użytkownicy"
+        tableName: UsersTableConstants.USERS
     };
 
     loadUsers = (usersListParams) => {

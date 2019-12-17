@@ -30,15 +30,15 @@ export class GroupSubjectsAddModal extends React.Component {
     };
 
     addConfig = {
-        title: "Dodawanie zajeć",
+        title: "Dodawanie przedmiotu",
         saveButton: "Dodaj",
-        successResponse: "Zajęcia został dodane"
+        successResponse: "Przedmiot został dodany"
     };
 
     editConfig = {
-        title: "Edycja zajeć",
+        title: "Edycja przedmiotu",
         saveButton: "Edytuj",
-        successResponse: "Zajęcia został edytowane"
+        successResponse: "Przedmiot został edytowany"
     };
 
     config = this.addConfig;
@@ -59,10 +59,14 @@ export class GroupSubjectsAddModal extends React.Component {
 
         switch (id) {
             case "name":
-                formErrors.nazwa =
+                formErrors.name =
                     value.length < 3 ? "Nazwa powinno mieć co najmniej 2 znaki" : "";
                 break;
             case "hours":
+                if(!value) {
+                    formErrors.hours = "Pole wymagane";
+                    break;
+                }
                 formErrors.hours =
                     isNaN(value) ? "Wprowadź poprawną ilość godzin" : "";
                 break;
@@ -109,10 +113,6 @@ export class GroupSubjectsAddModal extends React.Component {
         let valid = true;
 
         let fields = this.state.formFields;
-
-        if (this.isEdit) {
-            delete fields['password'];
-        }
 
         var self = this;
         Object.keys(fields).forEach(function (key) {
@@ -203,14 +203,14 @@ export class GroupSubjectsAddModal extends React.Component {
                     <div className="form-group">
                         <div className="form-group">
 
-                            <label htmlFor="firstname">Nazwa</label>
+                            <label htmlFor="firstname">Nazwa przedmiotu</label>
 
                             <input type="text"
                                    className={"form-control " + (this.state.formErrors.name ? "is-invalid" : '')}
                                    id="name" onChange={this.handleOnChange}
                                    aria-describedby="emailHelp"
                                    value={this.state.formFields.name}
-                                   placeholder="Wprowadź nazwę"></input>
+                                   placeholder="Wprowadź nazwę przedmiotu"></input>
                             <div className="invalid-feedback">{this.state.formErrors.name}</div>
                         </div>
                         <div className="form-group">

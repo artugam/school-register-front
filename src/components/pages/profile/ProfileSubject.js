@@ -36,6 +36,8 @@ export class ProfileSubject extends React.Component {
                 <td scope="row">{this.props.record.name}</td>
                 <td>{this.props.record.hours}</td>
                 <td>{this.props.record.type}</td>
+                <td>{this.props.record.group.name}</td>
+                <td>{this.props.record.group.course.name}</td>
                 <td>
                     {this.props.record.teachers.map((teacher) => {
                         return <div>{teacher.firstName} {teacher.lastName}</div>;

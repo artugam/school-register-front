@@ -34,7 +34,7 @@ export class CourseDeleteModal extends React.Component {
                     Usunięcie kierunku
                 </ModalHeader>
                 <ModalBody>
-                    Czy jesteś pewny, że chcesz usunąć ten kierunek?
+                    Czy jesteś pewny, że chcesz usunąć kierunek <b>{this.props.record.name}</b>?
                 </ModalBody>
                 <ModalFooter>
                     <Button color={"danger"}

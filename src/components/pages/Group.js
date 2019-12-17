@@ -52,11 +52,11 @@ export class Group extends BaseSiteController {
                             <div className="col-xl-12 mb-5 mb-xl-0">
                                 {this.state.group.id ?
                                     <div>
-                                        <GroupInfo
-                                            group={this.state.group}
-                                            records={this.state.records}
-                                        />
-                                        <br></br>
+                                        {/*<GroupInfo*/}
+                                        {/*    group={this.state.group}*/}
+                                        {/*    records={this.state.records}*/}
+                                        {/*/>*/}
+                                        {/*<br></br>*/}
                                         <GroupStudentsTable
                                             group={this.state.group}
                                         />

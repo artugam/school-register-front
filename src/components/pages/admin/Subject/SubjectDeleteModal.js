@@ -42,13 +42,12 @@ export class SubjectDeleteModal extends React.Component {
                 </ModalHeader>
                 <ModalBody>
                     Czy jesteś pewny, że chcesz usunąć
-                    zajecia
+                    zajecia z dnia
                     &nbsp;<b><Moment format="DD-MM-YYYY HH:mm">
                         {this.props.record.start}
                     </Moment></b> - <b><Moment format="DD-MM-YYYY HH:mm">
                         {this.props.record.end}
-                    </Moment></b>&nbsp;
-                    z grupy <b>{this.props.subject.group.name}</b>?
+                    </Moment></b>
                 </ModalBody>
                 <ModalFooter>
                     <Button color={"danger"}

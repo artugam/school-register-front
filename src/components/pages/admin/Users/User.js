@@ -59,7 +59,6 @@ export class User extends React.Component {
                 return userConstants.roleNames[role];
             }
         }
-
     };
 
     render() {
@@ -88,7 +87,7 @@ export class User extends React.Component {
 
                 </td>
                 <td>
-                    <a style={actionButtonStyle} onClick={this.togglePasswordModal}>
+                    <a style={actionButtonStyle} onClick={this.togglePasswordModal} title="Ustawienie hasła">
                         <i className="fa fa-key text-black"></i>
                         <UserPasswordModal
                             loadUsers={this.props.loadUsers}
@@ -99,7 +98,7 @@ export class User extends React.Component {
                             user={this.props.user}
                         />
                     </a>
-                    <a style={actionButtonStyle} onClick={this.toggleModal}>
+                    <a style={actionButtonStyle} onClick={this.toggleModal} title="Edycja użytkownika">
                         <i className="fa fa-edit text-yellow"></i>
                         <UserModal
                             loadUsers={this.props.loadUsers}
@@ -111,7 +110,7 @@ export class User extends React.Component {
                             user={this.props.user}
                         />
                     </a>
-                    <a className={!this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle}
+                    <a className={!this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle} title="Zablokowanie użytkownika"
                        onClick={this.toggleBlockModal}>
                         <i className="fa fa-lock text-primary"></i>
                         <UserStatusModal
@@ -123,7 +122,7 @@ export class User extends React.Component {
                             action={"block"}
                         />
                     </a>
-                    <a className={this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle}
+                    <a className={this.props.user.enabled ? "d-none" : ''} style={actionButtonStyle} title="Odblokowanie użytkownika"
                        onClick={this.toggleUnBlockModal}>
                         <i className="fa fa-lock-open text-success"></i>
                         <UserStatusModal
@@ -137,7 +136,7 @@ export class User extends React.Component {
                     </a>
 
 
-                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal}>
+                    <a style={actionButtonStyle} onClick={this.toggleDeleteModal} title="Usunięcie użytkownika">
                         <i className="fa fa-trash text-danger"></i>
                         <UserDeleteModal
                             key={this.props.user.id}

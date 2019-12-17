@@ -120,7 +120,11 @@ export class FullSubjectScheduleView extends React.Component {
                     <div className="row align-items-center">
                         <div className="col">
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
-                                <a href={"/groups/" + this.props.subject.group.id + "/subjects/"}>
+                                <a href={
+                                    this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
+                                     "/groups/" + this.props.subject.group.id + "/subjects/"
+                                        : '/profile'
+                                }>
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
                                 &nbsp; Przedmiot

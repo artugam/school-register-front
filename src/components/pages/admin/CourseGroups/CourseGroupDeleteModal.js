@@ -32,7 +32,7 @@ export class CourseGroupDeleteModal extends React.Component {
                 centered
             >
                 <ModalHeader tag={'h3'} toggle={this.props.toggleModal}>
-                    Usunięcie studenta z kierunku
+                    Usunięcie grupy
                 </ModalHeader>
                 <ModalBody>
                     Czy jesteś pewny, że chcesz usunąć

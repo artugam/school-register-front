@@ -154,7 +154,7 @@ export class NotificationsTable extends React.Component {
                         <table className="table align-items-center table-flush table-bordered text-center">
                             <thead className="thead-light">
                             <tr>
-                                <SortTableHeader field={"description"} text={"Opis"} handleSort={this.handleSort}/>
+                                <SortTableHeader field={"description"} text={"Treść"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"c.name"} text={"Kierunek"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"g.name"} text={"Grupa"} handleSort={this.handleSort}/>
                                 <SortTableHeader field={"s.name"} text={"Przedmiot"} handleSort={this.handleSort}/>

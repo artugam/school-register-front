@@ -158,7 +158,7 @@ export class FullSubjectNotificationModal extends React.Component {
                 <ModalBody>
                     <form>
                         <div className="form-group">
-                            <label htmlFor="description">Opis</label>
+                            <label htmlFor="description">Treść powiadomienia</label>
                             <textarea
                                 className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                 id="description"

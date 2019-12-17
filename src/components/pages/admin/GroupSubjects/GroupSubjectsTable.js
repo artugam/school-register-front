@@ -144,7 +144,7 @@ export class GroupSubjectsTable extends React.Component {
                                 <a href={"/courses/" + this.props.group.course.id + "/groups/"}  >
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
-                                &nbsp; Grupa - <b>{this.props.group.name}</b>
+                                &nbsp; Przedmioty - (Grupa - <b>{this.props.group.name})</b>
                             </h2>
                         </div>
                         <div className="col text-right">

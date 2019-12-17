@@ -86,9 +86,6 @@ export class FullGradeEditDescriptionModal extends React.Component {
 
     handleFormSubmit = (e) => {
 
-        if (this.state.formFields.type === false) {
-            this.state.formFields.type = this.props.options.types[0];
-        }
         if (!this.formValid()) {
             toast.error("Formularz zawiera błędy");
             return;
@@ -123,11 +120,11 @@ export class FullGradeEditDescriptionModal extends React.Component {
                 centered
             >
                 <ModalHeader tag={'h3'} toggle={this.props.toggleModal}>
-                    Edycja Opisu
+                    Edycja sekcji
                 </ModalHeader>
                 <ModalBody>
                     <div className="form-group">
-                        <label htmlFor="description">Opis</label>
+                        <label htmlFor="description">Nazwa sekcji</label>
                         <input className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                   id="description"
                                   onChange={this.handleOnChange}

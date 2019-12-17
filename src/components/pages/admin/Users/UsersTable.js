@@ -90,11 +90,17 @@ export class UsersTable extends React.Component {
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">Dodaj Nowego
                                 Użytkownika
                             </button>
-                            <UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
-                                       allowedRoles={this.state.allowedRoles}
-                                       loadUsers={this.props.loadUsers}
-                                       userListParams={this.props.userListParams}
-                            />
+                            {
+                                this.state.allowedRoles.length > 0 ?
+                                    <UserModal isOpen={this.state.isModalOpen} action={"add"} toggleModal={this.toggleModal}
+                                               allowedRoles={this.state.allowedRoles}
+                                               loadUsers={this.props.loadUsers}
+                                               userListParams={this.props.userListParams}
+                                               config={this.props.config}
+                                    />
+                                    : ''
+                            }
+
                         </div>
                     </div>
                     <div className="row align-items-center">
@@ -125,7 +131,7 @@ export class UsersTable extends React.Component {
                             </tr>
                             </thead>
 
-                            { this.props.users.content.length > 0 ?
+                            { this.props.users.content.length > 0 && this.state.allowedRoles.length ?
                                 <tbody className="tbody-dark">
                                 {this.props.users.content.map((user) => {
                                         return (<User

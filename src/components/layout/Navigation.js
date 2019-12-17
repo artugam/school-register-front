@@ -69,8 +69,8 @@ export class Navigation extends React.Component {
                             </div>
                         </form>
                         <ul className="navbar-nav">
-                            <li className="nav-item active ">
-                                <a className=" nav-link active " href="/dashboard"> <i
+                            <li className="nav-item">
+                                <a className=" nav-link" href="/dashboard"> <i
                                     className="ni ni-tv-2 text-primary"></i> Panel głowny
                                 </a>
                             </li>

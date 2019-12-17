@@ -24,9 +24,9 @@ export class FullGradesAddModal extends React.Component {
     };
 
     addConfig = {
-        title: "Dodawanie zajeć",
+        title: "Dodawanie sekcji",
         saveButton: "Dodaj",
-        successResponse: "Zajęcia został dodane"
+        successResponse: "Sekcja została dodana"
     };
 
     editConfig = {
@@ -53,9 +53,9 @@ export class FullGradesAddModal extends React.Component {
 
         switch (id) {
             case "description":
-                formErrors.start = false;
+                formErrors.description = false;
                 if (!value) {
-                    formErrors.start = errorConstantsValidator.required;
+                    formErrors.description = errorConstantsValidator.required;
                 }
                 break;
             default:
@@ -106,9 +106,6 @@ export class FullGradesAddModal extends React.Component {
 
     handleFormSubmit = (e) => {
 
-        if (this.state.formFields.type === false) {
-            this.state.formFields.type = this.props.options.types[0];
-        }
         if (!this.formValid()) {
             toast.error("Formularz zawiera błędy");
             return;
@@ -173,7 +170,7 @@ export class FullGradesAddModal extends React.Component {
                 </ModalHeader>
                 <ModalBody>
                     <div className="form-group">
-                        <label htmlFor="description">Opis</label>
+                        <label htmlFor="description">Nazwa sekcji</label>
                         <input className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                   id="description"
                                   onChange={this.handleOnChange}

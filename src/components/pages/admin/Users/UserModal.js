@@ -8,6 +8,7 @@ import axiosService from "../../../services/axios/AxiosService";
 import toast from "../../../services/toast/ToastService";
 import {API_URL} from "../../../constants/Api";
 import passwordValidator from "../../../services/validator/PasswordValidator";
+import UsersTableConstants from "../../../services/users/UsersTableConstants";
 
 export class UserModal extends React.Component {
 
@@ -73,7 +74,13 @@ export class UserModal extends React.Component {
                     value.length < 2 ? "Nazwisko powinno mieć co najmniej 2 znaki" : "";
                 break;
             case "uniqueNumber":
-                if(!value) {
+                var role = parseInt(this.state.formFields.role);
+                if(role === 1 || role === 2) {
+                    formErrors.uniqueNumber = "";
+
+                    return;
+                }
+                if (!value) {
                     formErrors.uniqueNumber = errorConstantsValidator.required;
                     return;
                 }
@@ -129,9 +136,20 @@ export class UserModal extends React.Component {
     };
 
     handleFormSubmit = (e) => {
-        if (this.state.formFields.role == false) {
-            this.state.formFields.role = this.props.allowedRoles[0].id;
+        console.log(this.state.formFields);
+        if (this.state.formFields.role == false || !this.state.formFields.role) {
+            var role = userConstants.roles.ROLE_USER;
+            if(this.props.config.tableName === UsersTableConstants.TEACHER) {
+                role = userConstants.roles.ROLE_TEACHER;
+            } else if(this.props.config.tableName === UsersTableConstants.ADMINS) {
+                role = userConstants.roles.ROLE_ADMIN;
+            }
+            var result = this.props.allowedRoles.filter(obj => {
+                return obj.name === role
+            });
+            this.state.formFields.role = result[0].id;
         }
+
         if (!this.formValid()) {
             toast.error("Formularz zawiera błędy");
             return;
@@ -194,14 +212,14 @@ export class UserModal extends React.Component {
     }
 
     updateStateWithUser() {
-        // console.log(this.user);
+
         var formFields = {
             firstname: this.user.firstName,
             lastname: this.user.lastName,
             email: this.user.email,
             uniqueNumber: this.user.uniqueNumber,
             password: '',
-            role: false,
+            role: this.getUserRole(this.user),
         };
 
         let newState = Object.assign({}, this.state);
@@ -209,6 +227,38 @@ export class UserModal extends React.Component {
         this.setState(newState);
 
     }
+
+    getUserRole = (user) => {
+
+        if (!user.roles.length) {
+            return false;
+        }
+
+        var role = this.getRole(user);
+        var outRole = false;
+        this.props.allowedRoles.map((item) => {
+            if(item.name === role) {
+                outRole = item.id;
+            }
+        });
+        return outRole;
+    };
+
+    getRole = (user) => {
+        if(user.roles.length === 4) {
+            return userConstants.roles.ROLE_ADMIN;
+        }
+        if(user.roles.length === 3) {
+            return userConstants.roles.ROLE_TEACHER;
+        }
+        if(user.roles.length === 2) {
+            return userConstants.roles.ROLE_SUPER_USER;
+        }
+        if(user.roles.length === 1) {
+            return userConstants.roles.ROLE_USER;
+        }
+    };
+
 
     generateRandomPassword = () => {
         var generator = require('generate-password');
@@ -303,29 +353,29 @@ export class UserModal extends React.Component {
                             </div>
                         }
 
-                        <div className="form-group">
-                            <label htmlFor="role">Rola</label>
-                            <select
-                                type="text"
-                                className={"form-control " + (this.state.formErrors.role ? "is-invalid" : '')}
-                                id="role"
-                                onChange={this.handleOnChange}
-                                value={this.state.formFields.role}
-                                placeholder="Wprowadź hasło"
-                            >
-                                {
-                                    this.props.allowedRoles.map((role) => {
-                                        return <option
-                                            key={role.id}
-                                            value={role.id}
-                                        >
-                                            {userConstants.roleNames[role.name]}
-                                        </option>
-                                    })
-                                }
-                            </select>
-                            <div className="invalid-feedback">{this.state.formErrors.role}</div>
-                        </div>
+                        {/*<div className="form-group">*/}
+                        {/*    <label htmlFor="role">Rola</label>*/}
+                        {/*    <select*/}
+                        {/*        type="text"*/}
+                        {/*        className={"form-control " + (this.state.formErrors.role ? "is-invalid" : '')}*/}
+                        {/*        id="role"*/}
+                        {/*        onChange={this.handleOnChange}*/}
+                        {/*        value={this.state.formFields.role}*/}
+                        {/*        placeholder="Wprowadź hasło"*/}
+                        {/*    >*/}
+                        {/*        {*/}
+                        {/*            this.props.allowedRoles.map((role) => {*/}
+                        {/*                return <option*/}
+                        {/*                    key={role.id}*/}
+                        {/*                    value={role.id}*/}
+                        {/*                >*/}
+                        {/*                    {userConstants.roleNames[role.name]}*/}
+                        {/*                </option>*/}
+                        {/*            })*/}
+                        {/*        }*/}
+                        {/*    </select>*/}
+                        {/*    <div className="invalid-feedback">{this.state.formErrors.role}</div>*/}
+                        {/*</div>*/}
 
                     </form>
                 </ModalBody>

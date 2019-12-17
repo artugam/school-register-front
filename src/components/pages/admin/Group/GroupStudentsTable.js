@@ -143,12 +143,12 @@ export class GroupStudentsTable extends React.Component {
                                 <a href={"/courses/" + this.props.group.course.id + "/groups/"}  >
                                     <i className="fa fa-arrow-left"></i>
                                 </a>
-                                &nbsp; Grupa - <b>{this.props.group.name}</b>
+                                &nbsp; Studenci grupy - <b>{this.props.group.name}</b>
                             </h2>
                         </div>
                         <div className="col text-right">
                             <button onClick={this.toggleModal} className="btn btn-sm btn-primary">
-                                Dodaj Studentów
+                                Dodaj Studentów do Grupy
                             </button>
                             {
                                 this.state.optionsLoaded === true ?

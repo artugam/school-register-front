@@ -60,7 +60,10 @@ export class NotificationModal extends React.Component {
 
         const {id, value} = e.target;
 
-        this.loadGroups(value);
+        if(value){
+            this.loadGroups(value);
+        }
+
     };
 
     loadGroups = (courseId, force = true) => {
@@ -99,7 +102,9 @@ export class NotificationModal extends React.Component {
         this.handleOnChange(e);
 
         const {id, value} = e.target;
-        this.loadSubjects(value);
+        if(value){
+            this.loadSubjects(value);
+        }
     };
 
 
@@ -144,12 +149,10 @@ export class NotificationModal extends React.Component {
     };
 
     handleFormSubmit = (e) => {
-        if (this.state.formFields.degree == '') {
-            this.state.formFields.degree = this.props.configOptions.degrees[0];
+        if (this.state.formFields.courseId == '') {
+            this.state.formFields.courseId = this.props.courses[0] ? this.props.courses[0].id : '';
         }
-        if (this.state.formFields.form == '') {
-            this.state.formFields.form = this.props.configOptions.forms[0];
-        }
+        
         if (!this.formValid()) {
             toast.error("Formularz zawiera błędy");
             return;
@@ -290,6 +293,11 @@ export class NotificationModal extends React.Component {
                                 value={this.state.formFields.courseId}
                                 placeholder="Wprowadź hasło"
                             >
+                                <option
+                                    key="empty"
+                                    value=""
+                                >
+                                </option>
                                 {this.props.courses.map((course) => {
                                     return <option
                                         key={course.id}
@@ -312,6 +320,11 @@ export class NotificationModal extends React.Component {
                                 value={this.state.formFields.groupId}
                                 placeholder="Wprowadź hasło"
                             >
+                                <option
+                                    key="empty"
+                                    value=""
+                                >
+                                </option>
                                 {this.state.groups.map((group) => {
                                     return <option
                                         key={group.id}
@@ -334,7 +347,11 @@ export class NotificationModal extends React.Component {
                                 value={this.state.formFields.subjectId}
                                 placeholder="Wprowadź hasło"
                             >
-
+                                <option
+                                    key="empty"
+                                    value=""
+                                >
+                                </option>
                                 {this.state.subjects.map((subject) => {
                                     return <option
                                         key={subject.id}
@@ -348,7 +365,7 @@ export class NotificationModal extends React.Component {
                             <div className="invalid-feedback">{this.state.formErrors.subjectId}</div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="description">Opis</label>
+                            <label htmlFor="description">Treść powiadomienia</label>
                             <textarea
                                 className={"form-control " + (this.state.formErrors.description ? "is-invalid" : '')}
                                 id="description"
