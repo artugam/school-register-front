@@ -125,7 +125,7 @@ export class FullSubjectScheduleRow extends React.Component {
                                                 : ''
                                         }
                                     </select>
-                                    : (this.state.presences[presence.id] !== " "? <b style={{color: this.getColor(this.state.presences[presence.id])}}>{this.state.presences[presence.id]}</b> : "-")
+                                    : (this.state.presences[presence.id] !== " "? <b className={"background-inherit " + this.getColor(this.state.presences[presence.id])}>{this.state.presences[presence.id]}</b> : "-")
                             }
                         </td>
                     })

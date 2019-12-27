@@ -123,7 +123,9 @@ export class FullGradesScheduleRow extends React.Component {
                                                 : ''
                                         }
                                     </select>
-                                    : this.state.grades[grade.id] ? this.state.grades[grade.id] == " " ? '-' : this.state.grades[grade.id] : '-'
+                                    : this.state.grades[grade.id] ? this.state.grades[grade.id] == " " ? '-' :
+                                        <b className={"background-inherit " + (this.state.grades[grade.id] == 2 ? "grade-two" : "grade-normal")}>{this.state.grades[grade.id].toFixed(1)}</b>
+                                    : '-'
                             }
                         </td>
                     })

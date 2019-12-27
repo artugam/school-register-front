@@ -81,3 +81,7 @@ input[id="search"] {
     color: #000000 !important;
     background-color: #FFFFFF !important;
 }
+
+.background-inherit {
+    background-color: inherit !important;
+}
