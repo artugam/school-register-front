@@ -65,25 +65,20 @@ export class FullSubjectScheduleRow extends React.Component {
     };
 
     getColor = (value) => {
-
         switch (value) {
             case "Obecny":
-                // return "#36a849";
-                return "rgba(17, 151, 7, 0.73)";
+                return 'presence-true';
             case "Spóźniony":
-                // return "#4c87e6";
-                return "rgba(136, 125, 151, 1)";
-                return "rgba(247, 241, 59, 0.79)";
+                return 'presence-late';
             case "Usprawiedliwiony":
-                // return "#7b8696";
-                return "rgba(47, 99, 228, 0.83)";
+                return  'presence-justified';
             case "Nieobecny":
-                // return "#d43737";
-                return "rgba(195, 9, 9, 0.83)";
+                return 'presence-false';
             default:
-                return "#ffffff"
+                return 'presence-none';
         }
     };
+
 
     render() {
         return (
@@ -91,9 +86,10 @@ export class FullSubjectScheduleRow extends React.Component {
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
                 {
                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                        <td scope="row" style={{backgroundColor: "#f6f9fc"}}>
-                            <b className="text-sm">
-                            {this.props.record.user.lastName} {this.props.record.user.firstName} {this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}
+                        <td scope="row" style={{backgroundColor: "#f6f9fc", textAlign: "left"}}>
+                            <b className="text-sm" title={this.props.record.user.uniqueNumber ? "Nr. indeksu: "+ this.props.record.user.uniqueNumber : ''}>
+                            {this.props.record.user.lastName} {this.props.record.user.firstName}
+                            {/*{this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}*/}
                             </b>
                         </td>
                         : ''
@@ -106,24 +102,24 @@ export class FullSubjectScheduleRow extends React.Component {
                                     <select
                                         type="text"
                                         // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                                        className={"form-control form-control-sm"}
+                                        className={"form-control form-control-sm sans-serif-font " + this.getColor(this.state.presences[presence.id])}
                                         id={presence.id}
                                         onChange={this.handleOnChange}
                                         value={this.state.presences[presence.id]}
                                         placeholder="Rodzaj zajęć"
-                                        style={{backgroundColor: this.getColor(this.state.presences[presence.id])}}
 
                                     >
                                         {
                                             this.props.options.types ?
                                                 this.props.options.types.map((role) => {
                                                     return <option
+                                                        className={this.getColor(role) + " sans-serif-font"}
                                                         key={role}
                                                         value={role}
                                                         // style={{backgroundColor: "#ffffff"}}
-                                                        style={{backgroundColor: this.getColor(role)}}
+                                                        // style={this.getColor(role)}
                                                     >
-                                                        {role}
+                                                        {role.toUpperCase()}
                                                     </option>
                                                 })
                                                 : ''

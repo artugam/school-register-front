@@ -61,14 +61,34 @@ export class FullGradesScheduleRow extends React.Component {
         this.setState(grades);
     };
 
+    getColor = (value) => {
+
+        return 'grade-two';
+        console.log(value);
+        var grade = '';
+        switch (value) {
+            case 2:
+                grade = 'grade-two';
+                break;
+                // return 'grade-two';
+            default:
+                grade =  'grade-normal';
+                break;
+                // return 'grade-normal'
+        }
+        console.log(grade);
+        return grade;
+    };
+
     render() {
         return (
             <tr style={{"borderBottom": "2px solid #adb5bd"}}>
                 {
                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                        <td scope="row" style={{backgroundColor: "#f6f9fc"}}>
-                            <b className="text-sm">
-                            {this.props.record.user.lastName} {this.props.record.user.firstName} {this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}
+                        <td scope="row" style={{backgroundColor: "#f6f9fc", textAlign: "left"}}>
+                            <b className="text-sm" title={this.props.record.user.uniqueNumber ? "Nr. indeksu: "+ this.props.record.user.uniqueNumber : ''}>
+                                {this.props.record.user.lastName} {this.props.record.user.firstName}
+                                {/*{this.props.record.user.uniqueNumber ? "- " + this.props.record.user.uniqueNumber : ''}*/}
                             </b>
                         </td>
                         : ''
@@ -82,7 +102,8 @@ export class FullGradesScheduleRow extends React.Component {
                                     <select
                                         type="text"
                                         // className={"form-control " + (this.state.formErrors.type ? "is-invalid" : '')}
-                                        className={"form-control form-control-sm"}
+                                        // className={"form-control form-control-sm " + this.state.grades[grade.id] == 2 ? this.getColor(this.state.grades[grade.id]) : ""}
+                                        className={"form-control form-control-sm " + (this.state.grades[grade.id] == 2 ? "grade-two" : "grade-normal")}
                                         id={grade.id}
                                         onChange={this.handleOnChange}
                                         value={this.state.grades[grade.id]}
@@ -94,8 +115,9 @@ export class FullGradesScheduleRow extends React.Component {
                                                     return <option
                                                         key={role}
                                                         value={role}
+                                                        className={ role == 2 ? "grade-two" : "grade-normal"}
                                                     >
-                                                        {role}
+                                                        {role != 0 ? role.toFixed(1) : role}
                                                     </option>
                                                 })
                                                 : ''

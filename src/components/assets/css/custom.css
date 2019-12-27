@@ -3,6 +3,13 @@
     color: black !important;
 }
 
+
+/*input.form-control {*/
+/*    color: black !important;*/
+/*}*/
+
+
+
 table tr:hover {
     background-color: #cfcfcf;
 }
@@ -38,4 +45,39 @@ input[id="search"] {
 
 .react-css-collapse-transition {
     transition: height 250ms cubic-bezier(.4, 0, .2, 1);
+}
+
+.sans-serif-font {
+    font-family: "Open Sans, sans-serif";
+}
+
+.presence-none {
+    color: #ffffff !important;
+    background-color: #ffffff !important;
+}
+.presence-true {
+    color: #1aae6f !important;
+    background-color: rgba(147, 231, 195, 0.5) !important;
+}
+.presence-late {
+    color: #03acca !important;
+    background-color: rgba(136, 230, 247, 0.5) !important;
+}
+.presence-justified {
+    color: #2643e9 !important;
+    background-color: rgba(203, 210, 246, 0.5) !important;
+}
+.presence-false {
+    color: #f80031 !important;
+    background-color: rgba(251, 175, 190, 0.5) !important;
+}
+
+.grade-two {
+    color: #f80031 !important;
+    background-color: rgba(251, 175, 190, 0.5) !important;
+}
+
+.grade-normal {
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
 }
