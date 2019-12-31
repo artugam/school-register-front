@@ -119,7 +119,7 @@ export class Navigation extends React.Component {
                                 <ul className="navbar-nav mb-md-3">
                                     <li className="nav-item">
                                         <a className="nav-link " href="/admins">
-                                            <i className="ni ni-single-02 text-green"></i>Administratorowie
+                                            <i className="ni ni-single-02 text-green"></i>Administratorzy
                                         </a>
                                     </li>
                                 </ul>

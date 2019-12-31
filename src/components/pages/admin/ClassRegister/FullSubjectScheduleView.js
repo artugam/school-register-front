@@ -118,7 +118,7 @@ export class FullSubjectScheduleView extends React.Component {
             <div className="card shadow">
                 <div className="card-header border-0">
                     <div className="row align-items-center">
-                        <div className="col">
+                        <div className="col-md-8">
                             <h2 className="d-inline mb-0 p-2 font-weight-500">
                                 <a href={
                                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
@@ -133,7 +133,7 @@ export class FullSubjectScheduleView extends React.Component {
                         </div>
                         {
                             this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                                <div className="col text-right">
+                                <div className="col col-md-4 text-right">
 
                                     <button onClick={this.toggleNotificationModal} className="btn btn-sm btn-primary">
                                         Dodaj Powiadomienie
@@ -160,7 +160,7 @@ export class FullSubjectScheduleView extends React.Component {
                             <tr>
                                 {
                                     this.props.roles.includes(userConstants.roles.ROLE_TEACHER) ?
-                                        <SortTableHeader text={"Student"}/>
+                                        <SortTableHeader text={"Student"} width={"18%"}/>
                                         : ''
                                 }
 

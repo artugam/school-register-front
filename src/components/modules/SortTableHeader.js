@@ -42,7 +42,7 @@ export class SortTableHeader extends React.Component {
 
     sortButtonStyle = {
         cursor: this.props.field ? "pointer" : "default ",
-        width: '300px'
+        width: this.props.width ?  this.props.width : '300px'
     };
 
 }

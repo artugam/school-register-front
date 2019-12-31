@@ -4,7 +4,7 @@ import globalConstants from "../../constants/Global";
 const UsersTableConstants = {
     TEACHER: "Prowadzący",
     USERS: "Studenci",
-    ADMINS: "Administratorowie"
+    ADMINS: "Administratorzy"
 };
 
 export default UsersTableConstants;
